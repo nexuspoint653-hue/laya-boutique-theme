@@ -1,0 +1,55 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "f1": {
+          "type": "menu",
+          "settings": {
+            "title": "Shop",
+            "menu": "footer-shop"
+          }
+        },
+        "f2": {
+          "type": "menu",
+          "settings": {
+            "title": "Client Care",
+            "menu": "footer-care"
+          }
+        },
+        "f3": {
+          "type": "menu",
+          "settings": {
+            "title": "Contact Us",
+            "menu": "footer-contact"
+          }
+        },
+        "f4": {
+          "type": "menu",
+          "settings": {
+            "title": "Legal",
+            "menu": "footer-legal"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {
+        "newsletter_title": "Subscribe to our newsletter",
+        "logo_word": "Laya",
+        "logo_sub": "Boutique",
+        "chat_text": "Chat with us",
+        "offer_link": "/pages/client-care"
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

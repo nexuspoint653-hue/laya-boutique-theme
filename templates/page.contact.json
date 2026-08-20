@@ -1,0 +1,63 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "We Are Here to Help"
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {
+        "heading": "Send Us a Message",
+        "services": "",
+        "show_date": false,
+        "message_label": "How can we help?",
+        "button_label": "Send Message",
+        "footnote": "We reply within one business day."
+      }
+    },
+    "svc": {
+      "type": "service-band",
+      "blocks": {
+        "s1": {
+          "type": "item",
+          "settings": {
+            "title": "Shipping & Returns",
+            "body": "Delivery timelines, duties, and how to arrange an exchange.",
+            "link_text": "Read More",
+            "link": "/pages/shipping-returns"
+          }
+        },
+        "s2": {
+          "type": "item",
+          "settings": {
+            "title": "Size Guide",
+            "body": "Measurements, lengths, and how our sizing runs across styles.",
+            "link_text": "View Guide",
+            "link": "/pages/size-guide"
+          }
+        },
+        "s3": {
+          "type": "item",
+          "settings": {
+            "title": "Appointments",
+            "body": "Private styling and made-to-measure fittings.",
+            "link_text": "Book Now",
+            "link": "/pages/appointments"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "form",
+    "svc"
+  ]
+}

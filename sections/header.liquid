@@ -1,0 +1,138 @@
+{%- assign menu = linklists[section.settings.menu] -%}
+<header class="hdr{% if template.name == 'index' %} on-hero{% else %} solid{% endif %}" id="hdr">
+  <div class="hdr-in">
+    <nav class="nav-l">
+      <button class="burger" id="burger" aria-label="Menu"><i></i><i></i></button>
+      {%- for link in menu.links limit: 4 -%}
+        <a href="{{ link.url }}" class="nav-a"{% if link.links.size > 0 %} data-menu="mega-{{ forloop.index }}"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="200" style="max-height:{{ section.settings.logo_height }}px;width:auto">
+      {%- else -%}
+        <span class="logo-mark">{{ section.settings.logo_word | default: shop.name }}</span>
+        {%- if section.settings.logo_sub != blank -%}<span class="logo-sub">{{ section.settings.logo_sub }}</span>{%- endif -%}
+      {%- endif -%}
+    </a>
+
+    <div class="nav-r">
+      <button class="nav-a icon-btn hide-sm" id="searchBtn">Search</button>
+      {%- if section.settings.care_page != blank -%}
+        <a href="{{ section.settings.care_page }}" class="nav-a hide-sm">{{ section.settings.care_label }}</a>
+      {%- endif -%}
+      <a href="{{ routes.account_url }}" class="nav-a hide-sm">{% if customer %}Account{% else %}Sign In{% endif %}</a>
+      <a href="{{ routes.cart_url }}" class="nav-a icon-btn">Bag<span class="bag-n">{{ cart.item_count }}</span></a>
+    </div>
+  </div>
+
+  <div class="mega">
+    {%- for link in menu.links limit: 4 -%}
+      {%- if link.links.size > 0 -%}
+        {%- assign img = blank -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.position == forloop.parentloop.index -%}{%- assign img = block.settings.image -%}{%- endif -%}
+        {%- endfor -%}
+        <div class="mega-in" id="mega-{{ forloop.index }}">
+          {%- for col in link.links limit: 4 -%}
+            <div class="mega-col">
+              <span class="mega-h">{{ col.title }}</span>
+              <ul>
+                {%- if col.links.size > 0 -%}
+                  {%- for item in col.links -%}<li><a href="{{ item.url }}">{{ item.title }}</a></li>{%- endfor -%}
+                {%- else -%}
+                  <li><a href="{{ col.url }}">Shop all</a></li>
+                {%- endif -%}
+              </ul>
+            </div>
+          {%- endfor -%}
+          {%- if link.links.size < 4 -%}{%- for i in (link.links.size..3) -%}<div class="mega-col"></div>{%- endfor -%}{%- endif -%}
+          <a class="mega-fig" href="{{ link.url }}">
+            {%- if img != blank -%}
+              <img src="{{ img | image_url: width: 900 }}" alt="" loading="lazy" width="900" height="700">
+            {%- else -%}
+              <img src="{{ 'laya-menu-1.jpg' | asset_url }}" alt="" loading="lazy" width="900" height="700">
+            {%- endif -%}
+          </a>
+          <span class="mega-title">{{ link.title }}</span>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</header>
+
+<aside class="drawer" id="drawer">
+  <div class="drawer-h"><span class="ui">Menu</span><button class="x" id="drawerX" aria-label="Close"></button></div>
+  <div class="drawer-b">
+    <ul>
+      {%- for link in menu.links -%}
+        <li>
+          {%- if link.links.size > 0 -%}
+            <button data-sub="dsub-{{ forloop.index }}">{{ link.title }} <span>+</span></button>
+            <div class="drawer-sub" id="dsub-{{ forloop.index }}">
+              {%- for col in link.links -%}
+                {%- if col.links.size > 0 -%}
+                  {%- for item in col.links -%}<a href="{{ item.url }}">{{ item.title }}</a>{%- endfor -%}
+                {%- else -%}
+                  <a href="{{ col.url }}">{{ col.title }}</a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      <li><a href="{{ routes.account_url }}">{% if customer %}Account{% else %}Sign In{% endif %}</a></li>
+    </ul>
+  </div>
+</aside>
+
+<aside class="drawer" id="search" style="inset:0 auto 0 0;width:min(520px,92vw);box-shadow:20px 0 60px rgba(0,0,0,.12)">
+  <div class="drawer-h"><span class="ui">Search</span><button class="x" id="searchX" aria-label="Close"></button></div>
+  <div class="drawer-b">
+    <form action="{{ routes.search_url }}" method="get" class="nl-field" style="max-width:none">
+      <input type="search" name="q" placeholder="What are you looking for?" autocomplete="off">
+      <button type="submit" aria-label="Search"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
+    </form>
+    {%- if section.settings.popular != blank -%}
+      <h4 style="margin:34px 0 14px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:400">Popular searches</h4>
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+        {%- assign terms = section.settings.popular | split: ',' -%}
+        {%- for t in terms -%}
+          <li><a style="font-size:14px" href="{{ routes.search_url }}?q={{ t | strip | url_encode }}">{{ t | strip }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</aside>
+
+<style>
+.hdr .logo img{display:block}
+.drawer#search{transform:translateX(-100%)}
+.drawer#search.on{transform:none}
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" },
+    { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 20, "max": 90, "step": 2, "unit": "px", "default": 48 },
+    { "type": "text", "id": "logo_word", "label": "Wordmark (used if no logo image)", "default": "Laya" },
+    { "type": "text", "id": "logo_sub", "label": "Wordmark sub-line", "default": "Boutique" },
+    { "type": "url", "id": "care_page", "label": "Client care link" },
+    { "type": "text", "id": "care_label", "label": "Client care label", "default": "Client Care" },
+    { "type": "text", "id": "popular", "label": "Popular searches (comma separated)", "default": "New In, Abayas, Dresses, Two-Piece Sets" }
+  ],
+  "blocks": [
+    { "type": "menu_image", "name": "Menu image", "settings": [
+      { "type": "range", "id": "position", "label": "Applies to menu item #", "min": 1, "max": 4, "step": 1, "default": 1 },
+      { "type": "image_picker", "id": "image", "label": "Image" }
+    ]}
+  ],
+  "max_blocks": 4
+}
+{% endschema %}

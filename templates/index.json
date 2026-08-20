@@ -1,0 +1,223 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-video",
+      "settings": {
+        "eyebrow": "Autumn 2026",
+        "heading": "New Arrivals",
+        "link_text": "Shop Now",
+        "align": "left",
+        "show_scroll": true,
+        "link": "/collections/new-in"
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Discover",
+        "heading": "The Autumn 2026 Collection",
+        "link_text": "Shop Now",
+        "count": 4,
+        "columns": "4",
+        "collection": "new-in",
+        "link": "/collections/new-in"
+      }
+    },
+    "split_1": {
+      "type": "split-panel",
+      "settings": {
+        "eyebrow": "The Signature",
+        "heading": "Cut for Movement",
+        "body": "<p>Layered chiffon drawn across the waist and held with hand-set crystal. Full through the skirt, narrow at the sleeve \u2014 engineered so the whole line moves as one.</p>",
+        "link_text": "Shop Dresses",
+        "scheme": "light",
+        "flip": false,
+        "link": "/collections/dresses",
+        "fallback": "laya-split-1.jpg"
+      }
+    },
+    "tiles": {
+      "type": "category-tiles",
+      "settings": {
+        "heading": "Trending Now"
+      },
+      "blocks": {
+        "t1": {
+          "type": "tile",
+          "settings": {
+            "label": "Abayas",
+            "collection": "abayas",
+            "fallback": "laya-tile-3.jpg"
+          }
+        },
+        "t2": {
+          "type": "tile",
+          "settings": {
+            "label": "Dressy Dresses",
+            "collection": "dresses",
+            "fallback": "laya-tile-2.jpg"
+          }
+        },
+        "t3": {
+          "type": "tile",
+          "settings": {
+            "label": "Two-Piece Sets",
+            "collection": "two-piece",
+            "fallback": "laya-tile-1.jpg"
+          }
+        },
+        "t4": {
+          "type": "tile",
+          "settings": {
+            "label": "Accessories",
+            "collection": "accessories",
+            "fallback": "laya-tile-4.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ]
+    },
+    "split_2": {
+      "type": "split-panel",
+      "settings": {
+        "eyebrow": "Atelier",
+        "heading": "Made to Measure",
+        "body": "<p>Book a private fitting and we will draft your piece to your own measurements \u2014 sleeve, shoulder and length adjusted, fabric chosen with you.</p>",
+        "link_text": "Book an Appointment",
+        "scheme": "dark",
+        "flip": true,
+        "link": "/pages/appointments",
+        "fallback": "laya-split-2.jpg"
+      }
+    },
+    "rail": {
+      "type": "product-rail",
+      "settings": {
+        "heading": "Top Picks",
+        "link_text": "Shop Bestsellers",
+        "count": 10,
+        "collection": "bestsellers",
+        "link": "/collections/bestsellers"
+      }
+    },
+    "banner": {
+      "type": "editorial-banner",
+      "settings": {
+        "eyebrow": "The Collection",
+        "heading": "Autumn 2026",
+        "link_text": "Discover the Collection",
+        "link": "/collections/new-in"
+      }
+    },
+    "look": {
+      "type": "shop-the-look",
+      "settings": {
+        "heading": "Shop The Look"
+      },
+      "blocks": {
+        "l1": {
+          "type": "look",
+          "settings": {
+            "products": [
+              "gid://shopify/Product/9236131774595",
+              "gid://shopify/Product/9236132790403",
+              "gid://shopify/Product/9236132724867"
+            ]
+          }
+        },
+        "l2": {
+          "type": "look",
+          "settings": {
+            "products": [
+              "gid://shopify/Product/9236131020931",
+              "gid://shopify/Product/9236132692099",
+              "gid://shopify/Product/9236132823171"
+            ]
+          }
+        },
+        "l3": {
+          "type": "look",
+          "settings": {
+            "products": [
+              "gid://shopify/Product/9236132561027",
+              "gid://shopify/Product/9236132790403",
+              "gid://shopify/Product/9236132692099"
+            ]
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3"
+      ]
+    },
+    "split_3": {
+      "type": "split-panel",
+      "settings": {
+        "eyebrow": "Accessories",
+        "heading": "Finish the Line",
+        "body": "<p>Silk shaylas, hand-finished waist chains and pearl drops \u2014 designed to sit quietly against the piece rather than compete with it.</p>",
+        "link_text": "Shop Accessories",
+        "scheme": "tint",
+        "flip": false,
+        "link": "/collections/accessories",
+        "fallback": "laya-split-3.jpg"
+      }
+    },
+    "svc": {
+      "type": "service-band",
+      "blocks": {
+        "s1": {
+          "type": "item",
+          "settings": {
+            "title": "Client Care",
+            "body": "Our client services team is available to assist with online orders, exchanges and any enquiry about your pieces.",
+            "link_text": "Learn More",
+            "link": "/pages/client-care"
+          }
+        },
+        "s2": {
+          "type": "item",
+          "settings": {
+            "title": "Appointments",
+            "body": "Connect with an in-house stylist for a private shopping experience tailored entirely to you.",
+            "link_text": "Request an Appointment",
+            "link": "/pages/appointments"
+          }
+        },
+        "s3": {
+          "type": "item",
+          "settings": {
+            "title": "Bespoke Atelier",
+            "body": "Made-to-measure and bridal commissions, available by appointment only.",
+            "link_text": "Learn More",
+            "link": "/pages/appointments"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "featured",
+    "split_1",
+    "tiles",
+    "split_2",
+    "rail",
+    "banner",
+    "look",
+    "split_3",
+    "svc"
+  ]
+}

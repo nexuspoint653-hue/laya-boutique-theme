@@ -1,0 +1,59 @@
+{
+  "sections": {
+    "hero": {
+      "type": "page-hero",
+      "settings": {
+        "eyebrow": "Since 2019",
+        "heading": "Our Story",
+        "height": 65,
+        "fallback": "laya-split-3.jpg"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {}
+    },
+    "svc": {
+      "type": "service-band",
+      "blocks": {
+        "s1": {
+          "type": "item",
+          "settings": {
+            "title": "Visit the Atelier",
+            "body": "Private appointments for styling, fittings and bridal commissions.",
+            "link_text": "Book Now",
+            "link": "/pages/appointments"
+          }
+        },
+        "s2": {
+          "type": "item",
+          "settings": {
+            "title": "Client Care",
+            "body": "Our team is here for orders, exchanges and anything else.",
+            "link_text": "Contact Us",
+            "link": "/pages/client-care"
+          }
+        },
+        "s3": {
+          "type": "item",
+          "settings": {
+            "title": "Size Guidance",
+            "body": "Measure with a stylist over video call, free of charge.",
+            "link_text": "Size Guide",
+            "link": "/pages/size-guide"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "main",
+    "svc"
+  ]
+}

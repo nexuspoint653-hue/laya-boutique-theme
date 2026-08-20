@@ -1,0 +1,44 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "show_related": true,
+        "size_guide": "/pages/size-guide",
+        "fitting_link": "/pages/appointments",
+        "related_collection": "accessories"
+      },
+      "blocks": {
+        "b1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Fabric & Care",
+            "body": "<p>Dry clean only. Cool iron on the reverse. Store on a padded hanger away from direct light to protect the drape.</p>"
+          }
+        },
+        "b2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & Returns",
+            "body": "<p>Complimentary tracked shipping on orders over $250. Delivered in 3\u20136 business days. Thirty-day returns on unworn pieces.</p>"
+          }
+        },
+        "b3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Made to Measure",
+            "body": "<p>This style can be drafted to your own measurements in our atelier. Lead time is approximately four weeks.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

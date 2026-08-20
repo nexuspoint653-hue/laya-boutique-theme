@@ -1,0 +1,6 @@
+# Shopify CLI config.
+#   shopify theme dev      -> live preview against the store
+#   shopify theme push     -> push to an unpublished theme
+#   shopify theme pull     -> pull editor changes back down
+[environments.development]
+store = "4d6bp2-sy.myshopify.com"

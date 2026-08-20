@@ -1,0 +1,24 @@
+<section class="banner" data-rv="zoom">
+  {%- if section.settings.image != blank -%}
+    <img src="{{ section.settings.image | image_url: width: 2400 }}" alt="" width="2400" height="1200" loading="lazy">
+  {%- else -%}<img src="{{ 'laya-banner.jpg' | asset_url }}" alt="" loading="lazy">{%- endif -%}
+  <div class="banner-copy">
+    {%- if section.settings.eyebrow != blank -%}<span class="eyebrow" style="color:rgba(255,255,255,.85)">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    {%- if section.settings.heading != blank -%}<h2 class="dsp dsp-xl" style="color:#fff">{{ section.settings.heading }}</h2>{%- endif -%}
+    {%- if section.settings.link_text != blank -%}<a href="{{ section.settings.link }}" class="ul" style="color:#fff">{{ section.settings.link_text }}</a>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Autumn 2026" },
+    { "type": "text", "id": "link_text", "label": "Link text", "default": "Discover the Collection" },
+    { "type": "url", "id": "link", "label": "Link" }
+  ],
+  "presets": [{ "name": "Editorial banner" }]
+}
+{% endschema %}

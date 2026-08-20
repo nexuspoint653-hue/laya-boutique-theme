@@ -1,0 +1,35 @@
+<div class="phead"><div class="wrap"><span class="eyebrow">{{ shop.name }}</span><h1 class="dsp dsp-l">Your Bag</h1></div></div>
+<div class="wrap" style="padding-block:clamp(34px,4vw,60px)">
+{%- if cart.item_count > 0 -%}
+  <form action="{{ routes.cart_url }}" method="post" novalidate>
+    {%- for item in cart.items -%}
+      <div class="cart-row">
+        <a href="{{ item.url }}">{% if item.image %}<img src="{{ item.image | image_url: width: 200 }}" alt="">{% endif %}</a>
+        <div>
+          <a href="{{ item.url }}" class="card-name" style="font-size:14px">{{ item.product.title }}</a>
+          <div class="small">{{ item.variant.title | remove: 'Default Title' }}</div>
+        </div>
+        <div class="qty">
+          <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity">
+        </div>
+        <div class="card-price">{{ item.final_line_price | money }}</div>
+      </div>
+    {%- endfor -%}
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:26px 0;flex-wrap:wrap;gap:16px">
+      <button type="submit" name="update" class="ul">Update Bag</button>
+      <div style="text-align:right">
+        <div class="ui" style="color:var(--muted)">Subtotal</div>
+        <div class="dsp dsp-m" style="letter-spacing:.04em">{{ cart.total_price | money }}</div>
+        <p class="small">Shipping and taxes calculated at checkout.</p>
+      </div>
+    </div>
+    <button type="submit" name="checkout" class="btn btn-solid" style="width:100%;text-align:center">Checkout</button>
+  </form>
+{%- else -%}
+  <div class="prose center">
+    <p class="lede">Your bag is currently empty.</p>
+    <div style="margin-top:30px"><a href="{{ routes.all_products_collection_url }}" class="btn">Continue Shopping</a></div>
+  </div>
+{%- endif -%}
+</div>
+{% schema %}{ "name": "Cart" }{% endschema %}

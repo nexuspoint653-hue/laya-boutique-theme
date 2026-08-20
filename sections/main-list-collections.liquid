@@ -1,0 +1,15 @@
+<div class="phead"><div class="wrap"><span class="eyebrow">Shop</span><h1 class="dsp dsp-l">Collections</h1></div></div>
+<div class="wrap" style="padding-block:36px">
+  <div class="grid-4 stag in">
+    {%- for c in collections -%}
+      <a class="tile" href="{{ c.url }}">
+        <div class="tile-media">
+          {%- if c.featured_image -%}<img src="{{ c.featured_image | image_url: width: 800 }}" alt="" loading="lazy">
+          {%- else -%}{{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+        </div>
+        <div class="tile-cap">{{ c.title }}</div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+{% schema %}{ "name": "Collections list" }{% endschema %}

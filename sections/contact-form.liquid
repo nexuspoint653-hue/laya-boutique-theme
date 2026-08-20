@@ -1,0 +1,59 @@
+<section class="sec-tight">
+  <div class="wrap"><div class="prose">
+    {%- if section.settings.heading != blank -%}<h2 class="dsp dsp-m" style="margin-bottom:8px">{{ section.settings.heading }}</h2>{%- endif -%}
+    {%- if section.settings.intro != blank -%}<div class="lede rte" style="margin-bottom:26px">{{ section.settings.intro }}</div>{%- endif -%}
+
+    {% form 'contact' %}
+      {%- if form.posted_successfully? -%}
+        <p class="lede">Thank you — we have your request and will reply within two business days.</p>
+      {%- else -%}
+        {%- if form.errors -%}
+          <p class="small" style="color:#a33">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+        <div class="form">
+          <div class="two">
+            <div class="field"><label for="cf-name">Name</label>
+              <input id="cf-name" type="text" name="contact[name]" required placeholder="Your name"></div>
+            <div class="field"><label for="cf-email">Email</label>
+              <input id="cf-email" type="email" name="contact[email]" required placeholder="you@email.com"></div>
+          </div>
+          <div class="two">
+            <div class="field"><label for="cf-phone">Phone</label>
+              <input id="cf-phone" type="tel" name="contact[phone]" placeholder="Optional"></div>
+            {%- if section.settings.services != blank -%}
+              <div class="field"><label for="cf-service">Service</label>
+                <select id="cf-service" name="contact[service]">
+                  {%- assign svc = section.settings.services | split: ',' -%}
+                  {%- for s in svc -%}<option>{{ s | strip }}</option>{%- endfor -%}
+                </select></div>
+            {%- endif -%}
+          </div>
+          {%- if section.settings.show_date -%}
+            <div class="field"><label for="cf-date">Preferred date</label>
+              <input id="cf-date" type="date" name="contact[preferred_date]"></div>
+          {%- endif -%}
+          <div class="field"><label for="cf-body">{{ section.settings.message_label }}</label>
+            <textarea id="cf-body" name="contact[body]" rows="4" placeholder="Optional"></textarea></div>
+          <button type="submit" class="btn btn-solid" style="justify-self:start">{{ section.settings.button_label }}</button>
+          <p class="small">{{ section.settings.footnote }}</p>
+        </div>
+      {%- endif -%}
+    {% endform %}
+  </div></div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Request an Appointment" },
+    { "type": "richtext", "id": "intro", "label": "Intro" },
+    { "type": "text", "id": "services", "label": "Service options (comma separated)", "default": "Personal Styling, Made-to-Measure, Bridal & Nikah, Wardrobe Edit" },
+    { "type": "checkbox", "id": "show_date", "label": "Show preferred date", "default": true },
+    { "type": "text", "id": "message_label", "label": "Message label", "default": "Tell us about the occasion" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Submit Request" },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "We reply to every request within two business days." }
+  ],
+  "presets": [{ "name": "Contact form" }]
+}
+{% endschema %}

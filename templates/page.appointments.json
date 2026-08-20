@@ -1,0 +1,12 @@
+{ "sections": {
+    "split": { "type": "split-panel", "settings": {
+      "eyebrow": "Private Service", "heading": "Book an Appointment",
+      "body": "<p>One hour, one stylist, entirely yours. Personal styling, made-to-measure fittings and bridal consultations — in the atelier or by video call.</p>",
+      "scheme": "light", "flip": false, "fallback": "laya-split-1.jpg" } },
+    "main": { "type": "main-page", "settings": {} },
+    "form": { "type": "contact-form", "settings": {
+      "heading": "Request an Appointment",
+      "services": "Personal Styling, Made-to-Measure, Bridal & Nikah, Wardrobe Edit",
+      "show_date": true, "button_label": "Submit Request" } }
+  },
+  "order": ["split", "main", "form"] }

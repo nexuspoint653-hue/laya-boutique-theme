@@ -1,0 +1,77 @@
+{%- liquid
+  assign pvideo = null
+  for m in product.media
+    if m.media_type == 'video'
+      assign pvideo = m
+      break
+    endif
+  endfor
+  assign hover_img = product.images[1]
+-%}
+<a class="card" href="{{ product.url }}">
+  <div class="card-media">
+    {%- if product.featured_image -%}
+      <img class="still" src="{{ product.featured_image | image_url: width: 800 }}"
+           srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w"
+           sizes="(max-width:700px) 50vw, 25vw"
+           alt="{{ product.featured_image.alt | escape }}" width="800" height="1000" loading="lazy">
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg still' }}
+    {%- endif -%}
+
+    {%- if pvideo -%}
+      {{ pvideo | video_tag: image_size: '600x', muted: true, loop: true, playsinline: true, controls: false, preload: 'none' }}
+    {%- elsif hover_img -%}
+      <img class="hover-img" src="{{ hover_img | image_url: width: 800 }}" alt="" width="800" height="1000" loading="lazy">
+    {%- endif -%}
+
+    {%- if product.metafields.custom.badge != blank -%}
+      <span class="card-badge">{{ product.metafields.custom.badge }}</span>
+    {%- elsif product.compare_at_price > product.price -%}
+      <span class="card-badge">Sale</span>
+    {%- elsif product.tags contains 'Bestseller' -%}
+      <span class="card-badge">Bestseller</span>
+    {%- elsif product.tags contains 'New' -%}
+      <span class="card-badge">New</span>
+    {%- endif -%}
+
+    <button class="card-fav" type="button" aria-label="Save" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on')">
+      <svg viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.4 5.9.7-4.4 4 1.2 5.8L12 16.6 6.8 19.5 8 13.7 3.6 9.7l5.9-.7z"/></svg>
+    </button>
+    <span class="card-quick">View</span>
+  </div>
+
+  <div class="card-info">
+    <span class="card-name">{{ product.title }}</span>
+    <span class="card-price">
+      {%- if product.compare_at_price > product.price -%}
+        <s style="opacity:.55">{{ product.compare_at_price | money }}</s>&nbsp;
+      {%- endif -%}
+      {{ product.price | money }}
+    </span>
+    <span class="card-foot">
+      <span class="sw">
+        {%- assign shown = 0 -%}
+        {%- for opt in product.options_with_values -%}
+          {%- assign oname = opt.name | downcase -%}
+          {%- if oname contains 'color' or oname contains 'colour' -%}
+            {%- for v in opt.values limit: 5 -%}
+              {%- if v.swatch.color -%}
+                <i style="background:{{ v.swatch.color }}" title="{{ v.name | default: v }}"></i>
+              {%- else -%}
+                <i style="background:{{ v | default: 'value' | handle }}" title="{{ v }}"></i>
+              {%- endif -%}
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endfor -%}
+            {%- if opt.values.size > 5 -%}<b>+{{ opt.values.size | minus: 5 }}</b>{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </span>
+      {%- if product.metafields.custom.colour_label != blank -%}
+        <span class="card-colour">{{ product.metafields.custom.colour_label }}</span>
+      {%- elsif product.selected_or_first_available_variant.option1 -%}
+        <span class="card-colour">{{ product.selected_or_first_available_variant.option1 }}</span>
+      {%- endif -%}
+    </span>
+  </div>
+</a>

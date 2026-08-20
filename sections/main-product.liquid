@@ -1,0 +1,128 @@
+{%- assign v = product.selected_or_first_available_variant -%}
+<div class="wrap" style="padding-top:34px">
+  <div class="crumb"><a href="{{ routes.root_url }}">Home</a> &nbsp;/&nbsp; {%- if collection %}<a href="{{ collection.url }}">{{ collection.title }}</a> &nbsp;/&nbsp; {% endif -%}{{ product.title }}</div>
+</div>
+
+<div class="wrap" style="padding-top:18px;padding-bottom:clamp(50px,6vw,90px)">
+  <div class="pdp">
+    <div class="pdp-gal">
+      {%- for media in product.media limit: 7 -%}
+        <figure>
+          {%- if media.media_type == 'image' -%}
+            <img src="{{ media | image_url: width: 1400 }}" alt="{{ media.alt | escape }}" width="1000" height="1250" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+          {%- elsif media.media_type == 'video' -%}
+            {{ media | video_tag: image_size: '1000x', controls: true, muted: true, loop: true, playsinline: true }}
+          {%- else -%}
+            {{ media | media_tag }}
+          {%- endif -%}
+        </figure>
+      {%- else -%}
+        <figure>{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</figure>
+      {%- endfor -%}
+    </div>
+
+    <div class="pdp-side">
+      <div>
+        <h1 class="dsp dsp-m" style="letter-spacing:.06em">{{ product.title }}</h1>
+        <div class="pdp-price" data-price style="margin-top:10px">
+          {%- if product.compare_at_price > product.price -%}<s style="opacity:.55">{{ product.compare_at_price | money }}</s>&nbsp;{%- endif -%}
+          {{ product.price | money }}
+        </div>
+      </div>
+
+      {%- if product.metafields.custom.short_description != blank -%}
+        <p class="small" style="max-width:46ch">{{ product.metafields.custom.short_description }}</p>
+      {%- endif -%}
+
+      <div data-variant-picker>
+      {% form 'product', product %}
+        <script type="application/json" data-variants>
+          [{%- for variant in product.variants -%}
+            {"id":{{ variant.id }},"options":{{ variant.options | json }},"available":{{ variant.available }},"price_formatted":{{ variant.price | money | json }}}{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}]
+        </script>
+
+        {%- for opt in product.options_with_values -%}
+          {%- assign oname = opt.name | downcase -%}
+          <div style="margin-bottom:18px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span class="ui" style="color:var(--muted)">{{ opt.name }}{% if oname contains 'colour' or oname contains 'color' %} — <span data-colour-label>{{ opt.selected_value }}</span>{% endif %}</span>
+              {%- if oname contains 'size' and section.settings.size_guide != blank -%}
+                <a href="{{ section.settings.size_guide }}" class="ul ul-r" style="font-size:10.5px">Size Guide</a>
+              {%- endif -%}
+            </div>
+            <div class="opt-row">
+              {%- for value in opt.values -%}
+                {%- assign is_swatch = false -%}
+                {%- if value.swatch.color and oname contains 'col' -%}{%- assign is_swatch = true -%}{%- endif -%}
+                <button type="button" class="opt{% if value == opt.selected_value %} on{% endif %}"
+                        data-value="{{ value | escape }}"
+                        {% if is_swatch %}style="padding:0;width:38px;height:38px;border-radius:50%;background:{{ value.swatch.color }};box-shadow:0 0 0 1px rgba(0,0,0,.12) inset" aria-label="{{ value | escape }}"{% endif %}>
+                  {%- unless is_swatch -%}{{ value }}{%- endunless -%}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+
+        <input type="hidden" name="id" value="{{ v.id }}">
+        <button type="submit" class="btn btn-solid" data-add style="width:100%;text-align:center;margin-top:6px"{% unless v.available %} disabled{% endunless %}>
+          {%- if v.available -%}Add to Bag{%- else -%}Sold Out{%- endif -%}
+        </button>
+      {% endform %}
+      </div>
+
+      {%- if section.settings.fitting_link != blank -%}
+        <a href="{{ section.settings.fitting_link }}" class="btn" style="width:100%;text-align:center;display:block">Book a Fitting</a>
+      {%- endif -%}
+
+      <div style="margin-top:14px">
+        {%- if product.description != blank -%}
+          <div class="acc"><button type="button" class="acc-h">Details &amp; Fit <span>+</span></button>
+            <div class="acc-b"><div class="rte" style="padding-bottom:4px">{{ product.description }}</div></div></div>
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+          <div class="acc" {{ block.shopify_attributes }}>
+            <button type="button" class="acc-h">{{ block.settings.title }} <span>+</span></button>
+            <div class="acc-b"><div class="rte">{{ block.settings.body }}</div></div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- if section.settings.show_related -%}
+<div class="wrap" style="padding-bottom:clamp(50px,6vw,90px)">
+  <div class="row-head"><h2 class="dsp dsp-s">Complete the Look</h2></div>
+  <div class="grid-4 stag in">
+    {%- assign rel = collections[section.settings.related_collection].products | default: collection.products -%}
+    {%- assign n = 0 -%}
+    {%- for p in rel -%}
+      {%- if p.id != product.id and n < 4 -%}
+        {% render 'product-card', product: p %}
+        {%- assign n = n | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "url", "id": "size_guide", "label": "Size guide link" },
+    { "type": "url", "id": "fitting_link", "label": "Book a fitting link" },
+    { "type": "checkbox", "id": "show_related", "label": "Show 'Complete the Look'", "default": true },
+    { "type": "collection", "id": "related_collection", "label": "Related products collection" }
+  ],
+  "blocks": [
+    { "type": "accordion", "name": "Accordion", "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Fabric & Care" },
+      { "type": "richtext", "id": "body", "label": "Body", "default": "<p>Dry clean only. Cool iron on the reverse.</p>" }
+    ]}
+  ],
+  "presets": [{ "name": "Product" }]
+}
+{% endschema %}

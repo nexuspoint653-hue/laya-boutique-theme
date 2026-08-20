@@ -1,0 +1,74 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "a1": {
+          "type": "message",
+          "settings": {
+            "text": "Complimentary shipping on orders over $250"
+          }
+        },
+        "a2": {
+          "type": "message",
+          "settings": {
+            "text": "The Autumn 2026 Collection \u2014 now available"
+          }
+        },
+        "a3": {
+          "type": "message",
+          "settings": {
+            "text": "Book a private styling appointment at our atelier"
+          }
+        }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3"
+      ]
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "logo_word": "Laya",
+        "logo_sub": "Boutique",
+        "care_label": "Client Care",
+        "popular": "New In, Abayas, Dresses, Two-Piece Sets",
+        "care_page": "/pages/client-care"
+      },
+      "blocks": {
+        "m1": {
+          "type": "menu_image",
+          "settings": {
+            "position": 1
+          }
+        },
+        "m2": {
+          "type": "menu_image",
+          "settings": {
+            "position": 2
+          }
+        },
+        "m3": {
+          "type": "menu_image",
+          "settings": {
+            "position": 3
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3"
+      ]
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

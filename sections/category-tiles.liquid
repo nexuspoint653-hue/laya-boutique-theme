@@ -1,0 +1,44 @@
+<section class="sec">
+  <div class="wrap">
+    {%- if section.settings.heading != blank -%}
+      <div class="sec-head" data-rv><h2 class="dsp dsp-m">{{ section.settings.heading }}</h2></div>
+    {%- endif -%}
+    <div class="grid-{{ section.blocks.size | at_most: 4 }} stag" data-rv>
+      {%- for block in section.blocks -%}
+        {%- assign c = collections[block.settings.collection] -%}
+        <a class="tile" href="{{ block.settings.link | default: c.url | default: '#' }}" {{ block.shopify_attributes }}>
+          <div class="tile-media">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 800 }}" alt="" width="700" height="933" loading="lazy">
+            {%- elsif c.featured_image -%}
+              <img src="{{ c.featured_image | image_url: width: 800 }}" alt="" width="700" height="933" loading="lazy">
+            {%- else -%}
+              <img src="{{ block.settings.fallback | default: 'laya-tile-1.jpg' | asset_url }}" alt="" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="tile-cap">{{ block.settings.label | default: c.title }}</div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category tiles",
+  "max_blocks": 4,
+  "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "Trending Now" }],
+  "blocks": [
+    { "type": "tile", "name": "Tile", "settings": [
+      { "type": "collection", "id": "collection", "label": "Collection" },
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "fallback", "label": "Bundled fallback image", "default": "laya-tile-1.jpg" },
+      { "type": "text", "id": "label", "label": "Label" },
+      { "type": "url", "id": "link", "label": "Link" }
+    ]}
+  ],
+  "presets": [{ "name": "Category tiles", "blocks": [
+    { "type": "tile" }, { "type": "tile" }, { "type": "tile" }, { "type": "tile" }
+  ]}]
+}
+{% endschema %}

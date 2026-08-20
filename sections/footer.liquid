@@ -1,0 +1,90 @@
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid" data-rv>
+      <div>
+        {%- if section.settings.newsletter_title != blank -%}
+          <h3 class="nl-title">{{ section.settings.newsletter_title }}</h3>
+        {%- endif -%}
+        {% form 'customer' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="nl-field">
+            <input type="email" name="contact[email]" placeholder="Email address*" aria-label="Email address" required>
+            <button type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
+          </div>
+          {%- if form.posted_successfully? -%}<p class="small" style="margin-top:12px">Thank you — you're on the list.</p>{%- endif -%}
+          {%- if form.errors -%}<p class="small" style="margin-top:12px;color:#a33">{{ form.errors.messages.email }}</p>{%- endif -%}
+        {% endform %}
+        {%- if section.settings.consent != blank -%}
+          <div class="consent"><input type="checkbox" id="cons"><label for="cons">{{ section.settings.consent }}</label></div>
+        {%- endif -%}
+        {%- if section.settings.offer_text != blank -%}
+          <p class="small" style="margin-top:24px;margin-bottom:5px">{{ section.settings.offer_text }}</p>
+          <a href="{{ section.settings.offer_link }}" class="ul">{{ section.settings.offer_link_text }}</a>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- assign list = linklists[block.settings.menu] -%}
+        <div {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.title | default: list.title }}</h4>
+          <ul>
+            {%- for link in list.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if shop.enabled_currencies.size > 1 or localization.available_countries.size > 1 -%}
+      <div class="ftr-ship">
+        <span>Shipping to:</span>
+        {% form 'localization' %}
+          <select name="country_code" onchange="this.form.submit()" style="border:0;border-bottom:1px solid var(--ink);background:none;font-size:11.5px;padding:2px 0">
+            {%- for country in localization.available_countries -%}
+              <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</option>
+            {%- endfor -%}
+          </select>
+        {% endform %}
+      </div>
+    {%- endif -%}
+
+    <hr class="rule" style="margin-top:26px">
+    <div class="ftr-mark" data-rv>
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | image_url: width: 900 }}" alt="{{ shop.name | escape }}" style="max-width:min(560px,80vw);margin:0 auto;height:auto">
+      {%- else -%}
+        <div class="logo-mark">{{ section.settings.logo_word | default: shop.name }}</div>
+        {%- if section.settings.logo_sub != blank -%}<div class="logo-sub">{{ section.settings.logo_sub }}</div>{%- endif -%}
+      {%- endif -%}
+    </div>
+    <div class="copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</div>
+  </div>
+</footer>
+
+{%- if section.settings.chat_link != blank -%}
+  <a href="{{ section.settings.chat_link }}" class="chat"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 01-8 8H4l2-3a8 8 0 1115-5z"/></svg>{{ section.settings.chat_text }}</a>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "newsletter_title", "label": "Newsletter heading", "default": "Subscribe to our newsletter" },
+    { "type": "textarea", "id": "consent", "label": "Consent text", "default": "By submitting your email above, you consent to receive recurring promotional and personalised marketing emails. You may unsubscribe at any time." },
+    { "type": "text", "id": "offer_text", "label": "Offer text", "default": "Sign up for texts and enjoy 10% off your first order" },
+    { "type": "text", "id": "offer_link_text", "label": "Offer link text", "default": "Claim Offer" },
+    { "type": "url", "id": "offer_link", "label": "Offer link" },
+    { "type": "image_picker", "id": "logo", "label": "Footer logo" },
+    { "type": "text", "id": "logo_word", "label": "Wordmark", "default": "Laya" },
+    { "type": "text", "id": "logo_sub", "label": "Wordmark sub-line", "default": "Boutique" },
+    { "type": "text", "id": "chat_text", "label": "Chat tab text", "default": "Chat with us" },
+    { "type": "url", "id": "chat_link", "label": "Chat tab link" }
+  ],
+  "blocks": [
+    { "type": "menu", "name": "Link column", "settings": [
+      { "type": "text", "id": "title", "label": "Title" },
+      { "type": "link_list", "id": "menu", "label": "Menu" }
+    ]}
+  ]
+}
+{% endschema %}

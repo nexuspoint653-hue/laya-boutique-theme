@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_bg }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64 }}">
+  {%- endif -%}
+  <title>{{ page_title }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@200;300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+  {{ 'laya.css' | asset_url | stylesheet_tag }}
+  <style>
+    :root{
+      --bone:{{ settings.color_bg }};
+      --ink:{{ settings.color_text }};
+      --gold:{{ settings.color_accent }};
+      --menu:{{ settings.color_menu }};
+      --deep:{{ settings.color_deep }};
+    }
+  </style>
+  {{ content_for_header }}
+  <script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
+</head>
+<body class="template-{{ template.name }}{% if template.name == 'index' %} has-hero{% endif %}">
+  <a class="skip" href="#main" style="position:absolute;left:-9999px">Skip to content</a>
+  {% sections 'header-group' %}
+  <div class="scrim" id="scrim"></div>
+  <main id="main" role="main">
+    {{ content_for_layout }}
+  </main>
+  {% sections 'footer-group' %}
+  {{ 'laya.js' | asset_url | script_tag }}
+</body>
+</html>

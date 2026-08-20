@@ -1,0 +1,40 @@
+{%- assign coll = collections[section.settings.collection] -%}
+<section class="sec">
+  <div class="wrap">
+    <div class="row-head" data-rv>
+      <h2 class="dsp dsp-m">{{ section.settings.heading }}</h2>
+      <div style="display:flex;align-items:center;gap:18px">
+        {%- if section.settings.link_text != blank -%}
+          <a href="{{ section.settings.link | default: coll.url }}" class="ul ul-r">{{ section.settings.link_text }}</a>
+        {%- endif -%}
+        <div class="rail-nav" data-nav="rail-{{ section.id }}">
+          <button class="rnav" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="rnav" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="rail" data-rail="rail-{{ section.id }}">
+      {%- for product in coll.products limit: section.settings.count -%}
+        {% render 'product-card', product: product %}
+      {%- else -%}
+        {%- for i in (1..6) -%}
+          <a class="card" href="{{ routes.all_products_collection_url }}"><div class="card-media">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg still' }}</div><div class="card-info"><span class="card-name">Example product</span><span class="card-price">$0.00</span></div></a>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product rail",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Top Picks" },
+    { "type": "text", "id": "link_text", "label": "Link text", "default": "Shop Bestsellers" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "range", "id": "count", "label": "Products", "min": 4, "max": 16, "step": 1, "default": 10 }
+  ],
+  "presets": [{ "name": "Product rail" }]
+}
+{% endschema %}

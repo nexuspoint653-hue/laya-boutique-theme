@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "eyebrow": "Autumn 2026",
+        "show_desc": true
+      }
+    },
+    "svc": {
+      "type": "service-band",
+      "blocks": {
+        "s1": {
+          "type": "item",
+          "settings": {
+            "title": "Complimentary Shipping",
+            "body": "On all orders over $250, with tracked delivery and duties calculated at checkout.",
+            "link_text": "Learn More",
+            "link": "/pages/shipping-returns"
+          }
+        },
+        "s2": {
+          "type": "item",
+          "settings": {
+            "title": "Easy Exchanges",
+            "body": "Thirty days to exchange or return unworn pieces in their original condition.",
+            "link_text": "Returns Policy",
+            "link": "/pages/shipping-returns"
+          }
+        },
+        "s3": {
+          "type": "item",
+          "settings": {
+            "title": "Size Guidance",
+            "body": "Unsure of your length? Our stylists will measure with you over video call.",
+            "link_text": "Size Guide",
+            "link": "/pages/size-guide"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "svc"
+  ]
+}
