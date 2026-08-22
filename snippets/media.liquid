@@ -1,0 +1,104 @@
+{%- comment -%}
+  One media renderer for the whole theme: Shopify video, external mp4,
+  a bundled theme asset, an uploaded image, or a styled placeholder — in that
+  order of preference. Every section passes its own settings in, so media
+  behaves identically everywhere.
+
+  Params
+    img          image_picker object            poster/still image
+    img_mobile   image_picker object            optional narrow-screen image
+    video        video object (Shopify-hosted)
+    video_url    string, mp4/webm URL
+    fallback     string, theme asset filename   e.g. 'laya-split-1.jpg'
+    placeholder  string                         product-1 … lifestyle-2, or 'tile'
+    ratio        string                         auto | 1-1 | 4-5 | 3-4 | 16-9 | 21-9
+    fit          string                         cover | contain
+    focal        string                         center | top | bottom | left | right
+    overlay      number 0–80                    scrim strength
+    autoplay/loop/muted/controls  booleans
+    sizes, width, height, loading, alt, cls
+{%- endcomment -%}
+{%- liquid
+  assign ratio = ratio | default: 'auto'
+  assign fit = fit | default: 'cover'
+  assign focal = focal | default: 'center'
+  assign overlay = overlay | default: 0
+  assign sizes = sizes | default: '100vw'
+  assign loading = loading | default: 'lazy'
+  assign alt_text = alt | default: ''
+  assign cls = cls | default: ''
+
+  case ratio
+    when '1-1'
+      assign pad = '100%'
+    when '4-5'
+      assign pad = '125%'
+    when '3-4'
+      assign pad = '133.33%'
+    when '2-3'
+      assign pad = '150%'
+    when '16-9'
+      assign pad = '56.25%'
+    when '21-9'
+      assign pad = '42.86%'
+    else
+      assign pad = ''
+  endcase
+-%}
+<div class="media {{ cls }}{% if pad != blank %} media--ratio{% endif %}"
+     {% if pad != blank %}style="--media-pad:{{ pad }}"{% endif %}
+     data-media-fit="{{ fit }}" data-media-focal="{{ focal }}">
+  {%- if video != blank -%}
+    {{ video | video_tag:
+       image_size: '1600x',
+       autoplay: autoplay,
+       loop: loop,
+       muted: muted,
+       controls: controls,
+       playsinline: true,
+       preload: 'metadata' }}
+  {%- elsif video_url != blank -%}
+    <video
+      {% if autoplay %}autoplay{% endif %}
+      {% if loop %}loop{% endif %}
+      {% if muted %}muted{% endif %}
+      {% if controls %}controls{% endif %}
+      playsinline preload="metadata"
+      {% if img != blank %}poster="{{ img | image_url: width: 1600 }}"{% endif %}>
+      <source src="{{ video_url }}" type="video/mp4">
+    </video>
+  {%- elsif img != blank -%}
+    {%- if img_mobile != blank -%}
+      <picture>
+        <source media="(max-width:749px)" srcset="{{ img_mobile | image_url: width: 900 }}">
+        <img src="{{ img | image_url: width: 1800 }}"
+             srcset="{{ img | image_url: width: 600 }} 600w,
+                     {{ img | image_url: width: 1200 }} 1200w,
+                     {{ img | image_url: width: 1800 }} 1800w"
+             sizes="{{ sizes }}" alt="{{ alt_text | escape }}" loading="{{ loading }}"
+             width="{{ width | default: 1800 }}" height="{{ height | default: 2250 }}">
+      </picture>
+    {%- else -%}
+      <img src="{{ img | image_url: width: 1800 }}"
+           srcset="{{ img | image_url: width: 600 }} 600w,
+                   {{ img | image_url: width: 1200 }} 1200w,
+                   {{ img | image_url: width: 1800 }} 1800w"
+           sizes="{{ sizes }}" alt="{{ alt_text | escape }}" loading="{{ loading }}"
+           width="{{ width | default: 1800 }}" height="{{ height | default: 2250 }}">
+    {%- endif -%}
+  {%- elsif fallback != blank -%}
+    <img src="{{ fallback | asset_url }}" alt="{{ alt_text | escape }}"
+         loading="{{ loading }}" width="{{ width | default: 1800 }}" height="{{ height | default: 2250 }}">
+  {%- elsif placeholder == 'tile' -%}
+    <span class="media-tile" aria-hidden="true"></span>
+  {%- elsif placeholder != blank -%}
+    {{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}
+  {%- else -%}
+    <span class="media-tile" aria-hidden="true"></span>
+  {%- endif -%}
+
+  {%- assign ov = overlay | plus: 0 -%}
+  {%- if ov > 0 -%}
+    <span class="media-scrim" style="opacity:{{ ov }}%" aria-hidden="true"></span>
+  {%- endif -%}
+</div>

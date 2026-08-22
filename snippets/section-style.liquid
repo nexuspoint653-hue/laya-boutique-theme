@@ -1,0 +1,82 @@
+{%- comment -%}
+  Scoped appearance for any section. Emits CSS custom properties on the
+  section wrapper so colour scheme, padding, width and dividers are all
+  editable per section without touching the stylesheet.
+  Usage: {% render 'section-style', s: section %}
+{%- endcomment -%}
+{%- liquid
+  assign scheme = s.settings.scheme | default: 'light'
+  case scheme
+    when 'tinted'
+      assign bg = '#F0ECE6'
+      assign fg = '#1B1A18'
+      assign mut = '#8A837A'
+      assign ln = '#E0D9CE'
+    when 'paper'
+      assign bg = '#FFFFFF'
+      assign fg = '#1B1A18'
+      assign mut = '#8A837A'
+      assign ln = '#E4DED4'
+    when 'dark'
+      assign bg = '#23211E'
+      assign fg = '#F2EDE5'
+      assign mut = '#A9A296'
+      assign ln = '#3A3733'
+    when 'gold'
+      assign bg = '#A98858'
+      assign fg = '#FFFFFF'
+      assign mut = '#F0E4D0'
+      assign ln = '#C0A175'
+    when 'custom'
+      assign bg = s.settings.bg_custom | default: '#FAF8F5'
+      assign fg = s.settings.text_custom | default: '#1B1A18'
+      assign mut = s.settings.muted_custom | default: '#8A837A'
+      assign ln = s.settings.line_custom | default: '#E4DED4'
+    else
+      assign bg = '#FAF8F5'
+      assign fg = '#1B1A18'
+      assign mut = '#8A837A'
+      assign ln = '#E4DED4'
+  endcase
+
+  assign pt = s.settings.pad_top | default: 0
+  assign pb = s.settings.pad_bottom | default: 0
+  assign width = s.settings.width | default: 'wide'
+  case width
+    when 'full'
+      assign maxw = 'none'
+      assign gut = '0px'
+    when 'narrow'
+      assign maxw = '1180px'
+      assign gut = 'clamp(18px,3.4vw,56px)'
+    when 'reading'
+      assign maxw = '900px'
+      assign gut = 'clamp(18px,3.4vw,56px)'
+    else
+      assign maxw = '1680px'
+      assign gut = 'clamp(18px,3.4vw,56px)'
+  endcase
+-%}
+<style>
+  #shopify-section-{{ s.id }}{
+    --sec-bg:{{ bg }}; --sec-fg:{{ fg }}; --sec-muted:{{ mut }}; --sec-line:{{ ln }};
+    --sec-max:{{ maxw }}; --sec-gut:{{ gut }};
+    {%- unless chrome == false %} background:var(--sec-bg); color:var(--sec-fg);{% endunless -%}
+    {%- if pt != 0 %} padding-top:{{ pt }}px;{% endif -%}
+    {%- if pb != 0 %} padding-bottom:{{ pb }}px;{% endif -%}
+    {%- if s.settings.divider_top %} border-top:1px solid var(--sec-line);{% endif -%}
+    {%- if s.settings.divider_bottom %} border-bottom:1px solid var(--sec-line);{% endif -%}
+  }
+  #shopify-section-{{ s.id }} .wrap{ max-width:var(--sec-max); padding-inline:var(--sec-gut) }
+  #shopify-section-{{ s.id }} .eyebrow,
+  #shopify-section-{{ s.id }} .small,
+  #shopify-section-{{ s.id }} .card-price,
+  #shopify-section-{{ s.id }} .lede{ color:var(--sec-muted) }
+  #shopify-section-{{ s.id }} .rule,
+  #shopify-section-{{ s.id }} hr{ border-color:var(--sec-line) }
+  {%- if scheme == 'dark' or scheme == 'gold' -%}
+  #shopify-section-{{ s.id }} .btn{ border-color:currentColor; color:var(--sec-fg) }
+  #shopify-section-{{ s.id }} .btn:hover{ background:var(--sec-fg); color:var(--sec-bg) }
+  #shopify-section-{{ s.id }} .btn-solid{ background:var(--sec-fg); color:var(--sec-bg) }
+  {%- endif -%}
+</style>

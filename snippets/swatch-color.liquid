@@ -1,0 +1,28 @@
+{%- comment -%}
+  Maps a colour option value to a CSS colour so swatches still read correctly
+  when a store has not configured Shopify's native swatch metafields.
+  Params: name (string)
+{%- endcomment -%}
+{%- assign h = name | handleize -%}
+{%- case h -%}
+  {%- when 'black','jet-black','true-black','onyx','ink','noir' -%}#1B1A18
+  {%- when 'white','optic-white','off-white','ecru','ivory','cream','bone','chalk','natural' -%}#F4F1EB
+  {%- when 'grey','gray','heather-grey','heather-gray','charcoal','slate','ash','smoke','pewter' -%}#8A837A
+  {%- when 'navy','midnight','indigo','deep-navy','ink-blue' -%}#243049
+  {%- when 'blue','sky','powder-blue','cornflower','denim','steel-blue' -%}#8FA9C4
+  {%- when 'olive','army','military-green','sage','moss' -%}#7C866B
+  {%- when 'green','forest','emerald','pine' -%}#3C5A45
+  {%- when 'red','crimson','scarlet' -%}#B4362B
+  {%- when 'rust','terracotta','brick','clay' -%}#B2603D
+  {%- when 'burgundy','maroon','wine','oxblood','plum' -%}#5E2231
+  {%- when 'sand','tan','khaki','stone','taupe','camel','beige','latte' -%}#C9B79B
+  {%- when 'brown','chocolate','espresso','cocoa','mocha' -%}#5A4436
+  {%- when 'pink','blush','rose','dusty-rose','powder-pink' -%}#DCB4B4
+  {%- when 'purple','lilac','lavender','mauve','orchid' -%}#A692BE
+  {%- when 'yellow','mustard','gold','honey','butter' -%}#C9A227
+  {%- when 'orange','apricot','amber','peach' -%}#D08A4E
+  {%- when 'silver','platinum' -%}#C7C4BE
+  {%- when 'champagne','pearl','nude' -%}#E6D8C3
+  {%- when 'teal','turquoise','aqua' -%}#3F8C7F
+  {%- else -%}
+{%- endcase -%}

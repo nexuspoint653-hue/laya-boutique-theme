@@ -1,22 +1,115 @@
+{%- comment -%}
+  Laya product card.
+
+  Every option can be driven by the calling section, so one card serves the
+  whole site. All params are optional and fall back to sensible defaults, which
+  keeps existing {% render 'product-card', product: product %} calls working.
+
+  Params
+    product        product object (required)
+    ratio          1-1 | 4-5 | 3-4 | 2-3 | 16-9        default 4-5
+    placeholder    product-1 … product-6 | lifestyle-1 | lifestyle-2 | tile
+    fallback       theme asset filename used when a product has no image
+    hover          none | image | video | zoom          default video
+    show_badge     bool   default true
+    show_fav       bool   default true
+    show_quick     bool   default true
+    quick_label    string default 'View'
+    show_price     bool   default true
+    show_vendor    bool   default false
+    show_swatches  bool   default true
+    show_colour    bool   default true
+    swatch_limit   number default 5
+    align          left | center                        default left
+    index          loop index — rotates the placeholder so a grid is not identical
+{%- endcomment -%}
 {%- liquid
+  assign ratio = ratio | default: '4-5'
+  assign hover = hover | default: 'video'
+  assign quick_label = quick_label | default: 'View'
+  assign swatch_limit = swatch_limit | default: 5
+  assign align = align | default: 'left'
+  assign idx = index | default: 1
+
+  # nil means "not passed" and defaults on; only an explicit false hides it
+  if show_badge == false
+    assign show_badge = false
+  else
+    assign show_badge = true
+  endif
+  if show_fav == false
+    assign show_fav = false
+  else
+    assign show_fav = true
+  endif
+  if show_quick == false
+    assign show_quick = false
+  else
+    assign show_quick = true
+  endif
+  if show_price == false
+    assign show_price = false
+  else
+    assign show_price = true
+  endif
+  if show_vendor == true
+    assign show_vendor = true
+  else
+    assign show_vendor = false
+  endif
+  if show_swatches == false
+    assign show_swatches = false
+  else
+    assign show_swatches = true
+  endif
+  if show_colour == false
+    assign show_colour = false
+  else
+    assign show_colour = true
+  endif
+
   assign pvideo = null
-  for m in product.media
-    if m.media_type == 'video'
-      assign pvideo = m
-      break
-    endif
-  endfor
-  assign hover_img = product.images[1]
+  if hover == 'video'
+    for m in product.media
+      if m.media_type == 'video'
+        assign pvideo = m
+        break
+      endif
+    endfor
+  endif
+
+  assign hover_img = null
+  if hover == 'image' or hover == 'video'
+    assign hover_img = product.images[1]
+  endif
+
+  assign cap = 0
+  if product.compare_at_price
+    assign cap = product.compare_at_price | plus: 0
+  endif
+
+  assign ph = placeholder | default: ''
+  if ph == blank
+    assign phn = idx | modulo: 6 | plus: 1
+    assign ph = 'product-' | append: phn
+  endif
 -%}
-<a class="card" href="{{ product.url }}">
-  <div class="card-media">
+{%- if product and product.id -%}
+<a class="card{% if align == 'center' %} card--center{% endif %}{% if hover == 'zoom' %} card--zoom{% endif %}"
+   href="{{ product.url }}">
+  <div class="card-media" data-ratio="{{ ratio }}">
     {%- if product.featured_image -%}
       <img class="still" src="{{ product.featured_image | image_url: width: 800 }}"
            srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w"
            sizes="(max-width:700px) 50vw, 25vw"
            alt="{{ product.featured_image.alt | escape }}" width="800" height="1000" loading="lazy">
+    {%- elsif fallback != blank -%}
+      <img class="still" src="{{ fallback | asset_url }}" alt="{{ product.title | escape }}"
+           width="800" height="1000" loading="lazy">
+    {%- elsif ph == 'tile' -%}
+      <span class="still media-tile" aria-hidden="true"></span>
     {%- else -%}
-      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg still' }}
+      {{ ph | placeholder_svg_tag: 'placeholder-svg still' }}
     {%- endif -%}
 
     {%- if pvideo -%}
@@ -25,53 +118,73 @@
       <img class="hover-img" src="{{ hover_img | image_url: width: 800 }}" alt="" width="800" height="1000" loading="lazy">
     {%- endif -%}
 
-    {%- if product.metafields.custom.badge != blank -%}
-      <span class="card-badge">{{ product.metafields.custom.badge }}</span>
-    {%- elsif product.compare_at_price > product.price -%}
-      <span class="card-badge">Sale</span>
-    {%- elsif product.tags contains 'Bestseller' -%}
-      <span class="card-badge">Bestseller</span>
-    {%- elsif product.tags contains 'New' -%}
-      <span class="card-badge">New</span>
+    {%- if show_badge -%}
+      {%- if product.metafields.custom.badge != blank -%}
+        <span class="card-badge">{{ product.metafields.custom.badge }}</span>
+      {%- elsif product.available == false -%}
+        <span class="card-badge">Sold Out</span>
+      {%- elsif cap > product.price -%}
+        <span class="card-badge">Sale</span>
+      {%- elsif product.tags contains 'Bestseller' -%}
+        <span class="card-badge">Bestseller</span>
+      {%- elsif product.tags contains 'New' -%}
+        <span class="card-badge">New</span>
+      {%- endif -%}
     {%- endif -%}
 
-    <button class="card-fav" type="button" aria-label="Save" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on')">
-      <svg viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.4 5.9.7-4.4 4 1.2 5.8L12 16.6 6.8 19.5 8 13.7 3.6 9.7l5.9-.7z"/></svg>
-    </button>
-    <span class="card-quick">View</span>
+    {%- if show_fav -%}
+      <button class="card-fav" type="button" aria-label="Save {{ product.title | escape }}"
+              onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on')">
+        <svg viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.4 5.9.7-4.4 4 1.2 5.8L12 16.6 6.8 19.5 8 13.7 3.6 9.7l5.9-.7z"/></svg>
+      </button>
+    {%- endif -%}
+    {%- if show_quick -%}<span class="card-quick">{{ quick_label }}</span>{%- endif -%}
   </div>
 
   <div class="card-info">
+    {%- if show_vendor and product.vendor != blank -%}
+      <span class="card-vendor">{{ product.vendor }}</span>
+    {%- endif -%}
     <span class="card-name">{{ product.title }}</span>
-    <span class="card-price">
-      {%- if product.compare_at_price > product.price -%}
-        <s style="opacity:.55">{{ product.compare_at_price | money }}</s>&nbsp;
-      {%- endif -%}
-      {{ product.price | money }}
-    </span>
-    <span class="card-foot">
-      <span class="sw">
-        {%- assign shown = 0 -%}
-        {%- for opt in product.options_with_values -%}
-          {%- assign oname = opt.name | downcase -%}
-          {%- if oname contains 'color' or oname contains 'colour' -%}
-            {%- for v in opt.values limit: 5 -%}
-              {%- if v.swatch.color -%}
-                <i style="background:{{ v.swatch.color }}" title="{{ v.name | default: v }}"></i>
-              {%- else -%}
-                <i style="background:{{ v | default: 'value' | handle }}" title="{{ v }}"></i>
-              {%- endif -%}
-              {%- assign shown = shown | plus: 1 -%}
-            {%- endfor -%}
-            {%- if opt.values.size > 5 -%}<b>+{{ opt.values.size | minus: 5 }}</b>{%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
+    {%- if show_price -%}
+      <span class="card-price">
+        {%- if cap > product.price -%}
+          <s style="opacity:.55">{{ product.compare_at_price | money }}</s>&nbsp;
+        {%- endif -%}
+        {{ product.price | money }}
       </span>
-      {%- if product.metafields.custom.colour_label != blank -%}
-        <span class="card-colour">{{ product.metafields.custom.colour_label }}</span>
-      {%- elsif product.selected_or_first_available_variant.option1 -%}
-        <span class="card-colour">{{ product.selected_or_first_available_variant.option1 }}</span>
-      {%- endif -%}
-    </span>
+    {%- endif -%}
+    {%- if show_swatches or show_colour -%}
+      <span class="card-foot">
+        {%- if show_swatches -%}
+          <span class="sw">
+            {%- for opt in product.options_with_values -%}
+              {%- assign oname = opt.name | downcase -%}
+              {%- if oname contains 'color' or oname contains 'colour' -%}
+                {%- for v in opt.values limit: swatch_limit -%}
+                  {%- if v.swatch.color -%}
+                    <i style="background:{{ v.swatch.color }}" title="{{ v.name | default: v }}"></i>
+                  {%- else -%}
+                    {%- capture hexc %}{% render 'swatch-color', name: v %}{% endcapture -%}
+                    {%- assign hexc = hexc | strip -%}
+                    <i style="background:{{ hexc | default: '#DAD5CC' }}" title="{{ v }}"></i>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- assign vcount = opt.values.size | default: 0 -%}
+                {%- if vcount > swatch_limit -%}<b>+{{ vcount | minus: swatch_limit }}</b>{%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+        {%- endif -%}
+        {%- if show_colour -%}
+          {%- if product.metafields.custom.colour_label != blank -%}
+            <span class="card-colour">{{ product.metafields.custom.colour_label }}</span>
+          {%- elsif product.selected_or_first_available_variant.option1 -%}
+            <span class="card-colour">{{ product.selected_or_first_available_variant.option1 }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      </span>
+    {%- endif -%}
   </div>
 </a>
+{%- endif -%}
