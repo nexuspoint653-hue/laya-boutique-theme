@@ -1,4 +1,5 @@
-{%- assign coll = collections[section.settings.collection] -%}
+{% render 'section-style', s: section %}
+{%- assign coll = section.settings.collection -%}
 <section class="sec">
   <div class="wrap">
     <div class="row-head" data-rv>
@@ -15,7 +16,23 @@
     </div>
     <div class="rail" data-rail="rail-{{ section.id }}">
       {%- for product in coll.products limit: section.settings.count -%}
-        {% render 'product-card', product: product %}
+        {% render 'product-card',
+           product: product,
+           index: forloop.index,
+           ratio: section.settings.card_ratio,
+           placeholder: section.settings.card_placeholder,
+           fallback: section.settings.card_fallback,
+           hover: section.settings.card_hover,
+           align: section.settings.card_align,
+           quick_label: section.settings.quick_label,
+           swatch_limit: section.settings.swatch_limit,
+           show_badge: section.settings.show_badge,
+           show_fav: section.settings.show_fav,
+           show_quick: section.settings.show_quick,
+           show_price: section.settings.show_price,
+           show_vendor: section.settings.show_vendor,
+           show_swatches: section.settings.show_swatches,
+           show_colour: section.settings.show_colour %}
       {%- else -%}
         {%- for i in (1..6) -%}
           <a class="card" href="{{ routes.all_products_collection_url }}"><div class="card-media">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg still' }}</div><div class="card-info"><span class="card-name">Example product</span><span class="card-price">$0.00</span></div></a>
@@ -29,12 +46,348 @@
 {
   "name": "Product rail",
   "settings": [
-    { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Top Picks" },
-    { "type": "text", "id": "link_text", "label": "Link text", "default": "Shop Bestsellers" },
-    { "type": "url", "id": "link", "label": "Link" },
-    { "type": "range", "id": "count", "label": "Products", "min": 4, "max": 16, "step": 1, "default": 10 }
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Top Picks"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Shop Bestsellers"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "range",
+      "id": "count",
+      "label": "Products",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "select",
+      "id": "card_ratio",
+      "label": "Image shape",
+      "default": "4-5",
+      "options": [
+        {
+          "value": "1-1",
+          "label": "Square"
+        },
+        {
+          "value": "4-5",
+          "label": "Portrait 4:5"
+        },
+        {
+          "value": "3-4",
+          "label": "Portrait 3:4"
+        },
+        {
+          "value": "2-3",
+          "label": "Tall 2:3"
+        },
+        {
+          "value": "16-9",
+          "label": "Landscape 16:9"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_hover",
+      "label": "On hover",
+      "default": "video",
+      "options": [
+        {
+          "value": "video",
+          "label": "Play product video, else second image"
+        },
+        {
+          "value": "image",
+          "label": "Show second image"
+        },
+        {
+          "value": "zoom",
+          "label": "Zoom the first image"
+        },
+        {
+          "value": "none",
+          "label": "Nothing"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_align",
+      "label": "Card text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_placeholder",
+      "label": "Placeholder style",
+      "default": "",
+      "info": "Shown for products with no photograph yet.",
+      "options": [
+        {
+          "value": "",
+          "label": "Rotate through Shopify's set"
+        },
+        {
+          "value": "product-1",
+          "label": "Product 1"
+        },
+        {
+          "value": "product-2",
+          "label": "Product 2"
+        },
+        {
+          "value": "product-3",
+          "label": "Product 3"
+        },
+        {
+          "value": "product-4",
+          "label": "Product 4"
+        },
+        {
+          "value": "product-5",
+          "label": "Product 5"
+        },
+        {
+          "value": "product-6",
+          "label": "Product 6"
+        },
+        {
+          "value": "lifestyle-1",
+          "label": "Lifestyle 1"
+        },
+        {
+          "value": "lifestyle-2",
+          "label": "Lifestyle 2"
+        },
+        {
+          "value": "tile",
+          "label": "Plain tinted tile"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "card_fallback",
+      "label": "Bundled fallback image",
+      "info": "Theme asset filename. Overrides the placeholder style."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fav",
+      "label": "Show save button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick",
+      "label": "Show quick-view label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quick_label",
+      "label": "Quick-view label",
+      "default": "View"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Show colour swatches",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "swatch_limit",
+      "label": "Swatches before \"+n\"",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colour",
+      "label": "Show colour name",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Bone"
+        },
+        {
+          "value": "paper",
+          "label": "Paper"
+        },
+        {
+          "value": "tinted",
+          "label": "Tinted"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_custom",
+      "label": "Custom background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "text_custom",
+      "label": "Custom text",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "color",
+      "id": "muted_custom",
+      "label": "Custom secondary text",
+      "default": "#8A837A"
+    },
+    {
+      "type": "color",
+      "id": "line_custom",
+      "label": "Custom rule",
+      "default": "#E4DED4"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "wide",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full bleed"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "reading",
+          "label": "Reading"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_top",
+      "label": "Rule above",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_bottom",
+      "label": "Rule below",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Reveal on scroll",
+      "default": true
+    }
   ],
-  "presets": [{ "name": "Product rail" }]
+  "presets": [
+    {
+      "name": "Product rail"
+    }
+  ]
 }
 {% endschema %}

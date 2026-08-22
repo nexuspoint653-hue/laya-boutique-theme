@@ -1,3 +1,4 @@
+{% render 'section-style', s: section %}
 <section class="sec-tight">
   <div class="wrap"><div class="prose">
     {%- if section.settings.heading != blank -%}<h2 class="dsp dsp-m" style="margin-bottom:8px">{{ section.settings.heading }}</h2>{%- endif -%}
@@ -46,14 +47,174 @@
 {
   "name": "Contact form",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Request an Appointment" },
-    { "type": "richtext", "id": "intro", "label": "Intro" },
-    { "type": "text", "id": "services", "label": "Service options (comma separated)", "default": "Personal Styling, Made-to-Measure, Bridal & Nikah, Wardrobe Edit" },
-    { "type": "checkbox", "id": "show_date", "label": "Show preferred date", "default": true },
-    { "type": "text", "id": "message_label", "label": "Message label", "default": "Tell us about the occasion" },
-    { "type": "text", "id": "button_label", "label": "Button label", "default": "Submit Request" },
-    { "type": "text", "id": "footnote", "label": "Footnote", "default": "We reply to every request within two business days." }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Request an Appointment"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro"
+    },
+    {
+      "type": "text",
+      "id": "services",
+      "label": "Service options (comma separated)",
+      "default": "Personal Styling, Made-to-Measure, Bridal & Nikah, Wardrobe Edit"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show preferred date",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message label",
+      "default": "Tell us about the occasion"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Submit Request"
+    },
+    {
+      "type": "text",
+      "id": "footnote",
+      "label": "Footnote",
+      "default": "We reply to every request within two business days."
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Bone"
+        },
+        {
+          "value": "paper",
+          "label": "Paper"
+        },
+        {
+          "value": "tinted",
+          "label": "Tinted"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_custom",
+      "label": "Custom background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "text_custom",
+      "label": "Custom text",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "color",
+      "id": "muted_custom",
+      "label": "Custom secondary text",
+      "default": "#8A837A"
+    },
+    {
+      "type": "color",
+      "id": "line_custom",
+      "label": "Custom rule",
+      "default": "#E4DED4"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "wide",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full bleed"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "reading",
+          "label": "Reading"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_top",
+      "label": "Rule above",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_bottom",
+      "label": "Rule below",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Reveal on scroll",
+      "default": true
+    }
   ],
-  "presets": [{ "name": "Contact form" }]
+  "presets": [
+    {
+      "name": "Contact form"
+    }
+  ]
 }
 {% endschema %}

@@ -1,7 +1,136 @@
+{% render 'section-style', s: section %}
 <div class="wrap"><div class="prose center" style="padding-block:clamp(70px,10vw,150px)">
   <span class="eyebrow">Error 404</span>
   <h1 class="dsp dsp-l" style="margin:14px 0 18px">Page Not Found</h1>
   <p class="lede">The page you are looking for has moved or no longer exists.</p>
   <div style="margin-top:30px"><a href="{{ routes.root_url }}" class="btn">Return Home</a></div>
 </div></div>
-{% schema %}{ "name": "404" }{% endschema %}
+{% schema %}
+{
+  "name": "404",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Bone"
+        },
+        {
+          "value": "paper",
+          "label": "Paper"
+        },
+        {
+          "value": "tinted",
+          "label": "Tinted"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_custom",
+      "label": "Custom background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "text_custom",
+      "label": "Custom text",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "color",
+      "id": "muted_custom",
+      "label": "Custom secondary text",
+      "default": "#8A837A"
+    },
+    {
+      "type": "color",
+      "id": "line_custom",
+      "label": "Custom rule",
+      "default": "#E4DED4"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "wide",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full bleed"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "reading",
+          "label": "Reading"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_top",
+      "label": "Rule above",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_bottom",
+      "label": "Rule below",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Reveal on scroll",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

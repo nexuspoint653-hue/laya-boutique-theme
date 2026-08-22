@@ -1,0 +1,289 @@
+{% render 'section-style', s: section %}
+{%- if section.settings.cookie_show or section.settings.offer_show -%}
+<div data-popups data-cookie-delay="{{ section.settings.cookie_delay }}" data-offer-delay="{{ section.settings.offer_delay }}">
+{%- if section.settings.cookie_show -%}
+<!-- ============================ COOKIE NOTICE ============================ -->
+<aside class="cnote" id="layaCookie" hidden aria-label="Cookie notice">
+  <button class="cnote-x" id="cnoteX" type="button" aria-label="Dismiss"></button>
+  <div class="cnote-rule"></div>
+  <h4>{{ section.settings.cookie_title }}</h4>
+  <p>{{ section.settings.cookie_body }} <a href="{{ section.settings.privacy_link | default: '/pages/privacy' }}">Privacy Policy</a>.</p>
+  <div class="cnote-act">
+    <button class="btn btn-solid" id="cnoteOk" type="button">{{ section.settings.cookie_accept }}</button>
+    <a href="{{ section.settings.privacy_link | default: '/pages/privacy' }}" class="ul ul-r">Preferences</a>
+  </div>
+</aside>
+
+{%- endif -%}
+{%- if section.settings.offer_show -%}<!-- ============================ WELCOME OFFER ============================ -->
+<div class="offer" id="layaOffer" hidden role="dialog" aria-modal="true" aria-labelledby="offerTitle">
+  <div class="offer-card">
+    <button class="offer-x" id="offerX" type="button" aria-label="Close"></button>
+    <div class="offer-m">{%- if section.settings.image != blank -%}
+        <img src="{{ section.settings.image | image_url: width: 900 }}" alt="" width="900" height="1100">
+      {%- endif -%}</div>
+    <div class="offer-b">
+      <span class="eyebrow">{{ section.settings.offer_eyebrow }}</span>
+      <h3 id="offerTitle">{{ section.settings.offer_title }}</h3>
+      <div class="offer-rule"></div>
+      <p>{{ section.settings.offer_body }}</p>
+      {% form 'customer', class: 'offer-form', id: 'offerForm' %}
+        <input type="hidden" name="contact[tags]" value="newsletter,welcome-offer">
+        <div class="nl-field" style="max-width:none">
+          <input type="email" name="contact[email]" placeholder="Email address*" aria-label="Email address" required>
+          <button type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
+        </div>
+        <button class="btn btn-solid" type="submit">{{ section.settings.offer_cta }}</button>
+        <p class="offer-ok" id="offerOk" {% unless form.posted_successfully? %}hidden{% endunless %}>{{ section.settings.offer_thanks }}</p>
+      {% endform %}
+      <p class="offer-fine">By subscribing you agree to our <a href="{{ section.settings.privacy_link | default: '/pages/privacy' }}">Privacy Policy</a> and <a href="{{ section.settings.terms_link | default: '/pages/terms' }}">Terms</a>. Unsubscribe at any time.</p>
+      <button class="offer-no" id="offerNo" type="button">{{ section.settings.offer_dismiss }}</button>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Popups",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Cookie notice"
+    },
+    {
+      "type": "checkbox",
+      "id": "cookie_show",
+      "label": "Show cookie notice",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cookie_title",
+      "label": "Heading",
+      "default": "Cookies"
+    },
+    {
+      "type": "textarea",
+      "id": "cookie_body",
+      "label": "Body",
+      "default": "We use a few cookies to keep the boutique running and to understand which pieces you linger on. Nothing is sold on. Read our"
+    },
+    {
+      "type": "text",
+      "id": "cookie_accept",
+      "label": "Accept button",
+      "default": "Accept"
+    },
+    {
+      "type": "range",
+      "id": "cookie_delay",
+      "label": "Appears after",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Welcome offer"
+    },
+    {
+      "type": "checkbox",
+      "id": "offer_show",
+      "label": "Show welcome offer",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "offer_eyebrow",
+      "label": "Eyebrow",
+      "default": "Welcome to Laya"
+    },
+    {
+      "type": "text",
+      "id": "offer_title",
+      "label": "Heading",
+      "default": "Ten Per Cent Off Your First Order"
+    },
+    {
+      "type": "textarea",
+      "id": "offer_body",
+      "label": "Body",
+      "default": "Join our list for early access to new arrivals, atelier notes, and invitations to private appointments."
+    },
+    {
+      "type": "text",
+      "id": "offer_cta",
+      "label": "Button",
+      "default": "Claim Offer"
+    },
+    {
+      "type": "text",
+      "id": "offer_dismiss",
+      "label": "Dismiss link",
+      "default": "No thank you"
+    },
+    {
+      "type": "text",
+      "id": "offer_thanks",
+      "label": "Thank-you message",
+      "default": "Thank you — your code is on its way."
+    },
+    {
+      "type": "range",
+      "id": "offer_delay",
+      "label": "Appears after",
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Links"
+    },
+    {
+      "type": "url",
+      "id": "privacy_link",
+      "label": "Privacy Policy"
+    },
+    {
+      "type": "url",
+      "id": "terms_link",
+      "label": "Terms"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Bone"
+        },
+        {
+          "value": "paper",
+          "label": "Paper"
+        },
+        {
+          "value": "tinted",
+          "label": "Tinted"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_custom",
+      "label": "Custom background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "text_custom",
+      "label": "Custom text",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "color",
+      "id": "muted_custom",
+      "label": "Custom secondary text",
+      "default": "#8A837A"
+    },
+    {
+      "type": "color",
+      "id": "line_custom",
+      "label": "Custom rule",
+      "default": "#E4DED4"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "wide",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full bleed"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "reading",
+          "label": "Reading"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_top",
+      "label": "Rule above",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_bottom",
+      "label": "Rule below",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Reveal on scroll",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,3 +1,4 @@
+{% render 'section-style', s: section, chrome: false %}
 {%- assign menu = linklists[section.settings.menu] -%}
 <header class="hdr{% if template.name == 'index' %} on-hero{% else %} solid{% endif %}" id="hdr">
   <div class="hdr-in">
@@ -118,20 +119,144 @@
 {
   "name": "Header",
   "settings": [
-    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" },
-    { "type": "image_picker", "id": "logo", "label": "Logo image" },
-    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 20, "max": 90, "step": 2, "unit": "px", "default": 48 },
-    { "type": "text", "id": "logo_word", "label": "Wordmark (used if no logo image)", "default": "Laya" },
-    { "type": "text", "id": "logo_sub", "label": "Wordmark sub-line", "default": "Boutique" },
-    { "type": "url", "id": "care_page", "label": "Client care link" },
-    { "type": "text", "id": "care_label", "label": "Client care label", "default": "Client Care" },
-    { "type": "text", "id": "popular", "label": "Popular searches (comma separated)", "default": "New In, Abayas, Dresses, Two-Piece Sets" }
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 20,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "text",
+      "id": "logo_word",
+      "label": "Wordmark (used if no logo image)",
+      "default": "Laya"
+    },
+    {
+      "type": "text",
+      "id": "logo_sub",
+      "label": "Wordmark sub-line",
+      "default": "Boutique"
+    },
+    {
+      "type": "url",
+      "id": "care_page",
+      "label": "Client care link"
+    },
+    {
+      "type": "text",
+      "id": "care_label",
+      "label": "Client care label",
+      "default": "Client Care"
+    },
+    {
+      "type": "text",
+      "id": "popular",
+      "label": "Popular searches (comma separated)",
+      "default": "New In, Abayas, Dresses, Two-Piece Sets"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "bg_custom",
+      "label": "Custom background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "text_custom",
+      "label": "Custom text",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "color",
+      "id": "muted_custom",
+      "label": "Custom secondary text",
+      "default": "#8A837A"
+    },
+    {
+      "type": "color",
+      "id": "line_custom",
+      "label": "Custom rule",
+      "default": "#E4DED4"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_top",
+      "label": "Rule above",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_bottom",
+      "label": "Rule below",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Reveal on scroll",
+      "default": true
+    }
   ],
   "blocks": [
-    { "type": "menu_image", "name": "Menu image", "settings": [
-      { "type": "range", "id": "position", "label": "Applies to menu item #", "min": 1, "max": 4, "step": 1, "default": 1 },
-      { "type": "image_picker", "id": "image", "label": "Image" }
-    ]}
+    {
+      "type": "menu_image",
+      "name": "Menu image",
+      "settings": [
+        {
+          "type": "range",
+          "id": "position",
+          "label": "Applies to menu item #",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 1
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
   ],
   "max_blocks": 4
 }

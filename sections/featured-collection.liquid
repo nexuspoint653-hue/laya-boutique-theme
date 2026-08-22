@@ -1,25 +1,77 @@
-{%- assign coll = collections[section.settings.collection] -%}
-<section class="sec">
+{% render 'section-style', s: section %}
+{%- liquid
+  assign coll = section.settings.collection
+  assign ncols = section.settings.columns | default: '4'
+  assign count = section.settings.count | default: 4
+  assign align = section.settings.head_align | default: 'center'
+  assign hsize = section.settings.heading_size | default: 'dsp-l'
+  assign products = coll.products
+  assign pcount = products.size | default: 0
+-%}
+<section class="sec{% if section.settings.carousel %} sec--rail{% endif %}">
   <div class="wrap">
     {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
-      <div class="sec-head" data-rv>
+      <div class="sec-head sec-head--{{ align }}"{% if section.settings.animate %} data-rv{% endif %}>
         {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
-        {%- if section.settings.heading != blank -%}<h2 class="dsp dsp-l">{{ section.settings.heading }}</h2>{%- endif -%}
-        {%- if section.settings.link_text != blank -%}<a href="{{ section.settings.link | default: coll.url }}" class="ul">{{ section.settings.link_text }}</a>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2 class="dsp {{ hsize }}">{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.subheading != blank -%}<p class="lede">{{ section.settings.subheading }}</p>{%- endif -%}
+        {%- if section.settings.link_text != blank -%}
+          <a href="{{ section.settings.link | default: coll.url }}" class="{% if section.settings.link_style == 'button' %}btn{% elsif section.settings.link_style == 'button_solid' %}btn btn-solid{% else %}ul{% endif %}">{{ section.settings.link_text }}</a>
+        {%- endif -%}
       </div>
     {%- endif -%}
-    <div class="row-head" data-rv><span></span><a href="{{ coll.url | default: routes.all_products_collection_url }}" class="ul ul-r">Shop all</a></div>
-    <div class="grid-{{ section.settings.columns }} stag" data-rv>
-      {%- for product in coll.products limit: section.settings.count -%}
-        {% render 'product-card', product: product %}
+
+    {%- if section.settings.show_shop_all -%}
+      <div class="row-head"{% if section.settings.animate %} data-rv{% endif %}><span></span>
+        <a href="{{ coll.url | default: routes.all_products_collection_url }}" class="ul ul-r">{{ section.settings.shop_all_text | default: 'Shop all' }}</a>
+      </div>
+    {%- endif -%}
+
+    <div class="grid-{{ ncols }}{% if section.settings.stagger %} stag{% endif %}"{% if section.settings.animate %} data-rv{% endif %}>
+      {%- if pcount > 0 -%}
+        {%- for product in products limit: count -%}
+          {% render 'product-card',
+             product: product,
+             index: forloop.index,
+             ratio: section.settings.card_ratio,
+             placeholder: section.settings.card_placeholder,
+             fallback: section.settings.card_fallback,
+             hover: section.settings.card_hover,
+             align: section.settings.card_align,
+             quick_label: section.settings.quick_label,
+             swatch_limit: section.settings.swatch_limit,
+             show_badge: section.settings.show_badge,
+             show_fav: section.settings.show_fav,
+             show_quick: section.settings.show_quick,
+             show_price: section.settings.show_price,
+             show_vendor: section.settings.show_vendor,
+             show_swatches: section.settings.show_swatches,
+             show_colour: section.settings.show_colour %}
+        {%- endfor -%}
       {%- else -%}
-        {%- for i in (1..section.settings.count) -%}
-          <a class="card" href="{{ routes.all_products_collection_url }}">
-            <div class="card-media">{{ 'product-' | append: i | placeholder_svg_tag: 'placeholder-svg still' }}</div>
-            <div class="card-info"><span class="card-name">Example product</span><span class="card-price">$0.00</span></div>
+        {%- for i in (1..count) -%}
+          <a class="card{% if section.settings.card_align == 'center' %} card--center{% endif %}"
+             href="{{ coll.url | default: routes.all_products_collection_url }}">
+            <div class="card-media" data-ratio="{{ section.settings.card_ratio | default: '4-5' }}">
+              {%- if section.settings.card_fallback != blank -%}
+                <img class="still" src="{{ section.settings.card_fallback | asset_url }}" alt="" width="800" height="1000" loading="lazy">
+              {%- elsif section.settings.card_placeholder == 'tile' -%}
+                <span class="still media-tile" aria-hidden="true"></span>
+              {%- else -%}
+                {%- assign phn = i | modulo: 6 | plus: 1 -%}
+                {%- assign phk = section.settings.card_placeholder | default: '' -%}
+                {%- if phk == blank -%}{%- assign phk = 'product-' | append: phn -%}{%- endif -%}
+                {{ phk | placeholder_svg_tag: 'placeholder-svg still' }}
+              {%- endif -%}
+              {%- if section.settings.show_quick -%}<span class="card-quick">{{ section.settings.quick_label | default: 'View' }}</span>{%- endif -%}
+            </div>
+            <div class="card-info">
+              <span class="card-name">{{ section.settings.placeholder_name | default: 'Example product' }}</span>
+              {%- if section.settings.show_price -%}<span class="card-price">{{ 0 | money }}</span>{%- endif -%}
+            </div>
           </a>
         {%- endfor -%}
-      {%- endfor -%}
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -27,15 +79,118 @@
 {% schema %}
 {
   "name": "Featured collection",
+  "tag": "section",
   "settings": [
     { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "count", "label": "Products shown", "min": 2, "max": 24, "step": 1, "default": 4 },
+
+    { "type": "header", "content": "Heading" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Discover" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "The Autumn 2026 Collection" },
+    { "type": "textarea", "id": "subheading", "label": "Sub-heading" },
+    { "type": "select", "id": "heading_size", "label": "Heading size", "default": "dsp-l",
+      "options": [
+        { "value": "dsp-s", "label": "Small" },
+        { "value": "dsp-m", "label": "Medium" },
+        { "value": "dsp-l", "label": "Large" },
+        { "value": "dsp-xl", "label": "Extra large" }] },
+    { "type": "select", "id": "head_align", "label": "Heading alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }] },
     { "type": "text", "id": "link_text", "label": "Link text", "default": "Shop Now" },
     { "type": "url", "id": "link", "label": "Link" },
-    { "type": "range", "id": "count", "label": "Products", "min": 2, "max": 12, "step": 1, "default": 4 },
-    { "type": "select", "id": "columns", "label": "Columns", "options": [
-      { "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }], "default": "4" }
+    { "type": "select", "id": "link_style", "label": "Link style", "default": "underline",
+      "options": [
+        { "value": "underline", "label": "Underlined text" },
+        { "value": "button", "label": "Outline button" },
+        { "value": "button_solid", "label": "Filled button" }] },
+    { "type": "checkbox", "id": "show_shop_all", "label": "Show \"Shop all\" row", "default": true },
+    { "type": "text", "id": "shop_all_text", "label": "\"Shop all\" text", "default": "Shop all" },
+
+    { "type": "header", "content": "Grid" },
+    { "type": "select", "id": "columns", "label": "Columns", "default": "4",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }] },
+    { "type": "checkbox", "id": "carousel", "label": "Scroll sideways on mobile", "default": true },
+    { "type": "checkbox", "id": "stagger", "label": "Stagger cards as they appear", "default": true },
+    { "type": "checkbox", "id": "animate", "label": "Reveal on scroll", "default": true },
+
+    { "type": "header", "content": "Product cards" },
+    { "type": "select", "id": "card_ratio", "label": "Image shape", "default": "4-5",
+      "options": [
+        { "value": "1-1", "label": "Square" },
+        { "value": "4-5", "label": "Portrait 4:5" },
+        { "value": "3-4", "label": "Portrait 3:4" },
+        { "value": "2-3", "label": "Tall 2:3" },
+        { "value": "16-9", "label": "Landscape 16:9" }] },
+    { "type": "select", "id": "card_hover", "label": "On hover", "default": "video",
+      "options": [
+        { "value": "video", "label": "Play product video, else second image" },
+        { "value": "image", "label": "Show second image" },
+        { "value": "zoom", "label": "Zoom the first image" },
+        { "value": "none", "label": "Nothing" }] },
+    { "type": "select", "id": "card_align", "label": "Card text alignment", "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" }] },
+
+    { "type": "header", "content": "Image placeholders",
+      "info": "Used for products with no photograph yet, and for the example cards shown before a collection is chosen." },
+    { "type": "select", "id": "card_placeholder", "label": "Placeholder style", "default": "",
+      "options": [
+        { "value": "", "label": "Rotate through Shopify's set" },
+        { "value": "product-1", "label": "Product 1" },
+        { "value": "product-2", "label": "Product 2" },
+        { "value": "product-3", "label": "Product 3" },
+        { "value": "product-4", "label": "Product 4" },
+        { "value": "product-5", "label": "Product 5" },
+        { "value": "product-6", "label": "Product 6" },
+        { "value": "lifestyle-1", "label": "Lifestyle 1" },
+        { "value": "lifestyle-2", "label": "Lifestyle 2" },
+        { "value": "tile", "label": "Plain tinted tile" }] },
+    { "type": "text", "id": "card_fallback", "label": "Bundled fallback image",
+      "info": "Theme asset filename, e.g. laya-look-1.jpg. Overrides the placeholder style." },
+    { "type": "text", "id": "placeholder_name", "label": "Placeholder card name", "default": "Example product" },
+
+    { "type": "header", "content": "Card details" },
+    { "type": "checkbox", "id": "show_badge", "label": "Show badge (New, Sale, Sold out)", "default": true },
+    { "type": "checkbox", "id": "show_fav", "label": "Show save button", "default": true },
+    { "type": "checkbox", "id": "show_quick", "label": "Show quick-view label", "default": true },
+    { "type": "text", "id": "quick_label", "label": "Quick-view label", "default": "View" },
+    { "type": "checkbox", "id": "show_price", "label": "Show price", "default": true },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+    { "type": "checkbox", "id": "show_swatches", "label": "Show colour swatches", "default": true },
+    { "type": "range", "id": "swatch_limit", "label": "Swatches before \"+n\"", "min": 2, "max": 8, "step": 1, "default": 5 },
+    { "type": "checkbox", "id": "show_colour", "label": "Show colour name", "default": true },
+
+    { "type": "header", "content": "Appearance" },
+    { "type": "select", "id": "scheme", "label": "Colour scheme", "default": "light",
+      "options": [
+        { "value": "light", "label": "Bone" },
+        { "value": "paper", "label": "Paper" },
+        { "value": "tinted", "label": "Tinted" },
+        { "value": "dark", "label": "Dark" },
+        { "value": "gold", "label": "Gold" },
+        { "value": "custom", "label": "Custom" }] },
+    { "type": "color", "id": "bg_custom", "label": "Custom background", "default": "#FAF8F5" },
+    { "type": "color", "id": "text_custom", "label": "Custom text", "default": "#1B1A18" },
+    { "type": "color", "id": "muted_custom", "label": "Custom secondary text", "default": "#8A837A" },
+    { "type": "color", "id": "line_custom", "label": "Custom rule", "default": "#E4DED4" },
+    { "type": "select", "id": "width", "label": "Content width", "default": "wide",
+      "options": [
+        { "value": "full", "label": "Full bleed" },
+        { "value": "wide", "label": "Wide" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "reading", "label": "Reading" }] },
+    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
+    { "type": "checkbox", "id": "divider_top", "label": "Rule above", "default": false },
+    { "type": "checkbox", "id": "divider_bottom", "label": "Rule below", "default": false }
   ],
   "presets": [{ "name": "Featured collection" }]
 }
