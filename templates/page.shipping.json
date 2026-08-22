@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "Client Care",
+        "updated": "19 August 2026"
+      }
+    },
+    "service": {
+      "type": "service-band",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "service"
+  ]
+}

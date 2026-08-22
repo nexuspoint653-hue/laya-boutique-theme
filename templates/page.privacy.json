@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "Legal",
+        "updated": "19 August 2026"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
