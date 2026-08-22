@@ -35,6 +35,7 @@
     {{ content_for_layout }}
   </main>
   {% sections 'footer-group' %}
+  {% section 'site-popups' %}
   {{ 'laya.js' | asset_url | script_tag }}
 </body>
 </html>
