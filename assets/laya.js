@@ -213,3 +213,83 @@ document.addEventListener("DOMContentLoaded",function(){
 /* re-init when the theme editor re-renders a section */
 document.addEventListener("shopify:section:load",function(e){ boot(e.target); initHeader(); initPanels(); });
 })();
+
+/* ============================ COOKIE NOTICE + WELCOME OFFER ============================ */
+(function(){
+  var fresh = location.search.indexOf("fresh") > -1 ||
+             (typeof Shopify !== "undefined" && Shopify.designMode);
+  var store = {
+    get:function(k){ try{ return fresh ? null : localStorage.getItem(k); }catch(e){ return null; } },
+    set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  };
+
+  var host = document.querySelector("[data-popups]");
+  var COOKIE_MS = host ? (parseFloat(host.dataset.cookieDelay) || 0) * 1000 : 2000;
+  var OFFER_MS  = host ? (parseFloat(host.dataset.offerDelay)  || 15) * 1000 : 15000;
+
+  var note = document.getElementById("layaCookie");
+  var offer = document.getElementById("layaOffer");
+  var noteHidden = false;          /* held back while the offer is open */
+
+  /* ---- cookie notice ---- */
+  function showNote(){
+    if(!note) return;
+    note.hidden = false;
+    requestAnimationFrame(function(){ note.classList.add("on"); });
+  }
+  function closeNote(accepted){
+    if(!note) return;
+    note.classList.remove("on");
+    store.set("laya-cookie", accepted ? "accepted" : "dismissed");
+    setTimeout(function(){ note.hidden = true; }, 800);
+  }
+  if(note && !store.get("laya-cookie")){
+    setTimeout(showNote, COOKIE_MS);
+    var ok = document.getElementById("cnoteOk");
+    var cx = document.getElementById("cnoteX");
+    if(ok) ok.addEventListener("click", function(){ closeNote(true); });
+    if(cx) cx.addEventListener("click", function(){ closeNote(false); });
+  }
+
+  /* ---- welcome offer ---- */
+  function openOffer(){
+    if(!offer) return;
+    /* step the cookie notice out of the way rather than stacking the two */
+    if(note && !note.hidden){ note.classList.remove("on"); noteHidden = true; }
+    offer.hidden = false;
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(function(){ offer.classList.add("on"); });
+    var f = offer.querySelector("input[type=email]");
+    if(f) setTimeout(function(){ try{ f.focus({preventScroll:true}); }catch(e){} }, 700);
+  }
+  function closeOffer(){
+    if(!offer) return;
+    offer.classList.remove("on");
+    document.body.style.overflow = "";
+    store.set("laya-offer", "seen");
+    setTimeout(function(){
+      offer.hidden = true;
+      if(noteHidden && note && !note.hidden){ note.classList.add("on"); noteHidden = false; }
+    }, 700);
+  }
+  if(offer && !store.get("laya-offer")){
+    setTimeout(openOffer, OFFER_MS);
+    var ox = document.getElementById("offerX");
+    var on = document.getElementById("offerNo");
+    var of = document.getElementById("offerForm");
+    if(ox) ox.addEventListener("click", closeOffer);
+    if(on) on.addEventListener("click", closeOffer);
+    offer.addEventListener("click", function(e){ if(e.target === offer) closeOffer(); });
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && offer && !offer.hidden) closeOffer();
+    });
+    if(of) of.addEventListener("submit", function(e){
+      e.preventDefault();
+      var msg = document.getElementById("offerOk");
+      if(msg) msg.hidden = false;
+      store.set("laya-offer", "joined");
+      setTimeout(closeOffer, 1800);
+    });
+  }
+})();
+
