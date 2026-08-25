@@ -121,8 +121,8 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .mega-fig:hover img{transform:scale(1.05)}
 .mega-title{position:absolute;left:var(--gut);bottom:26px;font-family:var(--serif);font-size:clamp(28px,3.8vw,52px);letter-spacing:.10em;text-transform:uppercase;font-weight:300;color:#fff;opacity:.96;pointer-events:none;opacity:0;transform:translateY(20px);transition:opacity .8s var(--e-out) .2s,transform .8s var(--e-out) .2s}
 .hdr.menu-open .mega-in.show .mega-title{opacity:1;transform:none}
-.scrim{position:fixed;inset:var(--hdr) 0 0;background:rgba(20,19,17,.34);opacity:0;pointer-events:none;transition:opacity .5s var(--e-out);z-index:40;backdrop-filter:blur(2px)}
-.scrim.on{opacity:1;pointer-events:auto}
+.scrim{position:fixed;inset:var(--hdr) 0 0;background:rgba(20,19,17,.34);opacity:0;pointer-events:none;transition:opacity .5s var(--e-out);z-index:40}
+.scrim.on{opacity:1;pointer-events:auto;backdrop-filter:blur(2px)}
 /* ============================== HERO ============================== */
 .hero{position:relative;height:calc(100svh - 38px);min-height:520px;max-height:940px;overflow:hidden;margin-top:calc(-1 * var(--hdr))}
 .hero-media{position:absolute;inset:0}
@@ -595,7 +595,6 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .offer[data-anim=none]{transition:none}
 .offer--nobd{background:none;pointer-events:none}
 .offer--nobd .offer-card{pointer-events:auto}
-@supports (backdrop-filter:blur(1px)){.offer{backdrop-filter:blur(var(--pop-blur,0px))}}
 
 .offer-card{background:var(--pop-bg,var(--paper));color:var(--pop-fg,var(--ink));
   border-radius:var(--pop-radius,0);box-shadow:var(--pop-shadow);overflow:hidden;
@@ -692,4 +691,16 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
   .offer--drawer-right .offer-card,.offer--drawer-left .offer-card{width:100%}
   .cnote--bar,.cnote--top{gap:14px}
   .cnote--bar .cnote-act,.cnote--top .cnote-act{margin-left:0}
+}
+
+/* ============================ MOTION BUDGET ============================
+   The hero pan is the single most expensive thing on the page: a full-bleed
+   layer being re-composited every frame for as long as the tab is open.
+   Video already moves on its own, so it never gets the pan; stills keep it
+   but only while the hero is actually on screen.                          */
+.hero-media video{animation:none;transform:scale(1.02)}
+.hero-media.rest img,.hero-media.rest video{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){
+  .hero-media img,.hero-media video{animation:none}
+  [data-rv],[data-rv]>*,.stag>*{transition-duration:.01ms!important}
 }

@@ -206,7 +206,26 @@ function initLooks(root){
   });
 }
 
-function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initLooks(root); observe(root); }
+/* ---------- motion budget ----------
+   Anything animating off screen is pure cost: pause the hero pan and stop
+   decoding video the moment it leaves the viewport, restart on the way back. */
+var restIO = ("IntersectionObserver" in window) ? new IntersectionObserver(function(en){
+  en.forEach(function(e){
+    var el = e.target;
+    el.classList.toggle("rest", !e.isIntersecting);
+    el.querySelectorAll("video").forEach(function(v){
+      if(e.isIntersecting){ if(v.autoplay && v.paused){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); } }
+      else if(!v.paused){ v.pause(); }
+    });
+  });
+}, {rootMargin:"120px"}) : null;
+function initRest(root){
+  if(!restIO) return;
+  (root||document).querySelectorAll(".hero-media,.media:not([data-rest]),.card-media:not([data-rest])").forEach(function(el){
+    el.setAttribute("data-rest","1"); restIO.observe(el);
+  });
+}
+function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initLooks(root); observe(root); initRest(root); }
 document.addEventListener("DOMContentLoaded",function(){
   initHeader(); initPanels(); initAnno(); boot(document);
 });
