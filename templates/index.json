@@ -1,77 +1,180 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero-video",
       "settings": {
+        "video": "shopify://files/videos/The_Timeline___.mp4",
+        "video_url": "",
         "eyebrow": "Autumn 2026",
         "heading": "New Arrivals",
         "link_text": "Shop Now",
+        "link": "/collections/new-in",
         "align": "left",
         "show_scroll": true,
-        "link": "/collections/new-in"
+        "fallback": "",
+        "autoplay": true,
+        "loop": true,
+        "muted": true,
+        "controls": false,
+        "fit": "cover",
+        "focal": "center",
+        "placeholder": "tile",
+        "ratio": "auto",
+        "overlay": 0,
+        "heading_size": "dsp-l",
+        "text_align": "left",
+        "text_pos": "center",
+        "text_width": 100,
+        "link_style": "underline",
+        "link_text_2": "",
+        "link_2": "",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
       }
     },
     "featured": {
       "type": "featured-collection",
       "settings": {
+        "collection": "new-in",
+        "count": 4,
         "eyebrow": "Discover",
         "heading": "The Autumn 2026 Collection",
+        "subheading": "",
+        "heading_size": "dsp-l",
+        "head_align": "center",
         "link_text": "Shop Now",
-        "count": 4,
+        "link": "/collections/new-in",
+        "link_style": "underline",
+        "show_shop_all": true,
+        "shop_all_text": "Shop all",
         "columns": "4",
-        "collection": "new-in",
-        "link": "/collections/new-in"
+        "carousel": true,
+        "stagger": true,
+        "animate": true,
+        "card_ratio": "4-5",
+        "card_hover": "video",
+        "card_align": "left",
+        "card_placeholder": "",
+        "card_fallback": "",
+        "placeholder_name": "Example product",
+        "show_badge": true,
+        "show_fav": true,
+        "show_quick": true,
+        "quick_label": "View",
+        "show_price": true,
+        "show_vendor": false,
+        "show_swatches": true,
+        "swatch_limit": 5,
+        "show_colour": true,
+        "scheme": "light",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false
       }
     },
     "split_1": {
       "type": "split-panel",
       "settings": {
+        "fallback": "laya-split-1.jpg",
+        "flip": false,
+        "scheme": "light",
         "eyebrow": "The Signature",
         "heading": "Cut for Movement",
-        "body": "<p>Layered chiffon drawn across the waist and held with hand-set crystal. Full through the skirt, narrow at the sleeve \u2014 engineered so the whole line moves as one.</p>",
+        "body": "<p>Layered chiffon drawn across the waist and held with hand-set crystal. Full through the skirt, narrow at the sleeve — engineered so the whole line moves as one.</p>",
         "link_text": "Shop Dresses",
-        "scheme": "light",
-        "flip": false,
         "link": "/collections/dresses",
-        "fallback": "laya-split-1.jpg"
+        "video_url": "",
+        "autoplay": true,
+        "loop": true,
+        "muted": true,
+        "controls": false,
+        "fit": "cover",
+        "focal": "center",
+        "placeholder": "tile",
+        "ratio": "auto",
+        "overlay": 0,
+        "heading_size": "dsp-l",
+        "text_align": "left",
+        "text_pos": "center",
+        "text_width": 100,
+        "link_style": "underline",
+        "link_text_2": "",
+        "link_2": "",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
       }
     },
     "tiles": {
       "type": "category-tiles",
-      "settings": {
-        "heading": "Trending Now"
-      },
       "blocks": {
         "t1": {
           "type": "tile",
           "settings": {
-            "label": "Abayas",
             "collection": "abayas",
-            "fallback": "laya-tile-3.jpg"
+            "fallback": "laya-tile-3.jpg",
+            "label": "Abayas",
+            "link": "",
+            "video_url": ""
           }
         },
         "t2": {
           "type": "tile",
           "settings": {
-            "label": "Dressy Dresses",
             "collection": "dresses",
-            "fallback": "laya-tile-2.jpg"
+            "fallback": "laya-tile-2.jpg",
+            "label": "Dressy Dresses",
+            "link": "",
+            "video_url": ""
           }
         },
         "t3": {
           "type": "tile",
           "settings": {
-            "label": "Two-Piece Sets",
             "collection": "two-piece",
-            "fallback": "laya-tile-1.jpg"
+            "fallback": "laya-tile-1.jpg",
+            "label": "Two-Piece Sets",
+            "link": "",
+            "video_url": ""
           }
         },
         "t4": {
           "type": "tile",
           "settings": {
-            "label": "Accessories",
             "collection": "accessories",
-            "fallback": "laya-tile-4.jpg"
+            "fallback": "laya-tile-4.jpg",
+            "label": "Accessories",
+            "link": "",
+            "video_url": ""
           }
         }
       },
@@ -80,29 +183,109 @@
         "t2",
         "t3",
         "t4"
-      ]
+      ],
+      "settings": {
+        "heading": "Trending Now",
+        "tile_fallback": "",
+        "tile_video_url": "",
+        "tile_autoplay": true,
+        "tile_loop": true,
+        "tile_muted": true,
+        "tile_controls": false,
+        "tile_fit": "cover",
+        "tile_focal": "center",
+        "tile_placeholder": "tile",
+        "tile_ratio": "3-4",
+        "tile_overlay": 0,
+        "tile_cap_pos": "below",
+        "tile_columns": "auto",
+        "tile_zoom": true,
+        "scheme": "light",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
+      }
     },
     "split_2": {
       "type": "split-panel",
       "settings": {
+        "fallback": "laya-split-2.jpg",
+        "flip": true,
+        "scheme": "dark",
         "eyebrow": "Atelier",
         "heading": "Made to Measure",
-        "body": "<p>Book a private fitting and we will draft your piece to your own measurements \u2014 sleeve, shoulder and length adjusted, fabric chosen with you.</p>",
+        "body": "<p>Book a private fitting and we will draft your piece to your own measurements — sleeve, shoulder and length adjusted, fabric chosen with you.</p>",
         "link_text": "Book an Appointment",
-        "scheme": "dark",
-        "flip": true,
         "link": "/pages/appointments",
-        "fallback": "laya-split-2.jpg"
+        "video_url": "",
+        "autoplay": true,
+        "loop": true,
+        "muted": true,
+        "controls": false,
+        "fit": "cover",
+        "focal": "center",
+        "placeholder": "tile",
+        "ratio": "auto",
+        "overlay": 0,
+        "heading_size": "dsp-l",
+        "text_align": "left",
+        "text_pos": "center",
+        "text_width": 100,
+        "link_style": "underline",
+        "link_text_2": "",
+        "link_2": "",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
       }
     },
     "rail": {
       "type": "product-rail",
       "settings": {
+        "collection": "bestsellers",
         "heading": "Top Picks",
         "link_text": "Shop Bestsellers",
+        "link": "/collections/bestsellers",
         "count": 10,
-        "collection": "bestsellers",
-        "link": "/collections/bestsellers"
+        "card_ratio": "4-5",
+        "card_hover": "video",
+        "card_align": "left",
+        "card_placeholder": "",
+        "card_fallback": "",
+        "show_badge": true,
+        "show_fav": true,
+        "show_quick": true,
+        "quick_label": "View",
+        "show_price": true,
+        "show_vendor": false,
+        "show_swatches": true,
+        "swatch_limit": 5,
+        "show_colour": true,
+        "scheme": "light",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
       }
     },
     "banner": {
@@ -111,14 +294,40 @@
         "eyebrow": "The Collection",
         "heading": "Autumn 2026",
         "link_text": "Discover the Collection",
-        "link": "/collections/new-in"
+        "link": "/collections/new-in",
+        "fallback": "laya-banner.jpg",
+        "video_url": "",
+        "autoplay": true,
+        "loop": true,
+        "muted": true,
+        "controls": false,
+        "fit": "cover",
+        "focal": "center",
+        "placeholder": "tile",
+        "ratio": "21-9",
+        "overlay": 0,
+        "heading_size": "dsp-l",
+        "text_align": "left",
+        "text_pos": "center",
+        "text_width": 100,
+        "link_style": "underline",
+        "link_text_2": "",
+        "link_2": "",
+        "scheme": "light",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
       }
     },
     "look": {
       "type": "shop-the-look",
-      "settings": {
-        "heading": "Shop The Look"
-      },
       "blocks": {
         "l1": {
           "type": "look",
@@ -155,19 +364,74 @@
         "l1",
         "l2",
         "l3"
-      ]
+      ],
+      "settings": {
+        "heading": "Shop The Look",
+        "card_ratio": "4-5",
+        "card_hover": "video",
+        "card_align": "left",
+        "card_placeholder": "",
+        "card_fallback": "",
+        "show_badge": true,
+        "show_fav": true,
+        "show_quick": true,
+        "quick_label": "View",
+        "show_price": true,
+        "show_vendor": false,
+        "show_swatches": true,
+        "swatch_limit": 5,
+        "show_colour": true,
+        "scheme": "light",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
+      }
     },
     "split_3": {
       "type": "split-panel",
       "settings": {
+        "fallback": "laya-split-3.jpg",
+        "flip": false,
+        "scheme": "tint",
         "eyebrow": "Accessories",
         "heading": "Finish the Line",
-        "body": "<p>Silk shaylas, hand-finished waist chains and pearl drops \u2014 designed to sit quietly against the piece rather than compete with it.</p>",
+        "body": "<p>Silk shaylas, hand-finished waist chains and pearl drops — designed to sit quietly against the piece rather than compete with it.</p>",
         "link_text": "Shop Accessories",
-        "scheme": "tint",
-        "flip": false,
         "link": "/collections/accessories",
-        "fallback": "laya-split-3.jpg"
+        "video_url": "",
+        "autoplay": true,
+        "loop": true,
+        "muted": true,
+        "controls": false,
+        "fit": "cover",
+        "focal": "center",
+        "placeholder": "tile",
+        "ratio": "auto",
+        "overlay": 0,
+        "heading_size": "dsp-l",
+        "text_align": "left",
+        "text_pos": "center",
+        "text_width": 100,
+        "link_style": "underline",
+        "link_text_2": "",
+        "link_2": "",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
       }
     },
     "svc": {
@@ -205,7 +469,20 @@
         "s1",
         "s2",
         "s3"
-      ]
+      ],
+      "settings": {
+        "scheme": "light",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "width": "wide",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true
+      }
     }
   },
   "order": [
