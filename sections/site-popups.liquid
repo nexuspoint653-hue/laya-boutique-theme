@@ -1,43 +1,242 @@
-{% render 'section-style', s: section %}
-{%- if section.settings.cookie_show or section.settings.offer_show -%}
-<div data-popups data-cookie-delay="{{ section.settings.cookie_delay }}" data-offer-delay="{{ section.settings.offer_delay }}">
-{%- if section.settings.cookie_show -%}
-<!-- ============================ COOKIE NOTICE ============================ -->
-<aside class="cnote" id="layaCookie" hidden aria-label="Cookie notice">
-  <button class="cnote-x" id="cnoteX" type="button" aria-label="Dismiss"></button>
-  <div class="cnote-rule"></div>
-  <h4>{{ section.settings.cookie_title }}</h4>
-  <p>{{ section.settings.cookie_body }} <a href="{{ section.settings.privacy_link | default: '/pages/privacy' }}">Privacy Policy</a>.</p>
+{%- liquid
+  assign s = section.settings
+
+  comment
+    Booleans are resolved up front — Liquid's and/or are right-associative,
+    so every guard below is a single precomputed flag.
+  endcomment
+
+  assign offer_on = false
+  if s.offer_show
+    assign offer_on = true
+  endif
+  assign cookie_on = false
+  if s.cookie_show
+    assign cookie_on = true
+  endif
+
+  assign media_side = s.media_side | default: 'left'
+  assign has_media = false
+  if s.media_type != 'none'
+    if media_side != 'none'
+      assign has_media = true
+    endif
+  endif
+
+  assign layout = s.layout | default: 'panel'
+  assign anim = s.anim | default: 'rise'
+
+  assign backdrop_on = true
+  if layout == 'corner-right' or layout == 'corner-left'
+    assign backdrop_on = false
+  endif
+  if s.backdrop_show == false
+    assign backdrop_on = false
+  endif
+
+  assign media_w = s.media_width | default: 45
+  assign body_w = 100 | minus: media_w
+
+  assign privacy_url = s.privacy_link | default: '/pages/privacy-policy'
+  assign terms_url = s.terms_link | default: '/pages/terms-conditions'
+
+  assign shadow = s.shadow | default: 'soft'
+  case shadow
+    when 'none'
+      assign shadow_css = 'none'
+    when 'strong'
+      assign shadow_css = '0 48px 110px rgba(0,0,0,.34)'
+    else
+      assign shadow_css = '0 34px 84px rgba(0,0,0,.22)'
+  endcase
+
+  assign cookie_shadow = '0 26px 64px rgba(0,0,0,.14)'
+  if shadow == 'none'
+    assign cookie_shadow = 'none'
+  endif
+
+  assign speed_ms = s.speed | default: 700
+  assign speed_slow = speed_ms | plus: 200
+
+  assign media_ratio = s.media_ratio | default: 'auto'
+  assign media_fallback = s.media_fallback | default: ''
+  assign media_placeholder = s.media_placeholder | default: 'tile'
+  assign media_alt = s.offer_title | default: ''
+
+  assign use_video = false
+  assign use_embed = false
+  if s.media_type == 'video'
+    assign use_video = true
+    if s.embed_url != blank
+      assign use_embed = true
+      assign use_video = false
+    endif
+  endif
+
+  assign img_arg = s.image
+  assign img_mob_arg = s.image_mobile
+  assign vid_arg = s.video
+  assign vid_url_arg = s.video_url
+  unless use_video
+    assign vid_arg = ''
+    assign vid_url_arg = ''
+  endunless
+  if s.media_type == 'colour'
+    assign img_arg = ''
+    assign img_mob_arg = ''
+    assign media_fallback = ''
+    assign media_placeholder = 'tile'
+  endif
+-%}
+
+{%- if offer_on or cookie_on -%}
+<style>
+  #shopify-section-{{ section.id }}{
+    --pop-bg:{{ s.offer_bg }};
+    --pop-fg:{{ s.offer_text }};
+    --pop-muted:{{ s.offer_muted }};
+    --pop-rule:{{ s.offer_rule_color }};
+    --pop-line:{{ s.offer_border }};
+    --pop-btn-bg:{{ s.btn_bg }};
+    --pop-btn-fg:{{ s.btn_text }};
+    --pop-btn-bg-h:{{ s.btn_bg_hover }};
+    --pop-btn-fg-h:{{ s.btn_text_hover }};
+    --pop-tile:{{ s.media_tint }};
+    --pop-max:{{ s.max_width }}px;
+    --pop-radius:{{ s.radius }}px;
+    --pop-pad:{{ s.pad }}px;
+    --pop-shadow:{{ shadow_css }};
+    --pop-title:{{ s.title_size }}px;
+    --pop-body:{{ s.body_size }}px;
+    --pop-media-w:{{ media_w }}fr;
+    --pop-body-w:{{ body_w }}fr;
+    --pop-speed:{{ speed_ms }}ms;
+    --pop-speed-slow:{{ speed_slow }}ms;
+    --pop-scrim:{{ s.backdrop_color }};
+    --pop-scrim-a:{{ s.backdrop_opacity }}%;
+    --pop-blur:{{ s.backdrop_blur }}px;
+    --ck-bg:{{ s.cookie_bg }};
+    --ck-fg:{{ s.cookie_text }};
+    --ck-muted:{{ s.cookie_muted }};
+    --ck-line:{{ s.cookie_border }};
+    --ck-rule:{{ s.cookie_rule_color }};
+    --ck-btn-bg:{{ s.cookie_btn_bg }};
+    --ck-btn-fg:{{ s.cookie_btn_text }};
+    --ck-width:{{ s.cookie_width }}px;
+    --ck-radius:{{ s.cookie_radius }}px;
+    --ck-pad:{{ s.cookie_pad }}px;
+    --ck-shadow:{{ cookie_shadow }};
+  }
+</style>
+
+<div data-popups
+     data-offer-trigger="{{ s.trigger }}"
+     data-offer-delay="{{ s.offer_delay }}"
+     data-offer-scroll="{{ s.scroll_pct }}"
+     data-offer-freq="{{ s.frequency }}"
+     data-offer-days="{{ s.frequency_days }}"
+     data-offer-devices="{{ s.devices }}"
+     data-offer-esc="{% if s.close_esc %}1{% else %}0{% endif %}"
+     data-offer-backdrop="{% if s.close_backdrop %}1{% else %}0{% endif %}"
+     data-offer-lock="{% if s.lock_scroll %}1{% else %}0{% endif %}"
+     data-offer-key="{{ s.reset_key | default: 'v1' }}"
+     data-cookie-delay="{{ s.cookie_delay }}"
+     data-cookie-key="{{ s.cookie_reset_key | default: 'v1' }}">
+
+{%- if cookie_on -%}
+<aside class="cnote cnote--{{ s.cookie_position }}" id="layaCookie" hidden aria-label="Cookie notice">
+  {%- if s.cookie_close -%}<button class="cnote-x" id="cnoteX" type="button" aria-label="Dismiss"></button>{%- endif -%}
+  {%- if s.cookie_rule -%}<div class="cnote-rule"></div>{%- endif -%}
+  {%- if s.cookie_title != blank -%}<h4>{{ s.cookie_title }}</h4>{%- endif -%}
+  <div class="cnote-copy">{{ s.cookie_body }}</div>
   <div class="cnote-act">
-    <button class="btn btn-solid" id="cnoteOk" type="button">{{ section.settings.cookie_accept }}</button>
-    <a href="{{ section.settings.privacy_link | default: '/pages/privacy' }}" class="ul ul-r">Preferences</a>
+    <button class="btn btn-solid" id="cnoteOk" type="button">{{ s.cookie_accept }}</button>
+    {%- if s.cookie_decline_show -%}
+      <button class="ul ul-r" id="cnoteNo" type="button">{{ s.cookie_decline }}</button>
+    {%- endif -%}
+    {%- if s.cookie_prefs_show -%}
+      <a href="{{ s.cookie_prefs_link | default: privacy_url }}" class="ul ul-r">{{ s.cookie_prefs }}</a>
+    {%- endif -%}
   </div>
 </aside>
-
 {%- endif -%}
-{%- if section.settings.offer_show -%}<!-- ============================ WELCOME OFFER ============================ -->
-<div class="offer" id="layaOffer" hidden role="dialog" aria-modal="true" aria-labelledby="offerTitle">
-  <div class="offer-card">
-    <button class="offer-x" id="offerX" type="button" aria-label="Close"></button>
-    <div class="offer-m">{%- if section.settings.image != blank -%}
-        <img src="{{ section.settings.image | image_url: width: 900 }}" alt="" width="900" height="1100">
-      {%- endif -%}</div>
+
+{%- if offer_on -%}
+<div class="offer offer--{{ layout }}{% unless backdrop_on %} offer--nobd{% endunless %}"
+     id="layaOffer" hidden role="dialog" aria-modal="true" aria-labelledby="offerTitle"
+     data-anim="{{ anim }}">
+  <div class="offer-card{% if has_media %} offer-card--m-{{ media_side }}{% else %} offer-card--solo{% endif %}{% if s.text_align == 'center' %} offer-card--center{% endif %}">
+    {%- if s.show_close -%}<button class="offer-x" id="offerX" type="button" aria-label="Close"></button>{%- endif -%}
+
+    {%- if has_media -%}
+      <div class="offer-m">
+        {%- if use_embed -%}
+          <div class="offer-embed">{{ s.embed_url | external_video_tag: loop: s.video_loop, autoplay: s.video_autoplay, muted: s.video_muted }}</div>
+        {%- else -%}
+          {% render 'media',
+             img: img_arg,
+             img_mobile: img_mob_arg,
+             video: vid_arg,
+             video_url: vid_url_arg,
+             fallback: media_fallback,
+             placeholder: media_placeholder,
+             ratio: media_ratio,
+             fit: s.media_fit,
+             focal: s.media_focal,
+             overlay: s.media_overlay,
+             autoplay: s.video_autoplay,
+             loop: s.video_loop,
+             muted: s.video_muted,
+             controls: s.video_controls,
+             loading: 'eager',
+             alt: media_alt,
+             sizes: '(max-width:760px) 100vw, 50vw' %}
+        {%- endif -%}
+        {%- if s.media_caption != blank -%}<span class="offer-cap">{{ s.media_caption }}</span>{%- endif -%}
+      </div>
+    {%- endif -%}
+
     <div class="offer-b">
-      <span class="eyebrow">{{ section.settings.offer_eyebrow }}</span>
-      <h3 id="offerTitle">{{ section.settings.offer_title }}</h3>
-      <div class="offer-rule"></div>
-      <p>{{ section.settings.offer_body }}</p>
-      {% form 'customer', class: 'offer-form', id: 'offerForm' %}
-        <input type="hidden" name="contact[tags]" value="newsletter,welcome-offer">
-        <div class="nl-field" style="max-width:none">
-          <input type="email" name="contact[email]" placeholder="Email address*" aria-label="Email address" required>
-          <button type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
-        </div>
-        <button class="btn btn-solid" type="submit">{{ section.settings.offer_cta }}</button>
-        <p class="offer-ok" id="offerOk" {% unless form.posted_successfully? %}hidden{% endunless %}>{{ section.settings.offer_thanks }}</p>
-      {% endform %}
-      <p class="offer-fine">By subscribing you agree to our <a href="{{ section.settings.privacy_link | default: '/pages/privacy' }}">Privacy Policy</a> and <a href="{{ section.settings.terms_link | default: '/pages/terms' }}">Terms</a>. Unsubscribe at any time.</p>
-      <button class="offer-no" id="offerNo" type="button">{{ section.settings.offer_dismiss }}</button>
+      {%- if s.offer_eyebrow != blank -%}<span class="eyebrow">{{ s.offer_eyebrow }}</span>{%- endif -%}
+      {%- if s.offer_title != blank -%}<h3 id="offerTitle">{{ s.offer_title }}</h3>{%- endif -%}
+      {%- if s.offer_rule -%}<div class="offer-rule"></div>{%- endif -%}
+      {%- if s.offer_body != blank -%}<div class="offer-copy">{{ s.offer_body }}</div>{%- endif -%}
+
+      {%- if s.collect_email -%}
+        {% form 'customer', class: 'offer-form', id: 'offerForm' %}
+          <input type="hidden" name="contact[tags]" value="{{ s.tags | default: 'newsletter,welcome-offer' }}">
+          {%- if s.collect_name -%}
+            <div class="offer-row">
+              <input type="text" name="contact[first_name]" placeholder="{{ s.name_placeholder }}" aria-label="{{ s.name_placeholder }}">
+            </div>
+          {%- endif -%}
+          <div class="nl-field" style="max-width:none">
+            <input type="email" name="contact[email]" placeholder="{{ s.email_placeholder }}" aria-label="{{ s.email_placeholder }}" required>
+            {%- if s.show_arrow -%}
+              <button type="submit" aria-label="Subscribe"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
+            {%- endif -%}
+          </div>
+          {%- if s.show_button -%}
+            <button class="btn btn-solid offer-cta" type="submit">{{ s.offer_cta }}</button>
+          {%- endif -%}
+          <div class="offer-ok" id="offerOk" {% unless form.posted_successfully? %}hidden{% endunless %}>
+            <p>{{ s.offer_thanks }}</p>
+            {%- if s.discount_code != blank -%}
+              <button class="offer-code" type="button" data-code="{{ s.discount_code }}">
+                <span>{{ s.discount_code }}</span><em>{{ s.code_hint }}</em>
+              </button>
+            {%- endif -%}
+          </div>
+          {%- if form.errors -%}
+            <p class="offer-err">{{ s.error_text }}</p>
+          {%- endif -%}
+        {% endform %}
+      {%- elsif s.button_link != blank -%}
+        <a class="btn btn-solid offer-cta" href="{{ s.button_link }}">{{ s.offer_cta }}</a>
+      {%- endif -%}
+
+      {%- if s.offer_fine != blank -%}<div class="offer-fine">{{ s.offer_fine }}</div>{%- endif -%}
+      {%- if s.dismiss_show -%}<button class="offer-no" id="offerNo" type="button">{{ s.offer_dismiss }}</button>{%- endif -%}
     </div>
   </div>
 </div>
@@ -48,242 +247,244 @@
 {% schema %}
 {
   "name": "Popups",
+  "tag": "section",
   "settings": [
+    { "type": "header", "content": "Welcome offer" },
+    { "type": "checkbox", "id": "offer_show", "label": "Show welcome offer", "default": true },
+    { "type": "text", "id": "offer_eyebrow", "label": "Eyebrow", "default": "Welcome to Laya" },
+    { "type": "text", "id": "offer_title", "label": "Heading", "default": "Ten Per Cent Off Your First Order" },
+    { "type": "richtext", "id": "offer_body", "label": "Body", "default": "<p>Join our list for early access to new arrivals, atelier notes, and invitations to private appointments.</p>" },
+    { "type": "checkbox", "id": "offer_rule", "label": "Show accent rule", "default": true },
+
+    { "type": "header", "content": "Offer — form" },
+    { "type": "checkbox", "id": "collect_email", "label": "Collect email address", "default": true, "info": "Turn off to use the popup as an announcement with a single link button." },
+    { "type": "checkbox", "id": "collect_name", "label": "Also ask for first name", "default": false },
+    { "type": "text", "id": "name_placeholder", "label": "Name placeholder", "default": "First name" },
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Email address*" },
+    { "type": "checkbox", "id": "show_arrow", "label": "Inline arrow submit", "default": true },
+    { "type": "checkbox", "id": "show_button", "label": "Large submit button", "default": true },
+    { "type": "text", "id": "offer_cta", "label": "Button label", "default": "Claim Offer" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Used only when \"Collect email address\" is off." },
+    { "type": "text", "id": "tags", "label": "Customer tags", "default": "newsletter,welcome-offer" },
+    { "type": "text", "id": "offer_thanks", "label": "Thank-you message", "default": "Thank you — your code is on its way." },
+    { "type": "text", "id": "discount_code", "label": "Discount code to reveal", "info": "Optional. Shown after signup; click copies it." },
+    { "type": "text", "id": "code_hint", "label": "Code hint", "default": "Tap to copy" },
+    { "type": "text", "id": "error_text", "label": "Error message", "default": "That email did not go through — please try again." },
+    { "type": "richtext", "id": "offer_fine", "label": "Small print", "default": "<p>By subscribing you agree to our Privacy Policy and Terms. Unsubscribe at any time.</p>" },
+    { "type": "checkbox", "id": "dismiss_show", "label": "Show dismiss link", "default": true },
+    { "type": "text", "id": "offer_dismiss", "label": "Dismiss link", "default": "No thank you" },
+
+    { "type": "header", "content": "Offer — media" },
     {
-      "type": "header",
-      "content": "Cookie notice"
-    },
-    {
-      "type": "checkbox",
-      "id": "cookie_show",
-      "label": "Show cookie notice",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "cookie_title",
-      "label": "Heading",
-      "default": "Cookies"
-    },
-    {
-      "type": "textarea",
-      "id": "cookie_body",
-      "label": "Body",
-      "default": "We use a few cookies to keep the boutique running and to understand which pieces you linger on. Nothing is sold on. Read our"
-    },
-    {
-      "type": "text",
-      "id": "cookie_accept",
-      "label": "Accept button",
-      "default": "Accept"
-    },
-    {
-      "type": "range",
-      "id": "cookie_delay",
-      "label": "Appears after",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "default": 2
-    },
-    {
-      "type": "header",
-      "content": "Welcome offer"
-    },
-    {
-      "type": "checkbox",
-      "id": "offer_show",
-      "label": "Show welcome offer",
-      "default": true
-    },
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Image"
-    },
-    {
-      "type": "text",
-      "id": "offer_eyebrow",
-      "label": "Eyebrow",
-      "default": "Welcome to Laya"
-    },
-    {
-      "type": "text",
-      "id": "offer_title",
-      "label": "Heading",
-      "default": "Ten Per Cent Off Your First Order"
-    },
-    {
-      "type": "textarea",
-      "id": "offer_body",
-      "label": "Body",
-      "default": "Join our list for early access to new arrivals, atelier notes, and invitations to private appointments."
-    },
-    {
-      "type": "text",
-      "id": "offer_cta",
-      "label": "Button",
-      "default": "Claim Offer"
-    },
-    {
-      "type": "text",
-      "id": "offer_dismiss",
-      "label": "Dismiss link",
-      "default": "No thank you"
-    },
-    {
-      "type": "text",
-      "id": "offer_thanks",
-      "label": "Thank-you message",
-      "default": "Thank you — your code is on its way."
-    },
-    {
-      "type": "range",
-      "id": "offer_delay",
-      "label": "Appears after",
-      "min": 5,
-      "max": 60,
-      "step": 5,
-      "unit": "s",
-      "default": 15
-    },
-    {
-      "type": "header",
-      "content": "Links"
-    },
-    {
-      "type": "url",
-      "id": "privacy_link",
-      "label": "Privacy Policy"
-    },
-    {
-      "type": "url",
-      "id": "terms_link",
-      "label": "Terms"
-    },
-    {
-      "type": "header",
-      "content": "Appearance"
-    },
-    {
-      "type": "select",
-      "id": "scheme",
-      "label": "Colour scheme",
-      "default": "light",
+      "type": "select", "id": "media_type", "label": "Media", "default": "image",
       "options": [
-        {
-          "value": "light",
-          "label": "Bone"
-        },
-        {
-          "value": "paper",
-          "label": "Paper"
-        },
-        {
-          "value": "tinted",
-          "label": "Tinted"
-        },
-        {
-          "value": "dark",
-          "label": "Dark"
-        },
-        {
-          "value": "gold",
-          "label": "Gold"
-        },
-        {
-          "value": "custom",
-          "label": "Custom"
-        }
+        { "value": "none", "label": "None" },
+        { "value": "image", "label": "Image" },
+        { "value": "video", "label": "Video" },
+        { "value": "colour", "label": "Colour panel" }
+      ]
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image" },
+    { "type": "video", "id": "video", "label": "Video (uploaded)" },
+    { "type": "text", "id": "video_url", "label": "Video file URL", "info": "Direct .mp4 or .webm link." },
+    { "type": "video_url", "id": "embed_url", "label": "YouTube or Vimeo URL", "accept": ["youtube", "vimeo"] },
+    { "type": "checkbox", "id": "video_autoplay", "label": "Autoplay", "default": true },
+    { "type": "checkbox", "id": "video_loop", "label": "Loop", "default": true },
+    { "type": "checkbox", "id": "video_muted", "label": "Muted", "default": true },
+    { "type": "checkbox", "id": "video_controls", "label": "Show controls", "default": false },
+    { "type": "text", "id": "media_fallback", "label": "Theme asset fallback", "default": "laya-split-1.jpg", "info": "Filename of an image bundled with the theme." },
+    {
+      "type": "select", "id": "media_placeholder", "label": "Placeholder", "default": "tile",
+      "options": [
+        { "value": "tile", "label": "Tinted panel" },
+        { "value": "lifestyle-1", "label": "Lifestyle 1" },
+        { "value": "lifestyle-2", "label": "Lifestyle 2" },
+        { "value": "product-1", "label": "Product 1" },
+        { "value": "product-2", "label": "Product 2" },
+        { "value": "product-3", "label": "Product 3" },
+        { "value": "product-4", "label": "Product 4" },
+        { "value": "product-5", "label": "Product 5" },
+        { "value": "product-6", "label": "Product 6" }
       ]
     },
     {
-      "type": "color",
-      "id": "bg_custom",
-      "label": "Custom background",
-      "default": "#FAF8F5"
-    },
-    {
-      "type": "color",
-      "id": "text_custom",
-      "label": "Custom text",
-      "default": "#1B1A18"
-    },
-    {
-      "type": "color",
-      "id": "muted_custom",
-      "label": "Custom secondary text",
-      "default": "#8A837A"
-    },
-    {
-      "type": "color",
-      "id": "line_custom",
-      "label": "Custom rule",
-      "default": "#E4DED4"
-    },
-    {
-      "type": "select",
-      "id": "width",
-      "label": "Content width",
-      "default": "wide",
+      "type": "select", "id": "media_side", "label": "Media position", "default": "left",
       "options": [
-        {
-          "value": "full",
-          "label": "Full bleed"
-        },
-        {
-          "value": "wide",
-          "label": "Wide"
-        },
-        {
-          "value": "narrow",
-          "label": "Narrow"
-        },
-        {
-          "value": "reading",
-          "label": "Reading"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" },
+        { "value": "top", "label": "Above text" },
+        { "value": "bottom", "label": "Below text" },
+        { "value": "background", "label": "Behind text" },
+        { "value": "none", "label": "Hidden" }
+      ]
+    },
+    { "type": "range", "id": "media_width", "label": "Media share of card", "min": 20, "max": 70, "step": 5, "unit": "%", "default": 45 },
+    {
+      "type": "select", "id": "media_ratio", "label": "Aspect ratio", "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Fill panel" },
+        { "value": "1-1", "label": "Square" },
+        { "value": "4-5", "label": "Portrait 4:5" },
+        { "value": "3-4", "label": "Portrait 3:4" },
+        { "value": "2-3", "label": "Portrait 2:3" },
+        { "value": "16-9", "label": "Landscape 16:9" },
+        { "value": "21-9", "label": "Cinematic 21:9" }
       ]
     },
     {
-      "type": "range",
-      "id": "pad_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "default": 0
+      "type": "select", "id": "media_fit", "label": "Fit", "default": "cover",
+      "options": [{ "value": "cover", "label": "Cover" }, { "value": "contain", "label": "Contain" }]
     },
     {
-      "type": "range",
-      "id": "pad_bottom",
-      "label": "Bottom padding",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "unit": "px",
-      "default": 0
+      "type": "select", "id": "media_focal", "label": "Focal point", "default": "center",
+      "options": [
+        { "value": "center", "label": "Centre" },
+        { "value": "top", "label": "Top" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "range", "id": "media_overlay", "label": "Overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
+    { "type": "color", "id": "media_tint", "label": "Colour panel / placeholder tint", "default": "#EFEAE2" },
+    { "type": "text", "id": "media_caption", "label": "Media caption" },
+
+    { "type": "header", "content": "Offer — layout" },
+    {
+      "type": "select", "id": "layout", "label": "Style", "default": "panel",
+      "options": [
+        { "value": "panel", "label": "Centred panel" },
+        { "value": "fullscreen", "label": "Full screen" },
+        { "value": "drawer-right", "label": "Drawer — right" },
+        { "value": "drawer-left", "label": "Drawer — left" },
+        { "value": "bar-bottom", "label": "Bar — bottom" },
+        { "value": "bar-top", "label": "Bar — top" },
+        { "value": "corner-right", "label": "Corner card — right" },
+        { "value": "corner-left", "label": "Corner card — left" }
+      ]
+    },
+    { "type": "range", "id": "max_width", "label": "Panel width", "min": 320, "max": 1200, "step": 20, "unit": "px", "default": 880 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "pad", "label": "Inner padding", "min": 16, "max": 80, "step": 2, "unit": "px", "default": 44 },
+    {
+      "type": "select", "id": "shadow", "label": "Shadow", "default": "soft",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "soft", "label": "Soft" },
+        { "value": "strong", "label": "Strong" }
+      ]
     },
     {
-      "type": "checkbox",
-      "id": "divider_top",
-      "label": "Rule above",
-      "default": false
+      "type": "select", "id": "text_align", "label": "Text alignment", "default": "left",
+      "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }]
     },
+    { "type": "range", "id": "title_size", "label": "Heading size", "min": 18, "max": 56, "step": 1, "unit": "px", "default": 32 },
+    { "type": "range", "id": "body_size", "label": "Body size", "min": 11, "max": 20, "step": 1, "unit": "px", "default": 13 },
     {
-      "type": "checkbox",
-      "id": "divider_bottom",
-      "label": "Rule below",
-      "default": false
+      "type": "select", "id": "anim", "label": "Entrance", "default": "rise",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "fade", "label": "Fade" },
+        { "value": "rise", "label": "Rise" },
+        { "value": "drop", "label": "Drop" },
+        { "value": "zoom", "label": "Zoom" },
+        { "value": "slide-right", "label": "Slide from right" },
+        { "value": "slide-left", "label": "Slide from left" }
+      ]
     },
+    { "type": "range", "id": "speed", "label": "Entrance speed", "min": 100, "max": 1400, "step": 50, "unit": "ms", "default": 700 },
+    { "type": "checkbox", "id": "show_close", "label": "Show close button", "default": true },
+
+    { "type": "header", "content": "Offer — colours" },
+    { "type": "color", "id": "offer_bg", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "offer_text", "label": "Text", "default": "#1B1A18" },
+    { "type": "color", "id": "offer_muted", "label": "Secondary text", "default": "#8A837A" },
+    { "type": "color", "id": "offer_rule_color", "label": "Accent rule", "default": "#8C7B5F" },
+    { "type": "color", "id": "offer_border", "label": "Border", "default": "#E4DED4" },
+    { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#1B1A18" },
+    { "type": "color", "id": "btn_text", "label": "Button text", "default": "#FAF8F5" },
+    { "type": "color", "id": "btn_bg_hover", "label": "Button background (hover)", "default": "#8C7B5F" },
+    { "type": "color", "id": "btn_text_hover", "label": "Button text (hover)", "default": "#FAF8F5" },
+    { "type": "checkbox", "id": "backdrop_show", "label": "Dim the page behind", "default": true },
+    { "type": "color", "id": "backdrop_color", "label": "Backdrop", "default": "#1B1A18" },
+    { "type": "range", "id": "backdrop_opacity", "label": "Backdrop opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 44 },
+    { "type": "range", "id": "backdrop_blur", "label": "Backdrop blur", "min": 0, "max": 20, "step": 1, "unit": "px", "default": 0 },
+
+    { "type": "header", "content": "Offer — behaviour" },
     {
-      "type": "checkbox",
-      "id": "animate",
-      "label": "Reveal on scroll",
-      "default": true
-    }
-  ]
+      "type": "select", "id": "trigger", "label": "Trigger", "default": "delay",
+      "options": [
+        { "value": "immediate", "label": "Straight away" },
+        { "value": "delay", "label": "After a delay" },
+        { "value": "scroll", "label": "After scrolling" },
+        { "value": "exit", "label": "On exit intent" }
+      ]
+    },
+    { "type": "range", "id": "offer_delay", "label": "Delay", "min": 0, "max": 120, "step": 1, "unit": "s", "default": 15 },
+    { "type": "range", "id": "scroll_pct", "label": "Scroll depth", "min": 5, "max": 100, "step": 5, "unit": "%", "default": 40 },
+    {
+      "type": "select", "id": "frequency", "label": "Show again", "default": "days",
+      "options": [
+        { "value": "once", "label": "Once, ever" },
+        { "value": "session", "label": "Once per session" },
+        { "value": "days", "label": "After a number of days" },
+        { "value": "always", "label": "Every visit" }
+      ]
+    },
+    { "type": "range", "id": "frequency_days", "label": "Days between showings", "min": 1, "max": 90, "step": 1, "default": 14 },
+    {
+      "type": "select", "id": "devices", "label": "Show on", "default": "all",
+      "options": [
+        { "value": "all", "label": "All devices" },
+        { "value": "desktop", "label": "Desktop only" },
+        { "value": "mobile", "label": "Mobile only" }
+      ]
+    },
+    { "type": "checkbox", "id": "close_backdrop", "label": "Close on backdrop click", "default": true },
+    { "type": "checkbox", "id": "close_esc", "label": "Close on Escape", "default": true },
+    { "type": "checkbox", "id": "lock_scroll", "label": "Lock page scroll while open", "default": true },
+    { "type": "text", "id": "reset_key", "label": "Reset key", "default": "v1", "info": "Change this to show the popup again to everyone who already dismissed it." },
+
+    { "type": "header", "content": "Cookie notice" },
+    { "type": "checkbox", "id": "cookie_show", "label": "Show cookie notice", "default": true },
+    { "type": "text", "id": "cookie_title", "label": "Heading", "default": "Cookies" },
+    { "type": "richtext", "id": "cookie_body", "label": "Body", "default": "<p>We use a few cookies to keep the boutique running and to understand which pieces you linger on. Nothing is sold on.</p>" },
+    { "type": "text", "id": "cookie_accept", "label": "Accept button", "default": "Accept" },
+    { "type": "checkbox", "id": "cookie_decline_show", "label": "Show decline button", "default": false },
+    { "type": "text", "id": "cookie_decline", "label": "Decline button", "default": "Decline" },
+    { "type": "checkbox", "id": "cookie_prefs_show", "label": "Show preferences link", "default": true },
+    { "type": "text", "id": "cookie_prefs", "label": "Preferences label", "default": "Preferences" },
+    { "type": "url", "id": "cookie_prefs_link", "label": "Preferences link" },
+    { "type": "checkbox", "id": "cookie_close", "label": "Show close button", "default": true },
+    { "type": "checkbox", "id": "cookie_rule", "label": "Show accent rule", "default": true },
+    {
+      "type": "select", "id": "cookie_position", "label": "Position", "default": "bl",
+      "options": [
+        { "value": "bl", "label": "Bottom left" },
+        { "value": "br", "label": "Bottom right" },
+        { "value": "bc", "label": "Bottom centre" },
+        { "value": "bar", "label": "Full-width bar" },
+        { "value": "top", "label": "Top bar" }
+      ]
+    },
+    { "type": "range", "id": "cookie_delay", "label": "Appears after", "min": 0, "max": 30, "step": 1, "unit": "s", "default": 2 },
+    { "type": "range", "id": "cookie_width", "label": "Width", "min": 280, "max": 620, "step": 10, "unit": "px", "default": 392 },
+    { "type": "range", "id": "cookie_radius", "label": "Corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "cookie_pad", "label": "Inner padding", "min": 14, "max": 48, "step": 2, "unit": "px", "default": 26 },
+    { "type": "color", "id": "cookie_bg", "label": "Background", "default": "#FFFFFF" },
+    { "type": "color", "id": "cookie_text", "label": "Text", "default": "#1B1A18" },
+    { "type": "color", "id": "cookie_muted", "label": "Secondary text", "default": "#8A837A" },
+    { "type": "color", "id": "cookie_border", "label": "Border", "default": "#E4DED4" },
+    { "type": "color", "id": "cookie_rule_color", "label": "Accent rule", "default": "#8C7B5F" },
+    { "type": "color", "id": "cookie_btn_bg", "label": "Button background", "default": "#1B1A18" },
+    { "type": "color", "id": "cookie_btn_text", "label": "Button text", "default": "#FAF8F5" },
+    { "type": "text", "id": "cookie_reset_key", "label": "Reset key", "default": "v1" },
+
+    { "type": "header", "content": "Links" },
+    { "type": "url", "id": "privacy_link", "label": "Privacy Policy" },
+    { "type": "url", "id": "terms_link", "label": "Terms" }
+  ],
+  "presets": [{ "name": "Popups" }]
 }
 {% endschema %}
