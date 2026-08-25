@@ -216,22 +216,50 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
 
 /* ============================ COOKIE NOTICE + WELCOME OFFER ============================ */
 (function(){
-  var fresh = location.search.indexOf("fresh") > -1 ||
-             (typeof Shopify !== "undefined" && Shopify.designMode);
+  /* ---------------------------------------------------------------
+     Popups. Every knob comes from the section's data- attributes so
+     the theme editor drives behaviour without touching this file.
+  --------------------------------------------------------------- */
+  var host = document.querySelector("[data-popups]");
+  if(!host) return;
+
+  var design = (typeof Shopify !== "undefined" && Shopify.designMode);
+  var fresh  = design || location.search.indexOf("fresh") > -1;
+
   var store = {
     get:function(k){ try{ return fresh ? null : localStorage.getItem(k); }catch(e){ return null; } },
-    set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+    set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+    ses:function(k){ try{ return fresh ? null : sessionStorage.getItem(k); }catch(e){ return null; } },
+    setSes:function(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
   };
 
-  var host = document.querySelector("[data-popups]");
-  var COOKIE_MS = host ? (parseFloat(host.dataset.cookieDelay) || 0) * 1000 : 2000;
-  var OFFER_MS  = host ? (parseFloat(host.dataset.offerDelay)  || 15) * 1000 : 15000;
+  var d = host.dataset;
+  var TRIGGER  = d.offerTrigger || "delay";
+  var DELAY    = (parseFloat(d.offerDelay) || 0) * 1000;
+  var SCROLL   = parseFloat(d.offerScroll) || 40;
+  var FREQ     = d.offerFreq || "days";
+  var DAYS     = parseFloat(d.offerDays) || 14;
+  var DEVICES  = d.offerDevices || "all";
+  var ESC      = d.offerEsc === "1";
+  var BACKDROP = d.offerBackdrop === "1";
+  var LOCK     = d.offerLock === "1";
+  var OKEY     = "laya-offer-" + (d.offerKey || "v1");
+  var CKEY     = "laya-cookie-" + (d.cookieKey || "v1");
+  var COOKIE_MS = (parseFloat(d.cookieDelay) || 0) * 1000;
 
-  var note = document.getElementById("layaCookie");
+  var note  = document.getElementById("layaCookie");
   var offer = document.getElementById("layaOffer");
-  var noteHidden = false;          /* held back while the offer is open */
+  var noteHeld = false;
+  var armed = false;
 
-  /* ---- cookie notice ---- */
+  function narrow(){ return window.matchMedia("(max-width:760px)").matches; }
+  function deviceOk(){
+    if(DEVICES === "desktop") return !narrow();
+    if(DEVICES === "mobile")  return narrow();
+    return true;
+  }
+
+  /* ------------------------------ cookie notice ------------------------------ */
   function showNote(){
     if(!note) return;
     note.hidden = false;
@@ -240,55 +268,124 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
   function closeNote(accepted){
     if(!note) return;
     note.classList.remove("on");
-    store.set("laya-cookie", accepted ? "accepted" : "dismissed");
+    store.set(CKEY, accepted ? "accepted" : "dismissed");
     setTimeout(function(){ note.hidden = true; }, 800);
   }
-  if(note && !store.get("laya-cookie")){
+  if(note && !store.get(CKEY)){
     setTimeout(showNote, COOKIE_MS);
     var ok = document.getElementById("cnoteOk");
     var cx = document.getElementById("cnoteX");
+    var cn = document.getElementById("cnoteNo");
     if(ok) ok.addEventListener("click", function(){ closeNote(true); });
     if(cx) cx.addEventListener("click", function(){ closeNote(false); });
+    if(cn) cn.addEventListener("click", function(){ closeNote(false); });
   }
 
-  /* ---- welcome offer ---- */
+  /* ------------------------------ welcome offer ------------------------------ */
+  function seen(){
+    if(fresh) return false;
+    if(FREQ === "always")  return false;
+    if(FREQ === "session") return !!store.ses(OKEY);
+    if(FREQ === "once")    return !!store.get(OKEY);
+    var t = parseFloat(store.get(OKEY));            /* days */
+    if(!t) return false;
+    return (Date.now() - t) < DAYS * 864e5;
+  }
+  function remember(){
+    if(FREQ === "session") store.setSes(OKEY, "1");
+    else store.set(OKEY, FREQ === "once" ? "1" : String(Date.now()));
+  }
+
   function openOffer(){
-    if(!offer) return;
-    /* step the cookie notice out of the way rather than stacking the two */
-    if(note && !note.hidden){ note.classList.remove("on"); noteHidden = true; }
+    if(!offer || !offer.hidden) return;
+    if(note && !note.hidden){ note.classList.remove("on"); noteHeld = true; }
     offer.hidden = false;
-    document.body.style.overflow = "hidden";
+    if(LOCK) document.body.style.overflow = "hidden";
     requestAnimationFrame(function(){ offer.classList.add("on"); });
-    var f = offer.querySelector("input[type=email]");
-    if(f) setTimeout(function(){ try{ f.focus({preventScroll:true}); }catch(e){} }, 700);
+    var f = offer.querySelector("input[type=email],input[type=text]");
+    if(f) setTimeout(function(){ try{ f.focus({preventScroll:true}); }catch(e){} }, 500);
   }
   function closeOffer(){
-    if(!offer) return;
+    if(!offer || offer.hidden) return;
     offer.classList.remove("on");
     document.body.style.overflow = "";
-    store.set("laya-offer", "seen");
+    remember();
     setTimeout(function(){
       offer.hidden = true;
-      if(noteHidden && note && !note.hidden){ note.classList.add("on"); noteHidden = false; }
-    }, 700);
+      if(noteHeld && note){ note.classList.add("on"); noteHeld = false; }
+    }, 650);
   }
-  if(offer && !store.get("laya-offer")){
-    setTimeout(openOffer, OFFER_MS);
+
+  function arm(){
+    if(armed || !offer) return;
+    armed = true;
+    if(TRIGGER === "immediate"){ openOffer(); return; }
+    if(TRIGGER === "delay"){ setTimeout(openOffer, DELAY); return; }
+    if(TRIGGER === "scroll"){
+      var onScroll = function(){
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        var pct = h > 0 ? (window.scrollY / h) * 100 : 100;
+        if(pct >= SCROLL){ window.removeEventListener("scroll", onScroll); openOffer(); }
+      };
+      window.addEventListener("scroll", onScroll, {passive:true});
+      onScroll();
+      return;
+    }
+    /* exit intent — pointer leaving the top of the viewport, or a hard
+       back-swipe on touch where there is no cursor to track */
+    var exit = function(e){
+      if(e.clientY > 0) return;
+      document.removeEventListener("mouseout", exit);
+      openOffer();
+    };
+    document.addEventListener("mouseout", exit);
+    if(narrow()) setTimeout(openOffer, Math.max(DELAY, 20000));
+  }
+
+  if(offer && deviceOk() && !seen()) arm();
+
+  if(offer){
     var ox = document.getElementById("offerX");
     var on = document.getElementById("offerNo");
     var of = document.getElementById("offerForm");
     if(ox) ox.addEventListener("click", closeOffer);
     if(on) on.addEventListener("click", closeOffer);
-    offer.addEventListener("click", function(e){ if(e.target === offer) closeOffer(); });
-    document.addEventListener("keydown", function(e){
-      if(e.key === "Escape" && offer && !offer.hidden) closeOffer();
+    if(BACKDROP) offer.addEventListener("click", function(e){ if(e.target === offer) closeOffer(); });
+    if(ESC) document.addEventListener("keydown", function(e){
+      if(e.key === "Escape" && !offer.hidden) closeOffer();
     });
     if(of) of.addEventListener("submit", function(e){
-      e.preventDefault();
       var msg = document.getElementById("offerOk");
+      var code = offer.querySelector(".offer-code");
+      remember();
+      if(code){                                  /* hold it open so the code can be copied */
+        e.preventDefault();
+        if(msg) msg.hidden = false;
+        return;
+      }
+      e.preventDefault();
       if(msg) msg.hidden = false;
-      store.set("laya-offer", "joined");
       setTimeout(closeOffer, 1800);
+    });
+    offer.addEventListener("click", function(e){
+      var b = e.target.closest ? e.target.closest(".offer-code") : null;
+      if(!b) return;
+      var v = b.dataset.code || "";
+      var tag = b.querySelector("em");
+      var revert = tag ? tag.textContent : "";
+      var done = function(){ if(tag){ tag.textContent = "Copied"; setTimeout(function(){ tag.textContent = revert; }, 1600); } };
+      if(navigator.clipboard) navigator.clipboard.writeText(v).then(done, done);
+      else done();
+    });
+  }
+
+  /* theme editor: selecting the section previews the popup */
+  if(design){
+    document.addEventListener("shopify:section:select", function(e){
+      if(e.target.querySelector && e.target.querySelector("[data-popups]")) openOffer();
+    });
+    document.addEventListener("shopify:section:deselect", function(e){
+      if(e.target.querySelector && e.target.querySelector("[data-popups]")) closeOffer();
     });
   }
 })();
