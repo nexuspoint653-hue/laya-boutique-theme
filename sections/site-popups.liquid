@@ -47,10 +47,10 @@
     when 'strong'
       assign shadow_css = '0 48px 110px rgba(0,0,0,.34)'
     else
-      assign shadow_css = '0 34px 84px rgba(0,0,0,.22)'
+      assign shadow_css = '0 40px 90px rgba(27,26,24,.28)'
   endcase
 
-  assign cookie_shadow = '0 26px 64px rgba(0,0,0,.14)'
+  assign cookie_shadow = '0 26px 64px rgba(27,26,24,.13)'
   if shadow == 'none'
     assign cookie_shadow = 'none'
   endif
@@ -95,6 +95,7 @@
     --pop-bg:{{ s.offer_bg }};
     --pop-fg:{{ s.offer_text }};
     --pop-muted:{{ s.offer_muted }};
+    --pop-copy:{{ s.offer_copy_color }};
     --pop-rule:{{ s.offer_rule_color }};
     --pop-line:{{ s.offer_border }};
     --pop-btn-bg:{{ s.btn_bg }};
@@ -104,12 +105,8 @@
     --pop-tile:{{ s.media_tint }};
     --pop-max:{{ s.max_width }}px;
     --pop-radius:{{ s.radius }}px;
-    --pop-pad:{{ s.pad }}px;
     --pop-shadow:{{ shadow_css }};
-    --pop-title:{{ s.title_size }}px;
     --pop-body:{{ s.body_size }}px;
-    --pop-media-w:{{ media_w }}fr;
-    --pop-body-w:{{ body_w }}fr;
     --pop-speed:{{ speed_ms }}ms;
     --pop-speed-slow:{{ speed_slow }}ms;
     --pop-scrim:{{ s.backdrop_color }};
@@ -123,9 +120,20 @@
     --ck-btn-fg:{{ s.cookie_btn_text }};
     --ck-width:{{ s.cookie_width }}px;
     --ck-radius:{{ s.cookie_radius }}px;
-    --ck-pad:{{ s.cookie_pad }}px;
     --ck-shadow:{{ cookie_shadow }};
   }
+{%- assign mw_v = s.media_width | plus: 0 -%}
+{%- unless mw_v == 47 %}  #shopify-section-{{ section.id }}{ --pop-media-w:{{ media_w }}fr; --pop-body-w:{{ body_w }}fr }
+{% endunless -%}
+{%- assign pad_v = s.pad | plus: 0 -%}
+{%- assign title_v = s.title_size | plus: 0 -%}
+{%- assign ckpad_v = s.cookie_pad | plus: 0 -%}
+{%- if pad_v > 0 %}  #shopify-section-{{ section.id }}{ --pop-pad:{{ pad_v }}px }
+{% endif -%}
+{%- if title_v > 0 %}  #shopify-section-{{ section.id }}{ --pop-title:{{ title_v }}px }
+{% endif -%}
+{%- if ckpad_v > 0 %}  #shopify-section-{{ section.id }}{ --ck-pad:{{ ckpad_v }}px }
+{% endif -%}
 {%- assign blur = s.backdrop_blur | plus: 0 -%}
 {%- if blur > 0 %}
   @supports (backdrop-filter:blur(1px)){
@@ -170,7 +178,7 @@
 <div class="offer offer--{{ layout }}{% unless backdrop_on %} offer--nobd{% endunless %}"
      id="layaOffer" hidden role="dialog" aria-modal="true" aria-labelledby="offerTitle"
      data-anim="{{ anim }}">
-  <div class="offer-card{% if has_media %} offer-card--m-{{ media_side }}{% else %} offer-card--solo{% endif %}{% if s.text_align == 'center' %} offer-card--center{% endif %}">
+  <div class="offer-card{% if has_media %} offer-card--m-{{ media_side }}{% else %} offer-card--solo{% endif %}{% if s.text_align == 'center' %} offer-card--center{% endif %}{% if s.media_mobile_show %} offer-card--mob{% endif %}">
     {%- if s.show_close -%}<button class="offer-x" id="offerX" type="button" aria-label="Close"></button>{%- endif -%}
 
     {%- if has_media -%}
@@ -252,7 +260,6 @@
 {% schema %}
 {
   "name": "Popups",
-  "tag": "section",
   "settings": [
     { "type": "header", "content": "Welcome offer" },
     { "type": "checkbox", "id": "offer_show", "label": "Show welcome offer", "default": true },
@@ -275,7 +282,7 @@
     { "type": "text", "id": "discount_code", "label": "Discount code to reveal", "info": "Optional. Shown after signup; click copies it." },
     { "type": "text", "id": "code_hint", "label": "Code hint", "default": "Tap to copy" },
     { "type": "text", "id": "error_text", "label": "Error message", "default": "That email did not go through — please try again." },
-    { "type": "richtext", "id": "offer_fine", "label": "Small print", "default": "<p>By subscribing you agree to our Privacy Policy and Terms. Unsubscribe at any time.</p>" },
+    { "type": "richtext", "id": "offer_fine", "label": "Small print", "default": "<p>By subscribing you agree to our <a href=\"/pages/privacy-policy\">Privacy Policy</a> and <a href=\"/pages/terms-conditions\">Terms</a>. Unsubscribe at any time.</p>" },
     { "type": "checkbox", "id": "dismiss_show", "label": "Show dismiss link", "default": true },
     { "type": "text", "id": "offer_dismiss", "label": "Dismiss link", "default": "No thank you" },
 
@@ -298,7 +305,7 @@
     { "type": "checkbox", "id": "video_loop", "label": "Loop", "default": true },
     { "type": "checkbox", "id": "video_muted", "label": "Muted", "default": true },
     { "type": "checkbox", "id": "video_controls", "label": "Show controls", "default": false },
-    { "type": "text", "id": "media_fallback", "label": "Theme asset fallback", "default": "laya-split-1.jpg", "info": "Filename of an image bundled with the theme." },
+    { "type": "text", "id": "media_fallback", "label": "Theme asset fallback", "info": "Optional. Filename of an image bundled with the theme, e.g. laya-split-1.jpg." },
     {
       "type": "select", "id": "media_placeholder", "label": "Placeholder", "default": "tile",
       "options": [
@@ -324,7 +331,8 @@
         { "value": "none", "label": "Hidden" }
       ]
     },
-    { "type": "range", "id": "media_width", "label": "Media share of card", "min": 20, "max": 70, "step": 5, "unit": "%", "default": 45 },
+    { "type": "range", "id": "media_width", "label": "Media share of card", "min": 20, "max": 70, "step": 1, "unit": "%", "default": 47 },
+    { "type": "checkbox", "id": "media_mobile_show", "label": "Show media on mobile", "default": false },
     {
       "type": "select", "id": "media_ratio", "label": "Aspect ratio", "default": "auto",
       "options": [
@@ -352,7 +360,7 @@
       ]
     },
     { "type": "range", "id": "media_overlay", "label": "Overlay", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
-    { "type": "color", "id": "media_tint", "label": "Colour panel / placeholder tint", "default": "#EFEAE2" },
+    { "type": "color", "id": "media_tint", "label": "Colour panel / placeholder tint", "default": "#EFEBE4" },
     { "type": "text", "id": "media_caption", "label": "Media caption" },
 
     { "type": "header", "content": "Offer — layout" },
@@ -371,7 +379,7 @@
     },
     { "type": "range", "id": "max_width", "label": "Panel width", "min": 320, "max": 1200, "step": 20, "unit": "px", "default": 880 },
     { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 0 },
-    { "type": "range", "id": "pad", "label": "Inner padding", "min": 16, "max": 80, "step": 2, "unit": "px", "default": 44 },
+    { "type": "range", "id": "pad", "label": "Inner padding", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0, "info": "0 keeps the theme's responsive padding." },
     {
       "type": "select", "id": "shadow", "label": "Shadow", "default": "soft",
       "options": [
@@ -384,7 +392,7 @@
       "type": "select", "id": "text_align", "label": "Text alignment", "default": "left",
       "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Centre" }]
     },
-    { "type": "range", "id": "title_size", "label": "Heading size", "min": 18, "max": 56, "step": 1, "unit": "px", "default": 32 },
+    { "type": "range", "id": "title_size", "label": "Heading size", "min": 0, "max": 56, "step": 1, "unit": "px", "default": 0, "info": "0 keeps the theme's responsive size." },
     { "type": "range", "id": "body_size", "label": "Body size", "min": 11, "max": 20, "step": 1, "unit": "px", "default": 13 },
     {
       "type": "select", "id": "anim", "label": "Entrance", "default": "rise",
@@ -405,15 +413,16 @@
     { "type": "color", "id": "offer_bg", "label": "Background", "default": "#FFFFFF" },
     { "type": "color", "id": "offer_text", "label": "Text", "default": "#1B1A18" },
     { "type": "color", "id": "offer_muted", "label": "Secondary text", "default": "#8A837A" },
-    { "type": "color", "id": "offer_rule_color", "label": "Accent rule", "default": "#8C7B5F" },
+    { "type": "color", "id": "offer_copy_color", "label": "Body text", "default": "#4A4640" },
+    { "type": "color", "id": "offer_rule_color", "label": "Accent rule", "default": "#A98858" },
     { "type": "color", "id": "offer_border", "label": "Border", "default": "#E4DED4" },
     { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#1B1A18" },
     { "type": "color", "id": "btn_text", "label": "Button text", "default": "#FAF8F5" },
-    { "type": "color", "id": "btn_bg_hover", "label": "Button background (hover)", "default": "#8C7B5F" },
+    { "type": "color", "id": "btn_bg_hover", "label": "Button background (hover)", "default": "#A98858" },
     { "type": "color", "id": "btn_text_hover", "label": "Button text (hover)", "default": "#FAF8F5" },
     { "type": "checkbox", "id": "backdrop_show", "label": "Dim the page behind", "default": true },
     { "type": "color", "id": "backdrop_color", "label": "Backdrop", "default": "#1B1A18" },
-    { "type": "range", "id": "backdrop_opacity", "label": "Backdrop opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 44 },
+    { "type": "range", "id": "backdrop_opacity", "label": "Backdrop opacity", "min": 0, "max": 90, "step": 1, "unit": "%", "default": 44 },
     { "type": "range", "id": "backdrop_blur", "label": "Backdrop blur", "min": 0, "max": 20, "step": 1, "unit": "px", "default": 0 },
 
     { "type": "header", "content": "Offer — behaviour" },
@@ -426,7 +435,7 @@
         { "value": "exit", "label": "On exit intent" }
       ]
     },
-    { "type": "range", "id": "offer_delay", "label": "Delay", "min": 0, "max": 120, "step": 1, "unit": "s", "default": 15 },
+    { "type": "range", "id": "offer_delay", "label": "Delay", "min": 0, "max": 100, "step": 1, "unit": "s", "default": 15 },
     { "type": "range", "id": "scroll_pct", "label": "Scroll depth", "min": 5, "max": 100, "step": 5, "unit": "%", "default": 40 },
     {
       "type": "select", "id": "frequency", "label": "Show again", "default": "days",
@@ -454,7 +463,7 @@
     { "type": "header", "content": "Cookie notice" },
     { "type": "checkbox", "id": "cookie_show", "label": "Show cookie notice", "default": true },
     { "type": "text", "id": "cookie_title", "label": "Heading", "default": "Cookies" },
-    { "type": "richtext", "id": "cookie_body", "label": "Body", "default": "<p>We use a few cookies to keep the boutique running and to understand which pieces you linger on. Nothing is sold on.</p>" },
+    { "type": "richtext", "id": "cookie_body", "label": "Body", "default": "<p>We use a few cookies to keep the boutique running and to understand which pieces you linger on. Nothing is sold on. Read our <a href=\"/pages/privacy-policy\">Privacy Policy</a>.</p>" },
     { "type": "text", "id": "cookie_accept", "label": "Accept button", "default": "Accept" },
     { "type": "checkbox", "id": "cookie_decline_show", "label": "Show decline button", "default": false },
     { "type": "text", "id": "cookie_decline", "label": "Decline button", "default": "Decline" },
@@ -474,14 +483,14 @@
       ]
     },
     { "type": "range", "id": "cookie_delay", "label": "Appears after", "min": 0, "max": 30, "step": 1, "unit": "s", "default": 2 },
-    { "type": "range", "id": "cookie_width", "label": "Width", "min": 280, "max": 620, "step": 10, "unit": "px", "default": 392 },
+    { "type": "range", "id": "cookie_width", "label": "Width", "min": 280, "max": 620, "step": 4, "unit": "px", "default": 392 },
     { "type": "range", "id": "cookie_radius", "label": "Corner radius", "min": 0, "max": 24, "step": 1, "unit": "px", "default": 0 },
-    { "type": "range", "id": "cookie_pad", "label": "Inner padding", "min": 14, "max": 48, "step": 2, "unit": "px", "default": 26 },
+    { "type": "range", "id": "cookie_pad", "label": "Inner padding", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 0, "info": "0 keeps the theme's default padding." },
     { "type": "color", "id": "cookie_bg", "label": "Background", "default": "#FFFFFF" },
     { "type": "color", "id": "cookie_text", "label": "Text", "default": "#1B1A18" },
     { "type": "color", "id": "cookie_muted", "label": "Secondary text", "default": "#8A837A" },
     { "type": "color", "id": "cookie_border", "label": "Border", "default": "#E4DED4" },
-    { "type": "color", "id": "cookie_rule_color", "label": "Accent rule", "default": "#8C7B5F" },
+    { "type": "color", "id": "cookie_rule_color", "label": "Accent rule", "default": "#A98858" },
     { "type": "color", "id": "cookie_btn_bg", "label": "Button background", "default": "#1B1A18" },
     { "type": "color", "id": "cookie_btn_text", "label": "Button text", "default": "#FAF8F5" },
     { "type": "text", "id": "cookie_reset_key", "label": "Reset key", "default": "v1" },
