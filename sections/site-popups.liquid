@@ -114,7 +114,6 @@
     --pop-speed-slow:{{ speed_slow }}ms;
     --pop-scrim:{{ s.backdrop_color }};
     --pop-scrim-a:{{ s.backdrop_opacity }}%;
-    --pop-blur:{{ s.backdrop_blur }}px;
     --ck-bg:{{ s.cookie_bg }};
     --ck-fg:{{ s.cookie_text }};
     --ck-muted:{{ s.cookie_muted }};
@@ -127,6 +126,12 @@
     --ck-pad:{{ s.cookie_pad }}px;
     --ck-shadow:{{ cookie_shadow }};
   }
+{%- assign blur = s.backdrop_blur | plus: 0 -%}
+{%- if blur > 0 %}
+  @supports (backdrop-filter:blur(1px)){
+    #shopify-section-{{ section.id }} .offer{ backdrop-filter:blur({{ blur }}px) }
+  }
+{% endif %}
 </style>
 
 <div data-popups
