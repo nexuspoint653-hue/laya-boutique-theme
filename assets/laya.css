@@ -883,3 +883,31 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 @media(hover:none){
   .card:hover .card-badge{opacity:1;transform:none}
 }
+
+/* ------------------- footer: folded columns on phones ------------------- */
+.ftr-col h4{margin:0}
+.ftr-h{all:unset;display:flex;align-items:center;justify-content:space-between;width:100%;
+  font:inherit;cursor:default;color:inherit}
+.ftr-h::after{content:"";width:9px;height:9px;border-right:1px solid currentColor;
+  border-bottom:1px solid currentColor;transform:rotate(45deg);opacity:0;margin:0 2px 4px 12px;
+  transition:transform .4s var(--e-out),opacity .3s}
+@media(max-width:749px){
+  .ftr{padding-top:clamp(34px,7vw,52px)}
+  .ftr-grid{grid-template-columns:1fr;gap:0}
+  .ftr-grid>*:first-child{margin-bottom:22px}
+  .ftr-col{border-top:1px solid var(--line)}
+  .ftr-col h4{margin:0}
+  .ftr-h{cursor:pointer;padding:15px 0}
+  .ftr-h::after{opacity:.55}
+  .ftr-col ul{overflow:hidden;max-height:60vh;transition:max-height .45s var(--e-out),opacity .3s;
+    margin:0;padding:0 0 14px}
+  .ftr-col.fold ul{max-height:0;opacity:0;padding-bottom:0}
+  .ftr-col.fold .ftr-h::after{transform:rotate(-135deg)}
+  .ftr-col li{margin:0 0 12px}
+  .ftr-ship{justify-content:flex-start;margin-top:22px}
+  .ftr-mark{padding:26px 0 12px}
+  .ftr-mark .logo-mark{font-size:clamp(30px,11vw,44px)}
+  .ftr-mark img{max-width:min(360px,72vw)!important}
+  .consent{margin-top:14px}
+  .nl-title{margin-bottom:14px}
+}

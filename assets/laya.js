@@ -238,6 +238,42 @@ function initRest(root){
     el.setAttribute("data-rest","1"); restIO.observe(el);
   });
 }
+/* ---------- footer: fold the link columns on phones ---------- */
+function initFooter(){
+  var ftr = document.querySelector(".ftr");
+  if(!ftr || ftr.dataset.folded) return;
+  if(ftr.hasAttribute("data-nocollapse")) return;
+  var cols = [].slice.call(ftr.querySelectorAll(".ftr-col"));
+  if(!cols.length) return;
+  ftr.dataset.folded = "1";
+
+  var narrow = window.matchMedia("(max-width:749px)");
+  function apply(){
+    cols.forEach(function(c){
+      var btn = c.querySelector(".ftr-h");
+      if(narrow.matches){
+        c.classList.add("fold");
+        if(btn) btn.setAttribute("aria-expanded","false");
+      }else{
+        c.classList.remove("fold");
+        if(btn) btn.setAttribute("aria-expanded","true");
+      }
+    });
+  }
+  apply();
+  if(narrow.addEventListener) narrow.addEventListener("change", apply);
+
+  cols.forEach(function(c){
+    var btn = c.querySelector(".ftr-h");
+    if(!btn) return;
+    btn.addEventListener("click", function(){
+      if(!narrow.matches) return;               /* desktop columns stay open */
+      var open = c.classList.toggle("fold") === false;
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  });
+}
+
 /* ---------- document pages: a quiet index that follows the scroll ---------- */
 function initDocNav(root){
   var scope = root || document;
@@ -307,10 +343,10 @@ function initDocNav(root){
 
 function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initLooks(root); observe(root); initRest(root); initDocNav(root); }
 document.addEventListener("DOMContentLoaded",function(){
-  initHeader(); initPanels(); initAnno(); boot(document);
+  initHeader(); initPanels(); initAnno(); initFooter(); boot(document);
 });
 /* re-init when the theme editor re-renders a section */
-document.addEventListener("shopify:section:load",function(e){ boot(e.target); initHeader(); initPanels(); });
+document.addEventListener("shopify:section:load",function(e){ boot(e.target); initHeader(); initPanels(); initFooter(); });
 })();
 
 /* ============================ COOKIE NOTICE + WELCOME OFFER ============================ */
