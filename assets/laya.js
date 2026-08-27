@@ -198,6 +198,44 @@ function initProduct(root){
 }
 
 
+/* ---------- product spotlight gallery ---------- */
+/* The mosaic over the corner of the main picture swaps which still is lit.
+   Arrow keys walk the set, so it stays usable without a mouse. */
+function initGallery(root){
+  (root||document).querySelectorAll("[data-gallery]").forEach(function(gal){
+    if(gal.dataset.wired) return; gal.dataset.wired="1";
+    var shots=gal.querySelectorAll(".pdp-shot");
+    var chips=gal.querySelectorAll(".pdp-chip");
+    if(!shots.length || !chips.length) return;
+
+    function show(i){
+      if(i<0) i=shots.length-1;
+      if(i>=shots.length) i=0;
+      shots.forEach(function(el,n){ el.classList.toggle("on", n===i); });
+      chips.forEach(function(el,n){
+        el.classList.toggle("on", n===i);
+        el.setAttribute("aria-current", n===i ? "true" : "false");
+      });
+      gal.dataset.active=i;
+    }
+
+    chips.forEach(function(chip,i){
+      chip.addEventListener("click",function(){ show(i); });
+      chip.addEventListener("mouseenter",function(){
+        if(gal.dataset.hover==="0") return;
+        show(i);
+      });
+      chip.addEventListener("keydown",function(e){
+        var cur=parseInt(gal.dataset.active||"0",10);
+        if(e.key==="ArrowRight"||e.key==="ArrowDown"){ e.preventDefault(); show(cur+1); chips[(cur+1)%chips.length].focus(); }
+        if(e.key==="ArrowLeft"||e.key==="ArrowUp"){ e.preventDefault(); var n=(cur-1+chips.length)%chips.length; show(n); chips[n].focus(); }
+      });
+    });
+    show(0);
+  });
+}
+
+
 /* ---------- shop the look ---------- */
 function initLooks(root){
   (root||document).querySelectorAll("[data-look-section]").forEach(function(sec){
@@ -341,7 +379,7 @@ function initDocNav(root){
   update();
 }
 
-function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initLooks(root); observe(root); initRest(root); initDocNav(root); }
+function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initGallery(root); initLooks(root); observe(root); initRest(root); initDocNav(root); }
 document.addEventListener("DOMContentLoaded",function(){
   initHeader(); initPanels(); initAnno(); initFooter(); boot(document);
 });
