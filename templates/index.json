@@ -424,7 +424,7 @@
     "rail": {
       "type": "product-rail",
       "settings": {
-        "collection": "bestsellers",
+        "collection": "dresses",
         "heading": "Top Picks",
         "link_text": "Shop Bestsellers",
         "link": "/collections/bestsellers",

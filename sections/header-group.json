@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header",
@@ -8,19 +17,22 @@
         "a1": {
           "type": "message",
           "settings": {
-            "text": "Complimentary shipping on orders over $250"
+            "text": "Complimentary shipping on orders over $250",
+            "link": ""
           }
         },
         "a2": {
           "type": "message",
           "settings": {
-            "text": "The Autumn 2026 Collection \u2014 now available"
+            "text": "The Autumn 2026 Collection — now available",
+            "link": ""
           }
         },
         "a3": {
           "type": "message",
           "settings": {
-            "text": "Book a private styling appointment at our atelier"
+            "text": "Book a private styling appointment at our atelier",
+            "link": ""
           }
         }
       },
@@ -28,18 +40,37 @@
         "a1",
         "a2",
         "a3"
-      ]
+      ],
+      "settings": {
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true,
+        "light_top": false,
+        "light_color": "#ffffff",
+        "light_blend": "normal",
+        "light_strength": 30,
+        "light_spread": 110,
+        "light_pos": 50,
+        "light_height": 70,
+        "scheme": "light",
+        "show": true,
+        "rotate": 0,
+        "text_size": 0,
+        "tracking": 0,
+        "uppercase": "theme",
+        "closable": false,
+        "bg_overlay": 0,
+        "bg_overlay_color": "#1b1a18"
+      }
     },
     "header": {
       "type": "header",
-      "settings": {
-        "menu": "main-menu",
-        "logo_word": "Laya",
-        "logo_sub": "Boutique",
-        "care_label": "Client Care",
-        "popular": "New In, Abayas, Dresses, Two-Piece Sets",
-        "care_page": "/pages/client-care"
-      },
       "blocks": {
         "m1": {
           "type": "menu_image",
@@ -64,7 +95,45 @@
         "m1",
         "m2",
         "m3"
-      ]
+      ],
+      "settings": {
+        "menu": "main-menu",
+        "logo_height": 48,
+        "logo_word": "Laya",
+        "logo_sub": "Boutique",
+        "care_page": "/pages/client-care",
+        "care_label": "Client Care",
+        "popular": "New In, Abayas, Dresses, Two-Piece Sets",
+        "bg_custom": "#faf8f5",
+        "text_custom": "#1b1a18",
+        "muted_custom": "#8a837a",
+        "line_custom": "#e4ded4",
+        "pad_top": 0,
+        "pad_bottom": 0,
+        "divider_top": false,
+        "divider_bottom": false,
+        "animate": true,
+        "light_top": false,
+        "light_color": "#ffffff",
+        "light_blend": "normal",
+        "light_strength": 30,
+        "light_spread": 110,
+        "light_pos": 50,
+        "light_height": 70,
+        "scheme": "light",
+        "sticky": "theme",
+        "transparent_hero": true,
+        "nav_gap": 0,
+        "nav_size": 0,
+        "show_search": true,
+        "show_account": true,
+        "show_bag": true,
+        "search_label": "Search",
+        "account_label": "Sign In",
+        "bag_label": "Bag",
+        "bg_overlay": 0,
+        "bg_overlay_color": "#1b1a18"
+      }
     }
   },
   "order": [
