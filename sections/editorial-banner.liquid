@@ -1,6 +1,26 @@
 {% render 'section-style', s: section %}
 {% render 'section-bg', s: section %}
 {%- assign media_fallback = section.settings.fallback | default: 'laya-banner.jpg' -%}
+{%- comment -%}
+  A film bundled with the theme frames itself: it plays at its own aspect and
+  brings its own scrim, so the copy stays readable over a bright plate. Both
+  are settings, so either can be dialled back in the editor.
+{%- endcomment -%}
+{%- assign eb_ratio = section.settings.ratio -%}
+{%- assign eb_overlay = section.settings.overlay -%}
+{%- assign eb_film = false -%}
+{%- if section.settings.video == blank and section.settings.video_url == blank and section.settings.video_asset != blank -%}
+  {%- assign eb_film = true -%}
+{%- endif -%}
+{%- if eb_film -%}
+  {%- if section.settings.film_ratio != blank and section.settings.film_ratio != 'inherit' -%}
+    {%- assign eb_ratio = section.settings.film_ratio -%}
+  {%- endif -%}
+  {%- assign film_ov = section.settings.film_overlay | plus: 0 -%}
+  {%- if film_ov > 0 -%}
+    {%- assign eb_overlay = film_ov -%}
+  {%- endif -%}
+{%- endif -%}
 <section class="banner" data-rv="zoom">
 {% render 'section-copy', s: section, place: 'top' %}
   {% render 'media',
@@ -12,10 +32,10 @@
        video_asset: section.settings.video_asset,
        poster_asset: section.settings.poster_asset,
        placeholder: section.settings.placeholder,
-       ratio: section.settings.ratio,
+       ratio: eb_ratio,
        fit: section.settings.fit,
        focal: section.settings.focal,
-       overlay: section.settings.overlay,
+       overlay: eb_overlay,
        autoplay: section.settings.autoplay,
        loop: section.settings.loop,
        muted: section.settings.muted,
@@ -103,13 +123,41 @@
       "type": "text",
       "id": "video_asset",
       "label": "Theme video file",
-      "info": "Filename of an .mp4 bundled with the theme, e.g. laya-monogram-set.mp4. Used when no video is uploaded above."
+      "info": "Filename of an .mp4 bundled with the theme, e.g. laya-monogram-set.mp4. Used when no video is uploaded above.",
+      "default": "laya-monogram-set.mp4"
     },
     {
       "type": "text",
       "id": "poster_asset",
       "label": "Theme poster image",
-      "info": "Optional. Theme asset filename shown before the video plays."
+      "info": "Optional. Theme asset filename shown before the video plays.",
+      "default": "laya-monogram-set-poster.jpg"
+    },
+    {
+      "type": "select",
+      "id": "film_ratio",
+      "label": "Theme film shape",
+      "info": "Used only when the banner is playing a theme video file.",
+      "options": [
+        { "value": "inherit", "label": "Same as the section" },
+        { "value": "auto", "label": "The film's own shape" },
+        { "value": "21-9", "label": "Cinematic 21:9" },
+        { "value": "16-9", "label": "Widescreen 16:9" },
+        { "value": "1-1", "label": "Square" },
+        { "value": "4-5", "label": "Portrait 4:5" }
+      ],
+      "default": "16-9"
+    },
+    {
+      "type": "range",
+      "id": "film_overlay",
+      "label": "Theme film scrim",
+      "info": "Darkens a theme video file so the heading stays readable. 0 leaves it alone.",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "%",
+      "default": 24
     },
     {
       "type": "checkbox",
