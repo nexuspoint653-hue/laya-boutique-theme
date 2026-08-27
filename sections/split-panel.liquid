@@ -10,6 +10,8 @@
        fallback: media_fallback,
        video: section.settings.video,
        video_url: section.settings.video_url,
+       video_asset: section.settings.video_asset,
+       poster_asset: section.settings.poster_asset,
        placeholder: section.settings.placeholder,
        ratio: section.settings.ratio,
        fit: section.settings.fit,
@@ -128,6 +130,18 @@
       "type": "url",
       "id": "video_url",
       "label": "External video URL (mp4)"
+    },
+    {
+      "type": "text",
+      "id": "video_asset",
+      "label": "Theme video file",
+      "info": "Filename of an .mp4 bundled with the theme, e.g. laya-monogram-set.mp4. Used when no video is uploaded above."
+    },
+    {
+      "type": "text",
+      "id": "poster_asset",
+      "label": "Theme poster image",
+      "info": "Optional. Theme asset filename shown before the video plays."
     },
     {
       "type": "checkbox",

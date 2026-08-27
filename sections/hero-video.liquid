@@ -16,6 +16,13 @@
       <video{% if section.settings.autoplay %} autoplay{% endif %}{% if section.settings.muted %} muted{% endif %}{% if section.settings.loop %} loop{% endif %}{% if section.settings.controls %} controls{% endif %} playsinline{% if section.settings.image %} poster="{{ section.settings.image | image_url: width: 1600 }}"{% endif %}>
         <source src="{{ section.settings.video_url }}" type="video/mp4">
       </video>
+    {%- elsif section.settings.video_asset != blank -%}
+      {%- assign hv_stem = section.settings.video_asset | split: '.' | first -%}
+      {%- assign hv_webm = hv_stem | append: '.webm' -%}
+      <video{% if section.settings.autoplay %} autoplay{% endif %}{% if section.settings.muted %} muted{% endif %}{% if section.settings.loop %} loop{% endif %}{% if section.settings.controls %} controls{% endif %} playsinline{% if section.settings.image != blank %} poster="{{ section.settings.image | image_url: width: 1600 }}"{% elsif section.settings.poster_asset != blank %} poster="{{ section.settings.poster_asset | asset_url }}"{% elsif section.settings.fallback != blank %} poster="{{ section.settings.fallback | asset_url }}"{% endif %}>
+        <source src="{{ hv_webm | asset_url }}" type="video/webm">
+        <source src="{{ section.settings.video_asset | asset_url }}" type="video/mp4">
+      </video>
     {%- elsif section.settings.image != blank -%}
       {%- if section.settings.image_mobile != blank -%}
         <picture>
@@ -68,6 +75,18 @@
       "type": "url",
       "id": "video_url",
       "label": "External video URL (mp4)"
+    },
+    {
+      "type": "text",
+      "id": "video_asset",
+      "label": "Theme video file",
+      "info": "Filename of an .mp4 bundled with the theme, e.g. laya-monogram-set.mp4. Used when no video is uploaded above."
+    },
+    {
+      "type": "text",
+      "id": "poster_asset",
+      "label": "Theme poster image",
+      "info": "Optional. Theme asset filename shown before the video plays."
     },
     {
       "type": "image_picker",

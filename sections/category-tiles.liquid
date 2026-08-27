@@ -21,6 +21,13 @@
               <video{% if section.settings.tile_autoplay %} autoplay{% endif %} muted loop playsinline{% if block.settings.image %} poster="{{ block.settings.image | image_url: width: 800 }}"{% endif %}>
                 <source src="{{ block.settings.video_url }}" type="video/mp4">
               </video>
+            {%- elsif block.settings.video_asset != blank -%}
+              {%- assign tv_stem = block.settings.video_asset | split: '.' | first -%}
+              {%- assign tv_webm = tv_stem | append: '.webm' -%}
+              <video{% if section.settings.tile_autoplay %} autoplay{% endif %} muted loop playsinline{% if block.settings.image != blank %} poster="{{ block.settings.image | image_url: width: 800 }}"{% elsif block.settings.fallback != blank %} poster="{{ block.settings.fallback | asset_url }}"{% endif %}>
+                <source src="{{ tv_webm | asset_url }}" type="video/webm">
+                <source src="{{ block.settings.video_asset | asset_url }}" type="video/mp4">
+              </video>
             {%- elsif block.settings.image != blank -%}
               <img src="{{ block.settings.image | image_url: width: 800 }}" alt="" width="700" height="933" loading="lazy">
             {%- elsif c.featured_image -%}
@@ -819,6 +826,12 @@
           "type": "url",
           "id": "video_url",
           "label": "External video URL (mp4)"
+        },
+        {
+          "type": "text",
+          "id": "video_asset",
+          "label": "Theme video file",
+          "info": "Filename of an .mp4 bundled with the theme, e.g. laya-monogram-set.mp4."
         }
       ]
     }
