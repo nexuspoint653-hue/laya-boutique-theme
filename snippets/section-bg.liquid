@@ -1,0 +1,90 @@
+{%- comment -%}
+  Background media for any section: photograph, uploaded video, an mp4 link, or
+  a YouTube/Vimeo embed, with its own overlay. Renders nothing at all unless the
+  merchant switches it on, so no section changes appearance by default.
+  Usage: {% render 'section-bg', s: section %}
+{%- endcomment -%}
+{%- liquid
+  assign b = s.settings
+  assign kind = b.bg_media_type | default: 'none'
+
+  assign on = false
+  unless kind == 'none'
+    assign on = true
+  endunless
+
+  assign has_src = false
+  if kind == 'image'
+    if b.bg_image != blank
+      assign has_src = true
+    endif
+    if b.bg_image_mobile != blank
+      assign has_src = true
+    endif
+  endif
+  if kind == 'video'
+    if b.bg_video != blank
+      assign has_src = true
+    endif
+    if b.bg_video_url != blank
+      assign has_src = true
+    endif
+    if b.bg_embed_url != blank
+      assign has_src = true
+    endif
+    if b.bg_image != blank
+      assign has_src = true
+    endif
+  endif
+  unless has_src
+    assign on = false
+  endunless
+
+  assign ov = b.bg_overlay | plus: 0
+  assign blur = b.bg_blur | plus: 0
+  assign fit = b.bg_fit | default: 'cover'
+  assign focal = b.bg_focal | default: 'center'
+-%}
+{%- if on -%}
+<style>
+  #shopify-section-{{ s.id }}{ position:relative; isolation:isolate }
+  #shopify-section-{{ s.id }} > .sec-bg{ position:absolute; inset:0; z-index:0; overflow:hidden;
+    pointer-events:none{% if b.bg_fixed %}; clip-path:inset(0){% endif %} }
+  #shopify-section-{{ s.id }} > .sec-bg > .media{ height:100% }
+  #shopify-section-{{ s.id }} > .sec-bg img,
+  #shopify-section-{{ s.id }} > .sec-bg video{ width:100%; height:100%; object-fit:{{ fit }};
+    {% if b.bg_fixed %}position:fixed; inset:0;{% endif %}
+    {% if blur > 0 %}filter:blur({{ blur }}px); transform:scale(1.06);{% endif %} }
+  #shopify-section-{{ s.id }} > .sec-bg .sec-bg-tint{ position:absolute; inset:0;
+    background:{{ b.bg_overlay_color | default: '#1B1A18' }}; opacity:{{ ov }}% }
+  #shopify-section-{{ s.id }} > *:not(.sec-bg){ position:relative; z-index:1 }
+</style>
+<div class="sec-bg" aria-hidden="true">
+  {%- if b.bg_embed_url != blank -%}
+    <div class="sec-bg-embed">{{ b.bg_embed_url | external_video_tag: loop: true, autoplay: true, muted: true }}</div>
+  {%- else -%}
+    {%- liquid
+      assign bg_video = b.bg_video
+      assign bg_video_url = b.bg_video_url
+      unless kind == 'video'
+        assign bg_video = ''
+        assign bg_video_url = ''
+      endunless
+    -%}
+    {% render 'media',
+       img: b.bg_image,
+       img_mobile: b.bg_image_mobile,
+       video: bg_video,
+       video_url: bg_video_url,
+       fit: fit,
+       focal: focal,
+       autoplay: true,
+       loop: true,
+       muted: true,
+       controls: false,
+       loading: 'lazy',
+       sizes: '100vw' %}
+  {%- endif -%}
+  {%- if ov > 0 -%}<span class="sec-bg-tint"></span>{%- endif -%}
+</div>
+{%- endif -%}

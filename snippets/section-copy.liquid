@@ -1,0 +1,65 @@
+{%- comment -%}
+  An optional band of copy — eyebrow, heading, sub-heading, rich text and two
+  buttons — that any section can show above or below its own content. Silent
+  unless switched on.
+  Usage: {% render 'section-copy', s: section, place: 'top' %}
+{%- endcomment -%}
+{%- liquid
+  assign c = s.settings
+  assign want = c.copy_pos | default: 'top'
+  assign spot = place | default: 'top'
+
+  assign on = false
+  if c.copy_show
+    if want == spot
+      assign on = true
+    endif
+  endif
+
+  assign any = false
+  if c.copy_eyebrow != blank
+    assign any = true
+  endif
+  if c.copy_heading != blank
+    assign any = true
+  endif
+  if c.copy_sub != blank
+    assign any = true
+  endif
+  if c.copy_body != blank
+    assign any = true
+  endif
+  if c.btn1_text != blank
+    assign any = true
+  endif
+  if c.btn2_text != blank
+    assign any = true
+  endif
+  unless any
+    assign on = false
+  endunless
+
+  assign align = c.copy_align | default: 'left'
+  assign wide = c.copy_width | default: 100
+  assign hsize = c.copy_heading_size | default: 'dsp-m'
+-%}
+{%- if on -%}
+<div class="wrap">
+  <div class="sec-copy sec-copy--{{ align }}" style="--copy-w:{{ wide }}%" data-rv>
+    {%- if c.copy_eyebrow != blank -%}<span class="eyebrow">{{ c.copy_eyebrow }}</span>{%- endif -%}
+    {%- if c.copy_heading != blank -%}<h2 class="dsp {{ hsize }}">{{ c.copy_heading }}</h2>{%- endif -%}
+    {%- if c.copy_sub != blank -%}<p class="sec-copy-sub">{{ c.copy_sub }}</p>{%- endif -%}
+    {%- if c.copy_body != blank -%}<div class="lede rte">{{ c.copy_body }}</div>{%- endif -%}
+    {%- if c.btn1_text != blank or c.btn2_text != blank -%}
+      <div class="btn-row">
+        {%- if c.btn1_text != blank -%}
+          <a href="{{ c.btn1_link | default: '#' }}" class="{% if c.btn1_style == 'underline' %}ul{% elsif c.btn1_style == 'solid' %}btn btn-solid{% else %}btn{% endif %}">{{ c.btn1_text }}</a>
+        {%- endif -%}
+        {%- if c.btn2_text != blank -%}
+          <a href="{{ c.btn2_link | default: '#' }}" class="{% if c.btn2_style == 'solid' %}btn btn-solid{% elsif c.btn2_style == 'button' %}btn{% else %}ul ul-r{% endif %}">{{ c.btn2_text }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}
