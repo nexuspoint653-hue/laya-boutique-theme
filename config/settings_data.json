@@ -20,7 +20,7 @@
         "settings": {
           "offer_show": true,
           "offer_eyebrow": "Welcome to Laya",
-          "offer_title": "Ten Per Cent Off Your First Order",
+          "offer_title": "10% Off Your First Order",
           "offer_body": "<p>Join our list for early access to new arrivals, atelier notes, and invitations to private appointments.</p>",
           "offer_rule": true,
           "collect_email": true,
