@@ -9,6 +9,8 @@
     img_mobile   image_picker object            optional narrow-screen image
     video        video object (Shopify-hosted)
     video_url    string, mp4/webm URL
+    video_asset  string, theme asset filename   e.g. 'laya-monogram-set.mp4'
+    poster_asset string, theme asset filename   still shown before the video plays
     fallback     string, theme asset filename   e.g. 'laya-split-1.jpg'
     placeholder  string                         product-1 … lifestyle-2, or 'tile'
     ratio        string                         auto | 1-1 | 4-5 | 3-4 | 16-9 | 21-9
@@ -27,6 +29,13 @@
   assign loading = loading | default: 'lazy'
   assign alt_text = alt | default: ''
   assign cls = cls | default: ''
+  assign video_asset = video_asset | default: ''
+  assign poster_asset = poster_asset | default: ''
+  assign video_asset_webm = ''
+  if video_asset != blank
+    assign va_stem = video_asset | split: '.' | first
+    assign video_asset_webm = va_stem | append: '.webm'
+  endif
 
   case ratio
     when '1-1'
@@ -64,8 +73,24 @@
       {% if muted %}muted{% endif %}
       {% if controls %}controls{% endif %}
       playsinline preload="metadata"
-      {% if img != blank %}poster="{{ img | image_url: width: 1600 }}"{% endif %}>
+      {% if img != blank %}poster="{{ img | image_url: width: 1600 }}"{% elsif poster_asset != blank %}poster="{{ poster_asset | asset_url }}"{% endif %}>
       <source src="{{ video_url }}" type="video/mp4">
+    </video>
+  {%- elsif video_asset != blank -%}
+    {%- comment -%}
+      A video bundled with the theme, referenced by filename the same way the
+      fallback image is. Lets a section ship with motion before anything is
+      uploaded in the editor, and keeps the file on Shopify's CDN.
+    {%- endcomment -%}
+    <video
+      {% if autoplay %}autoplay{% endif %}
+      {% if loop %}loop{% endif %}
+      {% if muted %}muted{% endif %}
+      {% if controls %}controls{% endif %}
+      playsinline preload="metadata"
+      {% if img != blank %}poster="{{ img | image_url: width: 1600 }}"{% elsif poster_asset != blank %}poster="{{ poster_asset | asset_url }}"{% elsif fallback != blank %}poster="{{ fallback | asset_url }}"{% endif %}>
+      <source src="{{ video_asset_webm | asset_url }}" type="video/webm">
+      <source src="{{ video_asset | asset_url }}" type="video/mp4">
     </video>
   {%- elsif img != blank -%}
     {%- if img_mobile != blank -%}
