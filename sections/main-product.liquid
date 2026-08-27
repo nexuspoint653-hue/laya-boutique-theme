@@ -232,6 +232,55 @@
   "settings": [
     {
       "type": "header",
+      "content": "In motion"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_motion",
+      "label": "Show the film card",
+      "info": "Plays the product video on its own, smaller card instead of inside the picture stack.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "motion_place",
+      "label": "Film sits",
+      "options": [
+        { "value": "below", "label": "Below the main picture" },
+        { "value": "off", "label": "Hide it" }
+      ],
+      "default": "below"
+    },
+    {
+      "type": "range",
+      "id": "motion_width",
+      "label": "Film width",
+      "min": 24,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "default": 46
+    },
+    {
+      "type": "text",
+      "id": "motion_label",
+      "label": "Film caption",
+      "default": "In motion"
+    },
+    {
+      "type": "checkbox",
+      "id": "motion_autoplay",
+      "label": "Play the film automatically",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "motion_controls",
+      "label": "Show film controls",
+      "default": false
+    },
+    {
+      "type": "header",
       "content": "Gallery"
     },
     {
