@@ -911,3 +911,29 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
   .consent{margin-top:14px}
   .nl-title{margin-bottom:14px}
 }
+
+/* --------- floating document card: moves between the policy pages --------- */
+.doc-jump{position:fixed;z-index:6;display:none;background:var(--paper);
+  border:1px solid var(--line);border-radius:14px;padding:20px 24px 18px;
+  box-shadow:0 18px 44px rgba(27,26,24,.10);max-width:min(280px,32vw);
+  opacity:0;transform:translateY(10px);animation:docJumpIn .7s var(--e-out) .5s forwards}
+@keyframes docJumpIn{to{opacity:1;transform:none}}
+.doc-jump--br{right:clamp(18px,3vw,44px);bottom:clamp(18px,3vw,44px)}
+.doc-jump--bl{left:clamp(18px,3vw,44px);bottom:clamp(18px,3vw,44px)}
+.doc-jump--tr{right:clamp(18px,3vw,44px);top:clamp(96px,12vh,150px)}
+.doc-jump-h{display:block;font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 14px}
+.doc-jump ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.doc-jump-i{display:block;font-family:var(--serif);font-size:14.5px;letter-spacing:.02em;
+  color:var(--soft);text-decoration:none;position:relative;padding-left:16px;
+  transition:color .4s var(--e-out)}
+.doc-jump-i::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1px;
+  background:currentColor;opacity:.45;transition:width .4s var(--e-out),opacity .4s}
+a.doc-jump-i:hover{color:var(--ink)}
+a.doc-jump-i:hover::before{width:11px;opacity:1}
+.doc-jump-i.is-here{color:var(--gold)}
+.doc-jump-i.is-here::before{background:var(--gold);opacity:1;width:11px}
+@media(min-width:1180px){.doc-jump{display:block}}
+@media(prefers-reduced-motion:reduce){
+  .doc-jump{animation:none;opacity:1;transform:none}
+}
