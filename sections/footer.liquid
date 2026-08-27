@@ -1,6 +1,6 @@
 {% render 'section-style', s: section %}
 {% render 'section-bg', s: section %}
-<footer class="ftr">
+<footer class="ftr"{% if section.settings.mobile_collapse == false %} data-nocollapse{% endif %}>
   <div class="wrap">
     <div class="ftr-grid" data-rv>
       <div>
@@ -27,8 +27,8 @@
 
       {%- for block in section.blocks -%}
         {%- assign list = linklists[block.settings.menu] -%}
-        <div {{ block.shopify_attributes }}>
-          <h4>{{ block.settings.title | default: list.title }}</h4>
+        <div class="ftr-col" {{ block.shopify_attributes }}>
+          <h4><button class="ftr-h" type="button" aria-expanded="true">{{ block.settings.title | default: list.title }}</button></h4>
           <ul>
             {%- for link in list.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
           </ul>
@@ -464,6 +464,23 @@
       "id": "bg_fixed",
       "label": "Hold the background still while scrolling",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_collapse",
+      "label": "Fold the link columns on phones",
+      "default": true,
+      "info": "Each column becomes a tap-to-open list so the footer stays short."
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_compact",
+      "label": "Tighten spacing on phones",
+      "default": true
     }
   ],
   "blocks": [
