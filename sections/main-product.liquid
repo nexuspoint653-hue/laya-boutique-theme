@@ -231,6 +231,84 @@
   "name": "Product",
   "settings": [
     {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "select",
+      "id": "gallery_style",
+      "label": "Layout",
+      "info": "Spotlight puts one large picture up front with a small mosaic of the others over its corner. Stack shows every picture down the page.",
+      "options": [
+        { "value": "spotlight", "label": "Spotlight with mosaic" },
+        { "value": "stack", "label": "Stacked pictures" }
+      ],
+      "default": "spotlight"
+    },
+    {
+      "type": "select",
+      "id": "stage_ratio",
+      "label": "Main picture shape",
+      "options": [
+        { "value": "1-1", "label": "Square" },
+        { "value": "4-5", "label": "Portrait 4:5" },
+        { "value": "3-4", "label": "Portrait 3:4" },
+        { "value": "2-3", "label": "Tall 2:3" }
+      ],
+      "default": "4-5"
+    },
+    {
+      "type": "text",
+      "id": "stage_placeholder",
+      "label": "Placeholder artwork",
+      "info": "Shown only while a product has no pictures. e.g. product-1",
+      "default": "product-1"
+    },
+    {
+      "type": "range",
+      "id": "image_limit",
+      "label": "Pictures shown",
+      "info": "0 shows every picture on the product.",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mosaic",
+      "label": "Show the mosaic switcher",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mosaic_pos",
+      "label": "Mosaic corner",
+      "options": [
+        { "value": "tr", "label": "Top right" },
+        { "value": "tl", "label": "Top left" },
+        { "value": "br", "label": "Bottom right" },
+        { "value": "bl", "label": "Bottom left" }
+      ],
+      "default": "tr"
+    },
+    {
+      "type": "range",
+      "id": "mosaic_width",
+      "label": "Mosaic size",
+      "min": 90,
+      "max": 240,
+      "step": 6,
+      "unit": "px",
+      "default": 138
+    },
+    {
+      "type": "text",
+      "id": "mosaic_label",
+      "label": "Mosaic label for screen readers",
+      "default": "View"
+    },
+    {
       "type": "url",
       "id": "size_guide",
       "label": "Size guide link"
