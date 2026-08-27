@@ -773,3 +773,56 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
   color:inherit;font-size:15px;line-height:1;cursor:pointer;opacity:.6}
 .anno-x:hover{opacity:1}
 .anno[hidden]{display:none!important}
+
+/* ============================ DOCUMENT PAGES ============================
+   A menu-card treatment for the legal and client-care pages: the theme's
+   Cormorant set larger and looser, section rules in gold, and an optional
+   floral drawn as a mask so its colour follows a setting.                */
+.doc-wrap{position:relative}
+.doc-floral{position:relative}
+.doc-floral::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-color:var(--fl-ink,#A98858);
+  -webkit-mask-image:var(--fl-img);mask-image:var(--fl-img);
+  -webkit-mask-size:var(--fl-size,320px) auto;mask-size:var(--fl-size,320px) auto;
+  -webkit-mask-repeat:repeat;mask-repeat:repeat;
+  opacity:var(--fl-op,10%)}
+.doc-floral>*{position:relative;z-index:1}
+.doc-floral--vine{--fl-img:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M100 0 C70 40 130 60 100 100 C70 140 130 160 100 200'/><path d='M100 30 C78 22 66 34 62 46 C80 52 96 44 100 30Z'/><path d='M100 70 C122 62 134 74 138 86 C120 92 104 84 100 70Z'/><path d='M100 130 C78 122 66 134 62 146 C80 152 96 144 100 130Z'/><path d='M100 170 C122 162 134 174 138 186 C120 192 104 184 100 170Z'/></g></svg>")}
+.doc-floral--bloom{--fl-img:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><ellipse cx='52' cy='35' rx='8.8' ry='17' transform='rotate%280 52 52%29'/><ellipse cx='52' cy='35' rx='8.8' ry='17' transform='rotate%2872 52 52%29'/><ellipse cx='52' cy='35' rx='8.8' ry='17' transform='rotate%28144 52 52%29'/><ellipse cx='52' cy='35' rx='8.8' ry='17' transform='rotate%28216 52 52%29'/><ellipse cx='52' cy='35' rx='8.8' ry='17' transform='rotate%28288 52 52%29'/></g><circle cx='52' cy='52' r='4.1' fill='black'/><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><ellipse cx='150' cy='83' rx='6.8' ry='13' transform='rotate%280 150 96%29'/><ellipse cx='150' cy='83' rx='6.8' ry='13' transform='rotate%2872 150 96%29'/><ellipse cx='150' cy='83' rx='6.8' ry='13' transform='rotate%28144 150 96%29'/><ellipse cx='150' cy='83' rx='6.8' ry='13' transform='rotate%28216 150 96%29'/><ellipse cx='150' cy='83' rx='6.8' ry='13' transform='rotate%28288 150 96%29'/></g><circle cx='150' cy='96' r='3.1' fill='black'/><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><ellipse cx='84' cy='143' rx='7.8' ry='15' transform='rotate%280 84 158%29'/><ellipse cx='84' cy='143' rx='7.8' ry='15' transform='rotate%2872 84 158%29'/><ellipse cx='84' cy='143' rx='7.8' ry='15' transform='rotate%28144 84 158%29'/><ellipse cx='84' cy='143' rx='7.8' ry='15' transform='rotate%28216 84 158%29'/><ellipse cx='84' cy='143' rx='7.8' ry='15' transform='rotate%28288 84 158%29'/></g><circle cx='84' cy='158' r='3.6' fill='black'/><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><ellipse cx='178' cy='172' rx='5.2' ry='10' transform='rotate%280 178 182%29'/><ellipse cx='178' cy='172' rx='5.2' ry='10' transform='rotate%2872 178 182%29'/><ellipse cx='178' cy='172' rx='5.2' ry='10' transform='rotate%28144 178 182%29'/><ellipse cx='178' cy='172' rx='5.2' ry='10' transform='rotate%28216 178 182%29'/><ellipse cx='178' cy='172' rx='5.2' ry='10' transform='rotate%28288 178 182%29'/></g><circle cx='178' cy='182' r='2.4' fill='black'/><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><ellipse cx='16' cy='130' rx='5.2' ry='10' transform='rotate%280 16 140%29'/><ellipse cx='16' cy='130' rx='5.2' ry='10' transform='rotate%2872 16 140%29'/><ellipse cx='16' cy='130' rx='5.2' ry='10' transform='rotate%28144 16 140%29'/><ellipse cx='16' cy='130' rx='5.2' ry='10' transform='rotate%28216 16 140%29'/><ellipse cx='16' cy='130' rx='5.2' ry='10' transform='rotate%28288 16 140%29'/></g><circle cx='16' cy='140' r='2.4' fill='black'/></svg>")}
+.doc-floral--trellis{--fl-img:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M0 100 C50 50 150 50 200 100 C150 150 50 150 0 100Z'/><path d='M100 0 C150 50 150 150 100 200 C50 150 50 50 100 0Z'/><circle cx='100' cy='100' r='16'/><circle cx='0' cy='100' r='7'/><circle cx='200' cy='100' r='7'/><circle cx='100' cy='0' r='7'/><circle cx='100' cy='200' r='7'/></g></svg>")}
+.doc-floral--laurel{--fl-img:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M40 190 C60 140 80 80 100 20'/><path d='M62 150 C46 142 38 152 36 162 C50 168 60 160 62 150Z'/><path d='M72 118 C90 110 100 120 102 130 C88 136 76 128 72 118Z'/><path d='M84 84 C68 76 60 86 58 96 C72 102 82 94 84 84Z'/><path d='M94 52 C112 44 122 54 124 64 C110 70 98 62 94 52Z'/><path d='M160 190 C150 140 150 90 168 40'/><path d='M158 148 C142 142 136 152 134 162 C148 166 156 158 158 148Z'/><path d='M160 106 C176 100 184 110 186 120 C172 124 164 116 160 106Z'/></g></svg>")}
+.doc-floral--palm{--fl-img:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><g stroke='black' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M100 200 C100 140 100 80 100 12'/><path d='M100 40 C70 34 52 52 44 74'/><path d='M100 40 C130 34 148 52 156 74'/><path d='M100 78 C66 74 46 94 38 118'/><path d='M100 78 C134 74 154 94 162 118'/><path d='M100 116 C68 114 50 134 44 158'/><path d='M100 116 C132 114 150 134 156 158'/><path d='M100 154 C74 154 60 170 56 188'/><path d='M100 154 C126 154 140 170 144 188'/></g></svg>")}
+
+.page-doc .wrap,.wrap.page-doc{max-width:min(880px,100%)}
+.page-doc .phead{text-align:center}
+.doc-flourish{display:block;width:132px;height:12px;margin:20px auto 0;
+  background:no-repeat center/contain url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12'><g stroke='black' fill='none' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6 C40 -2 60 14 100 6 C140 -2 160 14 196 6'/><circle cx='100' cy='6' r='2.6' fill='black'/></g></svg>")}
+.doc-stand{margin:16px auto 0;max-width:52ch;font-family:var(--serif);font-style:italic;
+  font-size:clamp(15px,1.5vw,18px);line-height:1.6;color:var(--muted)}
+.prose--menu{font-family:var(--serif);font-size:clamp(16px,1.5vw,18.5px);line-height:1.8;color:var(--soft)}
+.prose--menu p,.prose--menu li{font-family:inherit;font-size:inherit;line-height:inherit;color:inherit}
+.prose--menu > p:first-of-type{font-size:1.06em}
+.prose--menu h2{font-family:var(--serif);font-weight:400;font-size:clamp(15px,1.5vw,18px);
+  letter-spacing:.28em;text-transform:uppercase;text-align:center;color:var(--ink);
+  margin:56px 0 22px;display:flex;align-items:center;gap:18px;justify-content:center}
+.prose--menu h2::before,.prose--menu h2::after{content:"";height:1px;flex:1;max-width:120px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.prose--menu h3{font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:clamp(16px,1.6vw,20px);letter-spacing:.02em;text-transform:none;
+  color:var(--gold);margin:30px 0 8px}
+.prose--menu ul{list-style:none;padding-left:0;margin:14px 0}
+.prose--menu li{position:relative;padding-left:26px;margin:0 0 10px}
+.prose--menu li::before{content:"";position:absolute;left:4px;top:.72em;width:12px;height:1px;background:var(--gold)}
+.prose--menu a{color:inherit;text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:color-mix(in srgb,var(--gold) 60%,transparent)}
+.prose--menu .updated{text-align:center;font-family:var(--sans);font-size:10.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 40px}
+.prose--menu table{font-family:var(--serif)}
+.doc-signoff{margin:52px 0 0;text-align:center;font-family:var(--serif);font-style:italic;
+  color:var(--muted);font-size:15px}
+.doc-signoff::before{content:"";display:block;width:64px;height:1px;margin:0 auto 18px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+@media(max-width:760px){
+  .prose--menu h2{gap:10px}
+  .prose--menu h2::before,.prose--menu h2::after{max-width:40px}
+}
