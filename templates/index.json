@@ -14,6 +14,8 @@
       "settings": {
         "video": "shopify://files/videos/The_Timeline___.mp4",
         "video_url": "",
+        "video_asset": "",
+        "poster_asset": "",
         "eyebrow": "Autumn 2026",
         "heading": "New Arrivals",
         "link_text": "Shop Now",
@@ -159,15 +161,18 @@
     "split_1": {
       "type": "split-panel",
       "settings": {
+        "image": "shopify://shop_images/iman-purple-beaded-chiffon-gown.jpg",
         "fallback": "laya-split-1.jpg",
         "flip": false,
         "scheme": "light",
         "eyebrow": "The Signature",
         "heading": "Cut for Movement",
-        "body": "<p>Layered chiffon drawn across the waist and held with hand-set crystal. Full through the skirt, narrow at the sleeve \u2014 engineered so the whole line moves as one.</p>",
+        "body": "<p>Layered chiffon drawn across the waist and held with hand-set crystal. Full through the skirt, narrow at the sleeve — engineered so the whole line moves as one.</p>",
         "link_text": "Shop Dresses",
         "link": "/collections/dresses",
         "video_url": "",
+        "video_asset": "",
+        "poster_asset": "",
         "autoplay": true,
         "loop": true,
         "muted": true,
@@ -237,7 +242,8 @@
             "fallback": "laya-tile-3.jpg",
             "label": "Abayas",
             "link": "",
-            "video_url": ""
+            "video_url": "",
+            "video_asset": ""
           }
         },
         "t2": {
@@ -247,7 +253,8 @@
             "fallback": "laya-tile-2.jpg",
             "label": "Dressy Dresses",
             "link": "",
-            "video_url": ""
+            "video_url": "",
+            "video_asset": ""
           }
         },
         "t3": {
@@ -257,17 +264,20 @@
             "fallback": "laya-tile-1.jpg",
             "label": "Two-Piece Sets",
             "link": "",
-            "video_url": ""
+            "video_url": "",
+            "video_asset": ""
           }
         },
         "t4": {
           "type": "tile",
           "settings": {
             "collection": "accessories",
+            "image": "shopify://shop_images/rana-blush-ruched-chiffon-gown.jpg",
             "fallback": "laya-tile-4.jpg",
             "label": "Accessories",
             "link": "",
-            "video_url": ""
+            "video_url": "",
+            "video_asset": ""
           }
         }
       },
@@ -340,15 +350,18 @@
     "split_2": {
       "type": "split-panel",
       "settings": {
+        "image": "shopify://shop_images/dima-slate-chain-print-skirt-set.jpg",
         "fallback": "laya-split-2.jpg",
         "flip": true,
         "scheme": "dark",
         "eyebrow": "Atelier",
         "heading": "Made to Measure",
-        "body": "<p>Book a private fitting and we will draft your piece to your own measurements \u2014 sleeve, shoulder and length adjusted, fabric chosen with you.</p>",
+        "body": "<p>Book a private fitting and we will draft your piece to your own measurements — sleeve, shoulder and length adjusted, fabric chosen with you.</p>",
         "link_text": "Book an Appointment",
         "link": "/pages/appointments",
         "video_url": "",
+        "video_asset": "",
+        "poster_asset": "",
         "autoplay": true,
         "loop": true,
         "muted": true,
@@ -477,12 +490,16 @@
     "banner": {
       "type": "editorial-banner",
       "settings": {
-        "eyebrow": "Autumn 2026",
-        "heading": "The Monogram Set",
-        "link_text": "Shop Two-Piece Sets",
-        "link": "/collections/two-piece",
+        "eyebrow": "The Collection",
+        "heading": "Autumn 2026",
+        "link_text": "Discover the Collection",
+        "link": "/collections/new-in",
         "fallback": "laya-banner.jpg",
         "video_url": "",
+        "video_asset": "laya-monogram-set.mp4",
+        "poster_asset": "laya-monogram-set-poster.jpg",
+        "film_ratio": "16-9",
+        "film_overlay": 24,
         "autoplay": true,
         "loop": true,
         "muted": true,
@@ -490,15 +507,15 @@
         "fit": "cover",
         "focal": "center",
         "placeholder": "tile",
-        "ratio": "16-9",
-        "overlay": 18,
+        "ratio": "21-9",
+        "overlay": 0,
         "heading_size": "dsp-l",
         "text_align": "left",
         "text_pos": "center",
         "text_width": 100,
         "link_style": "underline",
-        "link_text_2": "View the Collection",
-        "link_2": "/collections/new-in",
+        "link_text_2": "",
+        "link_2": "",
         "scheme": "light",
         "bg_custom": "#faf8f5",
         "text_custom": "#1b1a18",
@@ -540,9 +557,7 @@
         "btn1_style": "button",
         "btn2_text": "",
         "btn2_link": "",
-        "btn2_style": "underline",
-        "video_asset": "laya-monogram-set.mp4",
-        "poster_asset": "laya-monogram-set-poster.jpg"
+        "btn2_style": "underline"
       }
     },
     "look": {
@@ -554,7 +569,10 @@
             "products": [
               "gid://shopify/Product/9236131774595",
               "gid://shopify/Product/9236132790403",
-              "gid://shopify/Product/9236132724867"
+              "gid://shopify/Product/9236132724867",
+              "amani-black-embellished-chiffon-set",
+              "ayla-teal-floral-blouse-and-trouser-set",
+              "dana-navy-satin-shirt-dress"
             ]
           }
         },
@@ -657,15 +675,18 @@
     "split_3": {
       "type": "split-panel",
       "settings": {
+        "image": "shopify://shop_images/ayla-teal-floral-blouse-and-trouser-set.jpg",
         "fallback": "laya-split-3.jpg",
         "flip": false,
         "scheme": "tint",
         "eyebrow": "Accessories",
         "heading": "Finish the Line",
-        "body": "<p>Silk shaylas, hand-finished waist chains and pearl drops \u2014 designed to sit quietly against the piece rather than compete with it.</p>",
+        "body": "<p>Silk shaylas, hand-finished waist chains and pearl drops — designed to sit quietly against the piece rather than compete with it.</p>",
         "link_text": "Shop Accessories",
         "link": "/collections/accessories",
         "video_url": "",
+        "video_asset": "",
+        "poster_asset": "",
         "autoplay": true,
         "loop": true,
         "muted": true,
