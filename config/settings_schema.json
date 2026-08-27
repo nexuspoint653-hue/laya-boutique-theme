@@ -43,6 +43,25 @@
     ]
   },
   {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "justify_text",
+        "label": "Justify body text",
+        "default": true,
+        "info": "Flushes paragraphs to both margins. Headings, buttons, labels and prices are left as they are."
+      },
+      {
+        "type": "checkbox",
+        "id": "justify_hyphens",
+        "label": "Hyphenate when justifying",
+        "default": true,
+        "info": "Breaks long words at the margin so justified lines do not open up gaps."
+      }
+    ]
+  },
+  {
     "name": "Brand",
     "settings": [
       {
