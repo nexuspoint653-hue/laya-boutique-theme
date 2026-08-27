@@ -22,6 +22,18 @@
     swatch_limit   number default 5
     align          left | center                        default left
     index          loop index — rotates the placeholder so a grid is not identical
+
+  Manual overrides — any of these replace what the product would supply, and
+  together they let a card exist with no product behind it at all.
+    img            image_picker object   replaces the product photograph
+    img_hover      image_picker object   replaces the second (hover) image
+    title_text     string                replaces the product title
+    price_text     string                replaces the price, shown verbatim
+    compare_text   string                struck-through price
+    badge_text     string                replaces the automatic badge
+    vendor_text    string                replaces the vendor
+    colour_text    string                replaces the colour name
+    url_text       string                replaces the link target
 {%- endcomment -%}
 {%- liquid
   assign ratio = ratio | default: '4-5'
@@ -93,18 +105,82 @@
     assign phn = idx | modulo: 6 | plus: 1
     assign ph = 'product-' | append: phn
   endif
+
+  # a card can be driven by a product, by hand, or by both.
+  # normalise first: a param the caller never passed is nil, and nil does not
+  # compare against blank reliably — default: '' makes every check below honest
+  assign img = img | default: ''
+  assign img_hover = img_hover | default: ''
+  assign title_text = title_text | default: ''
+  assign price_text = price_text | default: ''
+  assign compare_text = compare_text | default: ''
+  assign badge_text = badge_text | default: ''
+  assign vendor_text = vendor_text | default: ''
+  assign colour_text = colour_text | default: ''
+  assign url_text = url_text | default: ''
+
+  assign has_product = false
+  if product.id
+    assign has_product = true
+  endif
+
+  assign card_img = ''
+  if img != blank
+    assign card_img = img
+  elsif has_product
+    assign card_img = product.featured_image
+  endif
+
+  assign card_hover_img = ''
+  if img_hover != blank
+    assign card_hover_img = img_hover
+  elsif hover_img
+    assign card_hover_img = hover_img
+  endif
+
+  assign card_title = title_text
+  if card_title == blank
+    assign card_title = product.title
+  endif
+
+  assign card_url = url_text
+  if card_url == blank
+    if has_product
+      assign card_url = product.url
+    endif
+  endif
+  if card_url == blank
+    assign card_url = '#'
+  endif
+
+  assign card_vendor = vendor_text
+  if card_vendor == blank
+    assign card_vendor = product.vendor
+  endif
+  assign card_colour = colour_text
+
+  assign has_card = false
+  if has_product
+    assign has_card = true
+  endif
+  if card_title != blank
+    assign has_card = true
+  endif
+  if card_img != blank
+    assign has_card = true
+  endif
 -%}
-{%- if product and product.id -%}
+{%- if has_card -%}
 <a class="card{% if align == 'center' %} card--center{% endif %}{% if hover == 'zoom' %} card--zoom{% endif %}"
-   href="{{ product.url }}">
+   href="{{ card_url }}">
   <div class="card-media" data-ratio="{{ ratio }}">
-    {%- if product.featured_image -%}
-      <img class="still" src="{{ product.featured_image | image_url: width: 800 }}"
-           srcset="{{ product.featured_image | image_url: width: 400 }} 400w, {{ product.featured_image | image_url: width: 800 }} 800w"
+    {%- if card_img != blank -%}
+      <img class="still" src="{{ card_img | image_url: width: 800 }}"
+           srcset="{{ card_img | image_url: width: 400 }} 400w, {{ card_img | image_url: width: 800 }} 800w"
            sizes="(max-width:700px) 50vw, 25vw"
-           alt="{{ product.featured_image.alt | escape }}" width="800" height="1000" loading="lazy">
+           alt="{{ card_img.alt | default: card_title | escape }}" width="800" height="1000" loading="lazy">
     {%- elsif fallback != blank -%}
-      <img class="still" src="{{ fallback | asset_url }}" alt="{{ product.title | escape }}"
+      <img class="still" src="{{ fallback | asset_url }}" alt="{{ card_title | escape }}"
            width="800" height="1000" loading="lazy">
     {%- elsif ph == 'tile' -%}
       <span class="still media-tile" aria-hidden="true"></span>
@@ -114,12 +190,14 @@
 
     {%- if pvideo -%}
       {{ pvideo | video_tag: image_size: '600x', muted: true, loop: true, playsinline: true, controls: false, preload: 'none' }}
-    {%- elsif hover_img -%}
-      <img class="hover-img" src="{{ hover_img | image_url: width: 800 }}" alt="" width="800" height="1000" loading="lazy">
+    {%- elsif card_hover_img != blank -%}
+      <img class="hover-img" src="{{ card_hover_img | image_url: width: 800 }}" alt="" width="800" height="1000" loading="lazy">
     {%- endif -%}
 
     {%- if show_badge -%}
-      {%- if product.metafields.custom.badge != blank -%}
+      {%- if badge_text != blank -%}
+        <span class="card-badge">{{ badge_text }}</span>
+      {%- elsif product.metafields.custom.badge != blank -%}
         <span class="card-badge">{{ product.metafields.custom.badge }}</span>
       {%- elsif product.available == false -%}
         <span class="card-badge">Sold Out</span>
@@ -133,7 +211,7 @@
     {%- endif -%}
 
     {%- if show_fav -%}
-      <button class="card-fav" type="button" aria-label="Save {{ product.title | escape }}"
+      <button class="card-fav" type="button" aria-label="Save {{ card_title | escape }}"
               onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on')">
         <svg viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.4 5.9.7-4.4 4 1.2 5.8L12 16.6 6.8 19.5 8 13.7 3.6 9.7l5.9-.7z"/></svg>
       </button>
@@ -142,16 +220,21 @@
   </div>
 
   <div class="card-info">
-    {%- if show_vendor and product.vendor != blank -%}
-      <span class="card-vendor">{{ product.vendor }}</span>
+    {%- if show_vendor and card_vendor != blank -%}
+      <span class="card-vendor">{{ card_vendor }}</span>
     {%- endif -%}
-    <span class="card-name">{{ product.title }}</span>
+    <span class="card-name">{{ card_title }}</span>
     {%- if show_price -%}
       <span class="card-price">
-        {%- if cap > product.price -%}
-          <s style="opacity:.55">{{ product.compare_at_price | money }}</s>&nbsp;
+        {%- if price_text != blank -%}
+          {%- if compare_text != blank -%}<s style="opacity:.55">{{ compare_text }}</s>&nbsp;{%- endif -%}
+          {{ price_text }}
+        {%- elsif has_product -%}
+          {%- if cap > product.price -%}
+            <s style="opacity:.55">{{ product.compare_at_price | money }}</s>&nbsp;
+          {%- endif -%}
+          {{ product.price | money }}
         {%- endif -%}
-        {{ product.price | money }}
       </span>
     {%- endif -%}
     {%- if show_swatches or show_colour -%}
@@ -177,7 +260,9 @@
           </span>
         {%- endif -%}
         {%- if show_colour -%}
-          {%- if product.metafields.custom.colour_label != blank -%}
+          {%- if card_colour != blank -%}
+            <span class="card-colour">{{ card_colour }}</span>
+          {%- elsif product.metafields.custom.colour_label != blank -%}
             <span class="card-colour">{{ product.metafields.custom.colour_label }}</span>
           {%- elsif product.selected_or_first_available_variant.option1 -%}
             <span class="card-colour">{{ product.selected_or_first_available_variant.option1 }}</span>

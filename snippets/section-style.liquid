@@ -39,6 +39,20 @@
       assign ln = '#E4DED4'
   endcase
 
+  # light from above — an optional overhead wash, off unless switched on
+  assign light_on = false
+  if s.settings.light_top
+    if chrome != false
+      assign light_on = true
+    endif
+  endif
+  assign l_col = s.settings.light_color | default: '#FFFFFF'
+  assign l_str = s.settings.light_strength | default: 45
+  assign l_spread = s.settings.light_spread | default: 110
+  assign l_pos = s.settings.light_pos | default: 50
+  assign l_height = s.settings.light_height | default: 70
+  assign l_blend = s.settings.light_blend | default: 'normal'
+
   assign pt = s.settings.pad_top | default: 0
   assign pb = s.settings.pad_bottom | default: 0
   assign width = s.settings.width | default: 'wide'
@@ -74,6 +88,15 @@
   #shopify-section-{{ s.id }} .lede{ color:var(--sec-muted) }
   #shopify-section-{{ s.id }} .rule,
   #shopify-section-{{ s.id }} hr{ border-color:var(--sec-line) }
+  {%- if light_on -%}
+  #shopify-section-{{ s.id }}{ position:relative; overflow:hidden }
+  #shopify-section-{{ s.id }}::after{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:3;
+    background:radial-gradient(ellipse {{ l_spread }}% {{ l_height }}% at {{ l_pos }}% 0%,
+      {{ l_col }} 0%, transparent 70%);
+    opacity:{{ l_str }}%; mix-blend-mode:{{ l_blend }};
+  }
+  {%- endif -%}
   {%- if scheme == 'dark' or scheme == 'gold' -%}
   #shopify-section-{{ s.id }} .btn{ border-color:currentColor; color:var(--sec-fg) }
   #shopify-section-{{ s.id }} .btn:hover{ background:var(--sec-fg); color:var(--sec-bg) }
