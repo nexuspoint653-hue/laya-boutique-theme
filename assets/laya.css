@@ -273,6 +273,33 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .pdp-gal img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--e-out)}
 .pdp-gal figure:hover img{transform:scale(1.04)}
 
+/* --- Sticky Add to Bag, phones only ------------------------------------ */
+.pdp-dock{display:none}
+@media(max-width:749px){
+  .pdp-dock{
+    display:block;position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:rgba(250,248,245,.94);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    transform:translateY(102%);opacity:0;pointer-events:none;
+    transition:transform .34s var(--e-out),opacity .34s var(--e-out);
+    box-shadow:0 -8px 26px rgba(27,26,24,.10)
+  }
+  .pdp-dock.on{transform:none;opacity:1;pointer-events:auto}
+  .pdp-dock[hidden]{display:none}
+  .pdp-dock-in{display:flex;align-items:center;gap:14px}
+  .pdp-dock-info{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+  .pdp-dock-title{
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+  }
+  .pdp-dock-price{font-size:14px;color:var(--ink)}
+  .pdp-dock-btn{flex:0 0 auto;min-width:46%;text-align:center;margin:0;padding:13px 20px}
+  .pdp-dock-btn[disabled]{opacity:.45;pointer-events:none}
+  /* keep the last of the page clear of the bar */
+  body.has-dock{padding-bottom:74px}
+}
+
 /* --- Spotlight gallery: one big card, a mosaic over its corner, film apart --- */
 .pdp-gal--spot{display:block;grid-template-columns:none}
 .pdp-stage{position:relative;width:100%;padding-top:var(--stage-pad,125%);background:var(--tile);overflow:hidden}

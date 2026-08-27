@@ -198,6 +198,46 @@ function initProduct(root){
 }
 
 
+/* ---------- sticky add to bag ---------- */
+/* The bar mirrors the real button rather than replacing it: it watches the
+   button's disabled state and label so a sold-out variant reads the same in
+   both places, and a tap is forwarded to the real submit. */
+function initDock(root){
+  (root||document).querySelectorAll("[data-pdp-dock]").forEach(function(dock){
+    if(dock.dataset.wired) return; dock.dataset.wired="1";
+    var real = document.querySelector("[data-add]");
+    if(!real){ dock.remove(); return; }
+    var proxy = dock.querySelector("[data-dock-add]");
+    var price = dock.querySelector("[data-dock-price]");
+    var src   = document.querySelector("[data-price]");
+    dock.hidden = false;
+    document.body.classList.add("has-dock");
+
+    function mirror(){
+      if(proxy){
+        proxy.disabled = real.disabled;
+        if(real.disabled) proxy.textContent = real.textContent.trim();
+      }
+      if(price && src) price.innerHTML = src.innerHTML;
+    }
+    mirror();
+    new MutationObserver(mirror).observe(real, {attributes:true, childList:true, subtree:true, attributeFilter:["disabled"]});
+    if(src) new MutationObserver(mirror).observe(src, {childList:true, subtree:true, characterData:true});
+
+    if(proxy) proxy.addEventListener("click", function(){ real.click(); });
+
+    /* show the bar only once the real button has scrolled out of view */
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(entries){
+        dock.classList.toggle("on", !entries[0].isIntersecting);
+      }, {rootMargin:"0px 0px -10px 0px"}).observe(real);
+    } else {
+      dock.classList.add("on");
+    }
+  });
+}
+
+
 /* ---------- product spotlight gallery ---------- */
 /* The mosaic over the corner of the main picture swaps which still is lit.
    Arrow keys walk the set, so it stays usable without a mouse. */
@@ -379,7 +419,7 @@ function initDocNav(root){
   update();
 }
 
-function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initGallery(root); initLooks(root); observe(root); initRest(root); initDocNav(root); }
+function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initGallery(root); initDock(root); initLooks(root); observe(root); initRest(root); initDocNav(root); }
 document.addEventListener("DOMContentLoaded",function(){
   initHeader(); initPanels(); initAnno(); initFooter(); boot(document);
 });
