@@ -81,117 +81,574 @@
   "name": "Featured collection",
   "tag": "section",
   "settings": [
-    { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "range", "id": "count", "label": "Products shown", "min": 2, "max": 24, "step": 1, "default": 4 },
-
-    { "type": "header", "content": "Heading" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Discover" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "The Autumn 2026 Collection" },
-    { "type": "textarea", "id": "subheading", "label": "Sub-heading" },
-    { "type": "select", "id": "heading_size", "label": "Heading size", "default": "dsp-l",
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "count",
+      "label": "Products shown",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Discover"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Autumn 2026 Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Sub-heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "dsp-l",
       "options": [
-        { "value": "dsp-s", "label": "Small" },
-        { "value": "dsp-m", "label": "Medium" },
-        { "value": "dsp-l", "label": "Large" },
-        { "value": "dsp-xl", "label": "Extra large" }] },
-    { "type": "select", "id": "head_align", "label": "Heading alignment", "default": "center",
+        {
+          "value": "dsp-s",
+          "label": "Small"
+        },
+        {
+          "value": "dsp-m",
+          "label": "Medium"
+        },
+        {
+          "value": "dsp-l",
+          "label": "Large"
+        },
+        {
+          "value": "dsp-xl",
+          "label": "Extra large"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "head_align",
+      "label": "Heading alignment",
+      "default": "center",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Centre" },
-        { "value": "right", "label": "Right" }] },
-    { "type": "text", "id": "link_text", "label": "Link text", "default": "Shop Now" },
-    { "type": "url", "id": "link", "label": "Link" },
-    { "type": "select", "id": "link_style", "label": "Link style", "default": "underline",
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "link_style",
+      "label": "Link style",
+      "default": "underline",
       "options": [
-        { "value": "underline", "label": "Underlined text" },
-        { "value": "button", "label": "Outline button" },
-        { "value": "button_solid", "label": "Filled button" }] },
-    { "type": "checkbox", "id": "show_shop_all", "label": "Show \"Shop all\" row", "default": true },
-    { "type": "text", "id": "shop_all_text", "label": "\"Shop all\" text", "default": "Shop all" },
-
-    { "type": "header", "content": "Grid" },
-    { "type": "select", "id": "columns", "label": "Columns", "default": "4",
+        {
+          "value": "underline",
+          "label": "Underlined text"
+        },
+        {
+          "value": "button",
+          "label": "Outline button"
+        },
+        {
+          "value": "button_solid",
+          "label": "Filled button"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_all",
+      "label": "Show \"Shop all\" row",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shop_all_text",
+      "label": "\"Shop all\" text",
+      "default": "Shop all"
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "default": "4",
       "options": [
-        { "value": "2", "label": "2" },
-        { "value": "3", "label": "3" },
-        { "value": "4", "label": "4" },
-        { "value": "5", "label": "5" }] },
-    { "type": "checkbox", "id": "carousel", "label": "Scroll sideways on mobile", "default": true },
-    { "type": "checkbox", "id": "stagger", "label": "Stagger cards as they appear", "default": true },
-    { "type": "checkbox", "id": "animate", "label": "Reveal on scroll", "default": true },
-
-    { "type": "header", "content": "Product cards" },
-    { "type": "select", "id": "card_ratio", "label": "Image shape", "default": "4-5",
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel",
+      "label": "Scroll sideways on mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "stagger",
+      "label": "Stagger cards as they appear",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "animate",
+      "label": "Reveal on scroll",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "select",
+      "id": "card_ratio",
+      "label": "Image shape",
+      "default": "4-5",
       "options": [
-        { "value": "1-1", "label": "Square" },
-        { "value": "4-5", "label": "Portrait 4:5" },
-        { "value": "3-4", "label": "Portrait 3:4" },
-        { "value": "2-3", "label": "Tall 2:3" },
-        { "value": "16-9", "label": "Landscape 16:9" }] },
-    { "type": "select", "id": "card_hover", "label": "On hover", "default": "video",
+        {
+          "value": "1-1",
+          "label": "Square"
+        },
+        {
+          "value": "4-5",
+          "label": "Portrait 4:5"
+        },
+        {
+          "value": "3-4",
+          "label": "Portrait 3:4"
+        },
+        {
+          "value": "2-3",
+          "label": "Tall 2:3"
+        },
+        {
+          "value": "16-9",
+          "label": "Landscape 16:9"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_hover",
+      "label": "On hover",
+      "default": "video",
       "options": [
-        { "value": "video", "label": "Play product video, else second image" },
-        { "value": "image", "label": "Show second image" },
-        { "value": "zoom", "label": "Zoom the first image" },
-        { "value": "none", "label": "Nothing" }] },
-    { "type": "select", "id": "card_align", "label": "Card text alignment", "default": "left",
+        {
+          "value": "video",
+          "label": "Play product video, else second image"
+        },
+        {
+          "value": "image",
+          "label": "Show second image"
+        },
+        {
+          "value": "zoom",
+          "label": "Zoom the first image"
+        },
+        {
+          "value": "none",
+          "label": "Nothing"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_align",
+      "label": "Card text alignment",
+      "default": "left",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Centre" }] },
-
-    { "type": "header", "content": "Image placeholders",
-      "info": "Used for products with no photograph yet, and for the example cards shown before a collection is chosen." },
-    { "type": "select", "id": "card_placeholder", "label": "Placeholder style", "default": "",
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Image placeholders",
+      "info": "Used for products with no photograph yet, and for the example cards shown before a collection is chosen."
+    },
+    {
+      "type": "select",
+      "id": "card_placeholder",
+      "label": "Placeholder style",
+      "default": "",
       "options": [
-        { "value": "", "label": "Rotate through Shopify's set" },
-        { "value": "product-1", "label": "Product 1" },
-        { "value": "product-2", "label": "Product 2" },
-        { "value": "product-3", "label": "Product 3" },
-        { "value": "product-4", "label": "Product 4" },
-        { "value": "product-5", "label": "Product 5" },
-        { "value": "product-6", "label": "Product 6" },
-        { "value": "lifestyle-1", "label": "Lifestyle 1" },
-        { "value": "lifestyle-2", "label": "Lifestyle 2" },
-        { "value": "tile", "label": "Plain tinted tile" }] },
-    { "type": "text", "id": "card_fallback", "label": "Bundled fallback image",
-      "info": "Theme asset filename, e.g. laya-look-1.jpg. Overrides the placeholder style." },
-    { "type": "text", "id": "placeholder_name", "label": "Placeholder card name", "default": "Example product" },
-
-    { "type": "header", "content": "Card details" },
-    { "type": "checkbox", "id": "show_badge", "label": "Show badge (New, Sale, Sold out)", "default": true },
-    { "type": "checkbox", "id": "show_fav", "label": "Show save button", "default": true },
-    { "type": "checkbox", "id": "show_quick", "label": "Show quick-view label", "default": true },
-    { "type": "text", "id": "quick_label", "label": "Quick-view label", "default": "View" },
-    { "type": "checkbox", "id": "show_price", "label": "Show price", "default": true },
-    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
-    { "type": "checkbox", "id": "show_swatches", "label": "Show colour swatches", "default": true },
-    { "type": "range", "id": "swatch_limit", "label": "Swatches before \"+n\"", "min": 2, "max": 8, "step": 1, "default": 5 },
-    { "type": "checkbox", "id": "show_colour", "label": "Show colour name", "default": true },
-
-    { "type": "header", "content": "Appearance" },
-    { "type": "select", "id": "scheme", "label": "Colour scheme", "default": "light",
+        {
+          "value": "",
+          "label": "Rotate through Shopify's set"
+        },
+        {
+          "value": "product-1",
+          "label": "Product 1"
+        },
+        {
+          "value": "product-2",
+          "label": "Product 2"
+        },
+        {
+          "value": "product-3",
+          "label": "Product 3"
+        },
+        {
+          "value": "product-4",
+          "label": "Product 4"
+        },
+        {
+          "value": "product-5",
+          "label": "Product 5"
+        },
+        {
+          "value": "product-6",
+          "label": "Product 6"
+        },
+        {
+          "value": "lifestyle-1",
+          "label": "Lifestyle 1"
+        },
+        {
+          "value": "lifestyle-2",
+          "label": "Lifestyle 2"
+        },
+        {
+          "value": "tile",
+          "label": "Plain tinted tile"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "card_fallback",
+      "label": "Bundled fallback image",
+      "info": "Theme asset filename, e.g. laya-look-1.jpg. Overrides the placeholder style."
+    },
+    {
+      "type": "text",
+      "id": "placeholder_name",
+      "label": "Placeholder card name",
+      "default": "Example product"
+    },
+    {
+      "type": "header",
+      "content": "Card details"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge (New, Sale, Sold out)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fav",
+      "label": "Show save button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick",
+      "label": "Show quick-view label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quick_label",
+      "label": "Quick-view label",
+      "default": "View"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_swatches",
+      "label": "Show colour swatches",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "swatch_limit",
+      "label": "Swatches before \"+n\"",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_colour",
+      "label": "Show colour name",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "default": "light",
       "options": [
-        { "value": "light", "label": "Bone" },
-        { "value": "paper", "label": "Paper" },
-        { "value": "tinted", "label": "Tinted" },
-        { "value": "dark", "label": "Dark" },
-        { "value": "gold", "label": "Gold" },
-        { "value": "custom", "label": "Custom" }] },
-    { "type": "color", "id": "bg_custom", "label": "Custom background", "default": "#FAF8F5" },
-    { "type": "color", "id": "text_custom", "label": "Custom text", "default": "#1B1A18" },
-    { "type": "color", "id": "muted_custom", "label": "Custom secondary text", "default": "#8A837A" },
-    { "type": "color", "id": "line_custom", "label": "Custom rule", "default": "#E4DED4" },
-    { "type": "select", "id": "width", "label": "Content width", "default": "wide",
+        {
+          "value": "light",
+          "label": "Bone"
+        },
+        {
+          "value": "paper",
+          "label": "Paper"
+        },
+        {
+          "value": "tinted",
+          "label": "Tinted"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "bg_custom",
+      "label": "Custom background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "text_custom",
+      "label": "Custom text",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "color",
+      "id": "muted_custom",
+      "label": "Custom secondary text",
+      "default": "#8A837A"
+    },
+    {
+      "type": "color",
+      "id": "line_custom",
+      "label": "Custom rule",
+      "default": "#E4DED4"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Content width",
+      "default": "wide",
       "options": [
-        { "value": "full", "label": "Full bleed" },
-        { "value": "wide", "label": "Wide" },
-        { "value": "narrow", "label": "Narrow" },
-        { "value": "reading", "label": "Reading" }] },
-    { "type": "range", "id": "pad_top", "label": "Top padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
-    { "type": "range", "id": "pad_bottom", "label": "Bottom padding", "min": 0, "max": 200, "step": 4, "unit": "px", "default": 0 },
-    { "type": "checkbox", "id": "divider_top", "label": "Rule above", "default": false },
-    { "type": "checkbox", "id": "divider_bottom", "label": "Rule below", "default": false }
+        {
+          "value": "full",
+          "label": "Full bleed"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "reading",
+          "label": "Reading"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_top",
+      "label": "Rule above",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "divider_bottom",
+      "label": "Rule below",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Light from above"
+    },
+    {
+      "type": "checkbox",
+      "id": "light_top",
+      "label": "Light from above",
+      "default": false,
+      "info": "A soft overhead wash across this section. Looks best on dark schemes."
+    },
+    {
+      "type": "color",
+      "id": "light_color",
+      "label": "Light colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "light_blend",
+      "label": "Light blend",
+      "default": "normal",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Plain — a white wash"
+        },
+        {
+          "value": "soft-light",
+          "label": "Soft — barely there"
+        },
+        {
+          "value": "screen",
+          "label": "Bright — a strong beam"
+        },
+        {
+          "value": "overlay",
+          "label": "Contrast"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "light_strength",
+      "label": "Strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "light_spread",
+      "label": "Spread",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "unit": "%",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "light_pos",
+      "label": "Position across",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "light_height",
+      "label": "Reach down",
+      "min": 20,
+      "max": 140,
+      "step": 10,
+      "unit": "%",
+      "default": 70
+    }
   ],
-  "presets": [{ "name": "Featured collection" }]
+  "presets": [
+    {
+      "name": "Featured collection"
+    }
+  ]
 }
 {% endschema %}

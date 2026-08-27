@@ -182,6 +182,87 @@
       "id": "animate",
       "label": "Reveal on scroll",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Light from above"
+    },
+    {
+      "type": "checkbox",
+      "id": "light_top",
+      "label": "Light from above",
+      "default": false,
+      "info": "A soft overhead wash across this section. Looks best on dark schemes."
+    },
+    {
+      "type": "color",
+      "id": "light_color",
+      "label": "Light colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "light_blend",
+      "label": "Light blend",
+      "default": "normal",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Plain — a white wash"
+        },
+        {
+          "value": "soft-light",
+          "label": "Soft — barely there"
+        },
+        {
+          "value": "screen",
+          "label": "Bright — a strong beam"
+        },
+        {
+          "value": "overlay",
+          "label": "Contrast"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "light_strength",
+      "label": "Strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "light_spread",
+      "label": "Spread",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "unit": "%",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "light_pos",
+      "label": "Position across",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "light_height",
+      "label": "Reach down",
+      "min": 20,
+      "max": 140,
+      "step": 10,
+      "unit": "%",
+      "default": 70
     }
   ]
 }
