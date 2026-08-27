@@ -135,14 +135,27 @@ function observe(root){
 
 /* ---------- announcement rotator ---------- */
 function initAnno(){
+  var bar = document.querySelector(".anno");
+  if(bar){
+    var x = bar.querySelector(".anno-x");
+    if(x){
+      try{ if(localStorage.getItem("laya-anno") === "off") bar.hidden = true; }catch(e){}
+      x.addEventListener("click", function(){
+        bar.hidden = true;
+        try{ localStorage.setItem("laya-anno","off"); }catch(e){}
+      });
+    }
+  }
   var items=document.querySelectorAll("#anno .anno-item"); if(items.length<2) return;
+  var secs = bar ? parseFloat(bar.dataset.annoSecs) : 0;
+  var every = (secs > 0 ? secs : 4.6) * 1000;
   var i=0;
   setInterval(function(){
     items[i].classList.remove("on"); items[i].classList.add("off");
     var prev=i; i=(i+1)%items.length;
     items[i].classList.remove("off"); items[i].classList.add("on");
     setTimeout(function(){ items[prev].classList.remove("off"); },700);
-  },4600);
+  },every);
 }
 
 /* ---------- product page ---------- */
