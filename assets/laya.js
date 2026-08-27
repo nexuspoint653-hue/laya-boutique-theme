@@ -238,7 +238,74 @@ function initRest(root){
     el.setAttribute("data-rest","1"); restIO.observe(el);
   });
 }
-function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initLooks(root); observe(root); initRest(root); }
+/* ---------- document pages: a quiet index that follows the scroll ---------- */
+function initDocNav(root){
+  var scope = root || document;
+  var prose = scope.querySelector ? scope.querySelector(".prose--menu") : null;
+  if(!prose) prose = document.querySelector(".prose--menu");
+  if(!prose) return;
+  if(prose.hasAttribute("data-nonav")) return;
+  var wrap = prose.closest(".doc-wrap");
+  if(!wrap || wrap.querySelector(".doc-rail")) return;
+
+  var hs = [].slice.call(prose.querySelectorAll("h2"));
+  if(hs.length < 3) return;
+
+  var nav = document.createElement("nav");
+  nav.className = "doc-rail";
+  nav.setAttribute("aria-label", "On this page");
+  nav.innerHTML = '<span class="doc-rail-line"><i class="doc-rail-fill"></i></span>';
+  var list = document.createElement("ul");
+
+  hs.forEach(function(h, i){
+    if(!h.id) h.id = "sec-" + (i + 1);
+    var label = h.textContent.replace(/^\s*\d+[.)]\s*/, "").trim();
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = "#" + h.id;
+    a.className = "doc-rail-i";
+    a.innerHTML = '<i class="doc-rail-tick"></i><span class="doc-rail-num">' +
+                  String(i + 1).padStart(2, "0") + '</span><span class="doc-rail-lab"></span>';
+    a.querySelector(".doc-rail-lab").textContent = label;
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      h.scrollIntoView({behavior: "smooth", block: "start"});
+      history.replaceState(null, "", "#" + h.id);
+    });
+    li.appendChild(a); list.appendChild(li);
+  });
+  nav.appendChild(list);
+  wrap.appendChild(nav);
+
+  var links = [].slice.call(nav.querySelectorAll(".doc-rail-i"));
+  function mark(i){
+    links.forEach(function(a, n){ a.classList.toggle("on", n === i); });
+  }
+  mark(0);
+
+  /* the heading nearest the top of the viewport wins */
+  var ticking = false;
+  function update(){
+    ticking = false;
+    var best = 0;
+    for(var i = 0; i < hs.length; i++){
+      if(hs[i].getBoundingClientRect().top <= window.innerHeight * 0.34) best = i;
+    }
+    mark(best);
+    var box = wrap.getBoundingClientRect();
+    var run = box.height - window.innerHeight;
+    var pct = run > 0 ? Math.min(1, Math.max(0, -box.top / run)) : 1;
+    var fill = nav.querySelector(".doc-rail-fill");
+    if(fill) fill.style.setProperty("--p", pct.toFixed(4));
+    wrap.style.setProperty("--fl-drift", (-pct * 90).toFixed(1) + "px");
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+  addEventListener("scroll", onScroll, {passive:true});
+  addEventListener("resize", onScroll, {passive:true});
+  update();
+}
+
+function boot(root){ wireAllCards(root); initAcc(root); initRails(root); initProduct(root); initLooks(root); observe(root); initRest(root); initDocNav(root); }
 document.addEventListener("DOMContentLoaded",function(){
   initHeader(); initPanels(); initAnno(); boot(document);
 });
