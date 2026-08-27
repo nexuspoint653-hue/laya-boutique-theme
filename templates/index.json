@@ -161,7 +161,7 @@
     "split_1": {
       "type": "split-panel",
       "settings": {
-        "image": "shopify://shop_images/iman-purple-beaded-chiffon-gown.jpg",
+        "image": "shopify://shop_images/salwa-champagne-medallion-gown.jpg",
         "fallback": "laya-split-1.jpg",
         "flip": false,
         "scheme": "light",
