@@ -714,3 +714,41 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .look-lede{margin:0 0 22px;max-width:62ch}
 .card-slot{display:block;min-width:0}
 .card-slot>.card{height:100%}
+
+/* ============================== JUSTIFIED COPY ==============================
+   Body prose only. Headings, buttons, nav, prices, eyebrows and anything one
+   line long are left alone — justify does nothing to a single line and would
+   only stretch short labels. A section whose alignment the merchant set to
+   centre or right keeps that choice.                                        */
+.t-just :where(.rte,.rte p,.rte li,
+               .lede,
+               .prose p,.prose li,
+               .acc-b p,
+               .doc-b,.doc-b p,
+               .offer-copy,.offer-copy p,
+               .cnote-copy,.cnote-copy p,
+               .offer-fine,.offer-fine p,
+               .look-lede,
+               .split-body .lede,
+               .banner-copy .lede,
+               .hero-copy .lede){
+  text-align:justify;
+  text-justify:inter-word;
+  overflow-wrap:break-word;
+}
+.t-just.t-hyph :where(.rte,.rte p,.rte li,.lede,.prose p,.prose li,.acc-b p,
+                      .doc-b,.doc-b p,.offer-copy p,.cnote-copy p,.offer-fine p){
+  hyphens:auto;
+  -webkit-hyphens:auto;
+}
+/* a centred or right-aligned section wins over the global setting */
+.t-just [style*="text-align:center"] :where(.rte,.rte p,.rte li,.lede,.prose p,.prose li),
+.t-just [style*="text-align:right"] :where(.rte,.rte p,.rte li,.lede,.prose p,.prose li),
+.t-just .offer-card--center :where(.offer-copy,.offer-copy p,.offer-fine,.offer-fine p),
+.t-just .card--center :where(p){
+  text-align:inherit;
+  hyphens:manual;
+  -webkit-hyphens:manual;
+}
+/* a justified last line should never stretch */
+.t-just :where(.rte,.prose,.lede,.doc-b,.offer-copy,.cnote-copy){ text-align-last:auto }
