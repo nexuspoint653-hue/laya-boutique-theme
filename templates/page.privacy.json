@@ -18,9 +18,15 @@
         "floral": "vine",
         "floral_color": "#A98858",
         "floral_opacity": 9,
-        "floral_scale": 340,
+        "floral_scale": 110,
         "standfirst": "How we handle what you share with us.",
-        "signoff": "Questions about any of this? Write to privacy@layaboutique.com."
+        "signoff": "Questions about any of this? Write to privacy@layaboutique.com.",
+        "floral_pos": "right",
+        "doc_nav": true,
+        "doc_jump": true,
+        "doc_jump_menu": "footer-legal",
+        "doc_jump_title": "Also read",
+        "doc_jump_pos": "br"
       }
     }
   },

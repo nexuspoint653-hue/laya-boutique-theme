@@ -17,10 +17,16 @@
         "doc_style": "menu",
         "floral": "bloom",
         "floral_color": "#A98858",
-        "floral_opacity": 6,
-        "floral_scale": 260,
+        "floral_opacity": 9,
+        "floral_scale": 105,
         "standfirst": "How we behave online, and what we ask of you.",
-        "signoff": "Find us @layaboutique."
+        "signoff": "Find us @layaboutique.",
+        "floral_pos": "left",
+        "doc_nav": true,
+        "doc_jump": true,
+        "doc_jump_menu": "footer-legal",
+        "doc_jump_title": "Also read",
+        "doc_jump_pos": "br"
       }
     }
   },
