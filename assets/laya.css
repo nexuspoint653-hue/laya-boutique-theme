@@ -478,8 +478,10 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .media-tile{display:block;width:100%;height:100%;background:
   linear-gradient(135deg,var(--tile) 0%,var(--stone) 52%,var(--tile) 100%)}
 .media-scrim{position:absolute;inset:0;background:#1B1A18;pointer-events:none}
-.media .placeholder-svg{width:100%;height:100%;background:var(--tile);
-  fill:rgba(27,26,24,.10);display:block}
+.media .placeholder-svg,.card-media .placeholder-svg{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+  background:var(--tile);fill:rgba(27,26,24,.10);object-fit:cover}
+.media > .placeholder-svg{position:absolute;inset:0}
 
 /* card media honours the section's chosen aspect */
 .card-media[data-ratio="1-1"]{aspect-ratio:1/1}
