@@ -1,4 +1,6 @@
 {% render 'section-style', s: section %}
+{% render 'section-bg', s: section %}
+{% render 'section-copy', s: section, place: 'top' %}
 <div class="phead"><div class="wrap">
   <span class="eyebrow">Search</span>
   <h1 class="dsp dsp-l">{% if search.performed %}{{ search.results_count }} results{% else %}Search{% endif %}</h1>
@@ -18,6 +20,8 @@
     </div>
   {%- endif -%}
 </div>
+{% render 'section-copy', s: section, place: 'bottom' %}
+
 {% schema %}
 {
   "name": "Search",
@@ -224,6 +228,299 @@
       "step": 10,
       "unit": "%",
       "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Section background",
+      "info": "A photograph or video behind everything in this section."
+    },
+    {
+      "type": "select",
+      "id": "bg_media_type",
+      "label": "Background",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background image — mobile"
+    },
+    {
+      "type": "video",
+      "id": "bg_video",
+      "label": "Background video (uploaded)"
+    },
+    {
+      "type": "text",
+      "id": "bg_video_url",
+      "label": "Background video file URL",
+      "info": "Direct .mp4 or .webm link."
+    },
+    {
+      "type": "video_url",
+      "id": "bg_embed_url",
+      "label": "YouTube or Vimeo background",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg_fit",
+      "label": "Background fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg_focal",
+      "label": "Background focal point",
+      "default": "center",
+      "options": [
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay",
+      "label": "Background overlay",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "bg_overlay_color",
+      "label": "Overlay colour",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "range",
+      "id": "bg_blur",
+      "label": "Background blur",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_fixed",
+      "label": "Hold the background still while scrolling",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Extra copy",
+      "info": "An optional band of text and buttons, above or below this section."
+    },
+    {
+      "type": "checkbox",
+      "id": "copy_show",
+      "label": "Show extra copy",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "copy_pos",
+      "label": "Position",
+      "default": "top",
+      "options": [
+        {
+          "value": "top",
+          "label": "Above the section"
+        },
+        {
+          "value": "bottom",
+          "label": "Below the section"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "copy_eyebrow",
+      "label": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "copy_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "copy_heading_size",
+      "label": "Heading size",
+      "default": "dsp-m",
+      "options": [
+        {
+          "value": "dsp-s",
+          "label": "Small"
+        },
+        {
+          "value": "dsp-m",
+          "label": "Medium"
+        },
+        {
+          "value": "dsp-l",
+          "label": "Large"
+        },
+        {
+          "value": "dsp-xl",
+          "label": "Extra large"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "copy_sub",
+      "label": "Sub-heading"
+    },
+    {
+      "type": "richtext",
+      "id": "copy_body",
+      "label": "Body",
+      "default": "<p>Add a paragraph here.</p>"
+    },
+    {
+      "type": "select",
+      "id": "copy_align",
+      "label": "Alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "copy_width",
+      "label": "Text width",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "text",
+      "id": "btn1_text",
+      "label": "Button 1 label"
+    },
+    {
+      "type": "url",
+      "id": "btn1_link",
+      "label": "Button 1 link"
+    },
+    {
+      "type": "select",
+      "id": "btn1_style",
+      "label": "Button 1 style",
+      "default": "button",
+      "options": [
+        {
+          "value": "button",
+          "label": "Outline"
+        },
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "underline",
+          "label": "Underline"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn2_text",
+      "label": "Button 2 label"
+    },
+    {
+      "type": "url",
+      "id": "btn2_link",
+      "label": "Button 2 link"
+    },
+    {
+      "type": "select",
+      "id": "btn2_style",
+      "label": "Button 2 style",
+      "default": "underline",
+      "options": [
+        {
+          "value": "underline",
+          "label": "Underline"
+        },
+        {
+          "value": "button",
+          "label": "Outline"
+        },
+        {
+          "value": "solid",
+          "label": "Solid"
+        }
+      ]
     }
   ]
 }

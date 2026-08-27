@@ -1,6 +1,43 @@
 {% render 'section-style', s: section, chrome: false %}
-{%- assign menu = linklists[section.settings.menu] -%}
-<header class="hdr{% if template.name == 'index' %} on-hero{% else %} solid{% endif %}" id="hdr">
+{%- liquid
+  assign h = section.settings
+  assign menu = linklists[h.menu]
+  assign gap = h.nav_gap | plus: 0
+  assign nsize = h.nav_size | plus: 0
+  assign hov = h.bg_overlay | plus: 0
+  assign over_hero = false
+  if h.transparent_hero != false
+    if template.name == 'index'
+      assign over_hero = true
+    endif
+  endif
+-%}
+{%- if gap > 0 or nsize > 0 or h.sticky != 'theme' or h.bg_image != blank or hov > 0 -%}
+<style>
+  {%- if gap > 0 %}
+  #shopify-section-{{ section.id }} .nav-l,
+  #shopify-section-{{ section.id }} .nav-r{ gap:{{ gap }}px }
+  {%- endif -%}
+  {%- if nsize > 0 %}
+  #shopify-section-{{ section.id }} .nav-a{ font-size:{{ nsize }}px }
+  {%- endif -%}
+  {%- if h.sticky == 'fixed' %}
+  #shopify-section-{{ section.id }} .hdr{ position:fixed; left:0; right:0 }
+  {%- elsif h.sticky == 'static' %}
+  #shopify-section-{{ section.id }} .hdr{ position:relative }
+  {%- endif -%}
+  {%- if h.bg_image != blank %}
+  #shopify-section-{{ section.id }} .hdr.solid{
+    background-image:url({{ h.bg_image | image_url: width: 2400 }});
+    background-size:cover; background-position:center }
+  {%- endif -%}
+  {%- if hov > 0 %}
+  #shopify-section-{{ section.id }} .hdr::after{ content:""; position:absolute; inset:0; z-index:-1;
+    background:{{ h.bg_overlay_color | default: '#1B1A18' }}; opacity:{{ hov }}%; pointer-events:none }
+  {%- endif -%}
+</style>
+{%- endif -%}
+<header class="hdr{% if over_hero %} on-hero{% else %} solid{% endif %}" id="hdr">
   <div class="hdr-in">
     <nav class="nav-l">
       <button class="burger" id="burger" aria-label="Menu"><i></i><i></i></button>
@@ -11,7 +48,14 @@
 
     <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }}">
       {%- if section.settings.logo != blank -%}
+        {%- if section.settings.logo_mobile != blank -%}
+          <picture>
+            <source media="(max-width:749px)" srcset="{{ section.settings.logo_mobile | image_url: width: 400 }}">
+            <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="200" style="max-height:{{ section.settings.logo_height }}px;width:auto">
+          </picture>
+        {%- else -%}
         <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}" width="200" style="max-height:{{ section.settings.logo_height }}px;width:auto">
+        {%- endif -%}
       {%- else -%}
         <span class="logo-mark">{{ section.settings.logo_word | default: shop.name }}</span>
         {%- if section.settings.logo_sub != blank -%}<span class="logo-sub">{{ section.settings.logo_sub }}</span>{%- endif -%}
@@ -19,12 +63,12 @@
     </a>
 
     <div class="nav-r">
-      <button class="nav-a icon-btn hide-sm" id="searchBtn">Search</button>
+      {%- unless h.show_search == false -%}<button class="nav-a icon-btn hide-sm" id="searchBtn">{{ h.search_label | default: 'Search' }}</button>{%- endunless -%}
       {%- if section.settings.care_page != blank -%}
         <a href="{{ section.settings.care_page }}" class="nav-a hide-sm">{{ section.settings.care_label }}</a>
       {%- endif -%}
-      <a href="{{ routes.account_url }}" class="nav-a hide-sm">{% if customer %}Account{% else %}Sign In{% endif %}</a>
-      <a href="{{ routes.cart_url }}" class="nav-a icon-btn">Bag<span class="bag-n">{{ cart.item_count }}</span></a>
+      {%- unless h.show_account == false -%}<a href="{{ routes.account_url }}" class="nav-a hide-sm">{% if customer %}Account{% else %}{{ h.account_label | default: 'Sign In' }}{% endif %}</a>{%- endunless -%}
+      {%- unless h.show_bag == false -%}<a href="{{ routes.cart_url }}" class="nav-a icon-btn">{{ h.bag_label | default: 'Bag' }}<span class="bag-n">{{ cart.item_count }}</span></a>{%- endunless -%}
     </div>
   </div>
 
@@ -315,6 +359,152 @@
       "step": 10,
       "unit": "%",
       "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Header options"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Bone"
+        },
+        {
+          "value": "paper",
+          "label": "Paper"
+        },
+        {
+          "value": "tinted",
+          "label": "Tinted"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "sticky",
+      "label": "Header behaviour",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default (sticky)"
+        },
+        {
+          "value": "fixed",
+          "label": "Always fixed over the page"
+        },
+        {
+          "value": "static",
+          "label": "Scrolls away with the page"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_hero",
+      "label": "Sit over the hero until you scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "nav_gap",
+      "label": "Space between menu items",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "info": "0 keeps the theme's spacing."
+    },
+    {
+      "type": "range",
+      "id": "nav_size",
+      "label": "Menu text size",
+      "min": 0,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 keeps the theme's size."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show sign in",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bag",
+      "label": "Show bag",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Search label",
+      "default": "Search"
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Sign-in label",
+      "default": "Sign In"
+    },
+    {
+      "type": "text",
+      "id": "bag_label",
+      "label": "Bag label",
+      "default": "Bag"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_mobile",
+      "label": "Mobile logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Header background image"
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay",
+      "label": "Background overlay",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "bg_overlay_color",
+      "label": "Overlay colour",
+      "default": "#1B1A18"
     }
   ],
   "blocks": [

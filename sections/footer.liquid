@@ -1,4 +1,5 @@
 {% render 'section-style', s: section %}
+{% render 'section-bg', s: section %}
 <footer class="ftr">
   <div class="wrap">
     <div class="ftr-grid" data-rv>
@@ -332,6 +333,137 @@
       "step": 10,
       "unit": "%",
       "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Section background",
+      "info": "A photograph or video behind everything in this section."
+    },
+    {
+      "type": "select",
+      "id": "bg_media_type",
+      "label": "Background",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background image — mobile"
+    },
+    {
+      "type": "video",
+      "id": "bg_video",
+      "label": "Background video (uploaded)"
+    },
+    {
+      "type": "text",
+      "id": "bg_video_url",
+      "label": "Background video file URL",
+      "info": "Direct .mp4 or .webm link."
+    },
+    {
+      "type": "video_url",
+      "id": "bg_embed_url",
+      "label": "YouTube or Vimeo background",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg_fit",
+      "label": "Background fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg_focal",
+      "label": "Background focal point",
+      "default": "center",
+      "options": [
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay",
+      "label": "Background overlay",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "bg_overlay_color",
+      "label": "Overlay colour",
+      "default": "#1B1A18"
+    },
+    {
+      "type": "range",
+      "id": "bg_blur",
+      "label": "Background blur",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "bg_fixed",
+      "label": "Hold the background still while scrolling",
+      "default": false
     }
   ],
   "blocks": [

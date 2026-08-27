@@ -1,5 +1,39 @@
 {% render 'section-style', s: section, chrome: false %}
-<div class="anno"><div class="anno-track" id="anno">
+{%- liquid
+  assign a = section.settings
+  assign size = a.text_size | plus: 0
+  assign track = a.tracking | plus: 0
+  assign ov = a.bg_overlay | plus: 0
+  assign secs = a.rotate | plus: 0
+  assign show = true
+  if a.show == false
+    assign show = false
+  endif
+  if section.blocks.size == 0
+    assign show = false
+  endif
+-%}
+{%- if show -%}
+{%- if size > 0 or track > 0 or a.uppercase != 'theme' or a.bg_image != blank or ov > 0 -%}
+<style>
+  #shopify-section-{{ section.id }} .anno{ position:relative;
+    {%- if size > 0 %} font-size:{{ size }}px;{% endif -%}
+    {%- if track > 0 %} letter-spacing:.{{ track }}em;{% endif -%}
+    {%- if a.uppercase == 'upper' %} text-transform:uppercase;{% elsif a.uppercase == 'none' %} text-transform:none;{% endif -%}
+  }
+  {%- if a.bg_image != blank %}
+  #shopify-section-{{ section.id }} .anno{
+    background-image:url({{ a.bg_image | image_url: width: 2400 }});
+    background-size:cover; background-position:center }
+  {%- endif -%}
+  {%- if ov > 0 %}
+  #shopify-section-{{ section.id }} .anno::before{ content:""; position:absolute; inset:0;
+    background:{{ a.bg_overlay_color | default: '#1B1A18' }}; opacity:{{ ov }}%; pointer-events:none }
+  #shopify-section-{{ section.id }} .anno-track{ position:relative; z-index:1 }
+  {%- endif -%}
+</style>
+{%- endif -%}
+<div class="anno" data-anno-secs="{{ secs }}">{%- if a.closable -%}<button class="anno-x" type="button" aria-label="Dismiss">&times;</button>{%- endif -%}<div class="anno-track" id="anno">
   {%- for block in section.blocks -%}
     <div class="anno-item{% if forloop.first %} on{% endif %}" {{ block.shopify_attributes }}>
       {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
@@ -7,6 +41,7 @@
     </div>
   {%- endfor -%}
 </div></div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -194,6 +229,127 @@
       "step": 10,
       "unit": "%",
       "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Announcement options"
+    },
+    {
+      "type": "select",
+      "id": "scheme",
+      "label": "Colour scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Bone"
+        },
+        {
+          "value": "paper",
+          "label": "Paper"
+        },
+        {
+          "value": "tinted",
+          "label": "Tinted"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "gold",
+          "label": "Gold"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show",
+      "label": "Show the bar",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotate",
+      "label": "Seconds between messages",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "s",
+      "default": 0,
+      "info": "0 keeps the theme's timing."
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 keeps the theme's size."
+    },
+    {
+      "type": "range",
+      "id": "tracking",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "info": "0 keeps the theme's spacing."
+    },
+    {
+      "type": "select",
+      "id": "uppercase",
+      "label": "Letter case",
+      "default": "theme",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Theme default"
+        },
+        {
+          "value": "upper",
+          "label": "Uppercase"
+        },
+        {
+          "value": "none",
+          "label": "As typed"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "closable",
+      "label": "Let shoppers dismiss it",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "bg_overlay",
+      "label": "Background overlay",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "bg_overlay_color",
+      "label": "Overlay colour",
+      "default": "#1B1A18"
     }
   ]
 }
