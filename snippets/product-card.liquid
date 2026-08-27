@@ -185,7 +185,8 @@
     {%- elsif ph == 'tile' -%}
       <span class="still media-tile" aria-hidden="true"></span>
     {%- else -%}
-      {{ ph | placeholder_svg_tag: 'placeholder-svg still' }}
+      {%- capture ph_svg %}{{ ph | placeholder_svg_tag: 'placeholder-svg still' }}{% endcapture -%}
+      {{ ph_svg | replace: '<svg', '<svg preserveAspectRatio="xMidYMid slice"' }}
     {%- endif -%}
 
     {%- if pvideo -%}

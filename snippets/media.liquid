@@ -92,7 +92,13 @@
   {%- elsif placeholder == 'tile' -%}
     <span class="media-tile" aria-hidden="true"></span>
   {%- elsif placeholder != blank -%}
-    {{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- comment -%}
+      Shopify's placeholder SVGs letterbox their artwork by default, which reads
+      as padding next to a real photograph. "slice" makes them cover instead, so
+      an empty section is framed exactly like a filled one.
+    {%- endcomment -%}
+    {%- capture ph_svg %}{{ placeholder | placeholder_svg_tag: 'placeholder-svg' }}{% endcapture -%}
+    {{ ph_svg | replace: '<svg', '<svg preserveAspectRatio="xMidYMid slice"' }}
   {%- else -%}
     <span class="media-tile" aria-hidden="true"></span>
   {%- endif -%}
