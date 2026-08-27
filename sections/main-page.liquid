@@ -6,7 +6,7 @@
   assign look = p.doc_style | default: 'plain'
   assign floral = p.floral | default: 'none'
   assign fop = p.floral_opacity | plus: 0
-  assign fsize = p.floral_scale | default: 320
+  assign fsize = p.floral_scale | default: 108
 
   assign doc_cls = ''
   if look == 'menu'
@@ -15,6 +15,10 @@
   assign fl_cls = ''
   unless floral == 'none'
     assign fl_cls = ' doc-floral doc-floral--' | append: floral
+    assign fside = p.floral_pos | default: 'right'
+    unless fside == 'right'
+      assign fl_cls = fl_cls | append: ' doc-floral--' | append: fside
+    endunless
   endunless
 -%}
 {%- unless floral == 'none' -%}
@@ -22,7 +26,7 @@
   #shopify-section-{{ section.id }} .doc-floral{
     --fl-ink:{{ p.floral_color | default: '#A98858' }};
     --fl-op:{{ fop }}%;
-    --fl-size:{{ fsize }}px;
+    --fl-h:{{ fsize }}%;
   }
 </style>
 {%- endunless -%}
@@ -35,7 +39,7 @@
     {%- if p.standfirst != blank -%}<p class="doc-stand">{{ p.standfirst }}</p>{%- endif -%}
   </div>
 </div>
-<div class="wrap{{ doc_cls }}"><div class="prose rte{% if look == 'menu' %} prose--menu{% endif %}">
+<div class="wrap{{ doc_cls }}"><div class="prose rte{% if look == 'menu' %} prose--menu{% endif %}"{% if p.doc_nav == false %} data-nonav{% endif %}>
   {%- if p.updated != blank -%}
     <p class="updated">Last updated {{ p.updated }}</p>
   {%- endif -%}
@@ -99,15 +103,15 @@
         },
         {
           "value": "vine",
-          "label": "Trailing vine"
+          "label": "Single stem"
         },
         {
           "value": "bloom",
-          "label": "Scattered blossom"
+          "label": "Blossom branch"
         },
         {
           "value": "trellis",
-          "label": "Arabesque trellis"
+          "label": "Arch"
         },
         {
           "value": "laurel",
@@ -116,6 +120,26 @@
         {
           "value": "palm",
           "label": "Palm frond"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "floral_pos",
+      "label": "Motif position",
+      "default": "right",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right edge"
+        },
+        {
+          "value": "left",
+          "label": "Left edge"
+        },
+        {
+          "value": "both",
+          "label": "Both edges, mirrored"
         }
       ]
     },
@@ -130,20 +154,21 @@
       "id": "floral_opacity",
       "label": "Motif strength",
       "min": 0,
-      "max": 40,
+      "max": 30,
       "step": 1,
       "unit": "%",
-      "default": 10
+      "default": 9
     },
     {
       "type": "range",
       "id": "floral_scale",
-      "label": "Motif scale",
-      "min": 120,
-      "max": 640,
-      "step": 20,
-      "unit": "px",
-      "default": 320
+      "label": "Motif height",
+      "min": 60,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 108,
+      "info": "How tall the drawing stands relative to the screen."
     },
     {
       "type": "text",
@@ -651,6 +676,13 @@
           "label": "Solid"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "doc_nav",
+      "label": "Show the scrolling index",
+      "default": true,
+      "info": "A quiet rail that tracks which section the reader is in."
     }
   ]
 }
