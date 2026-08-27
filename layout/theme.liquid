@@ -27,7 +27,7 @@
   {{ content_for_header }}
   <script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
 </head>
-<body class="template-{{ template.name }}{% if template.name == 'index' %} has-hero{% endif %}">
+<body class="template-{{ template.name }}{% if template.name == 'index' %} has-hero{% endif %}{% if settings.justify_text %} t-just{% endif %}{% if settings.justify_hyphens %} t-hyph{% endif %}">
   <a class="skip" href="#main" style="position:absolute;left:-9999px">Skip to content</a>
   {% sections 'header-group' %}
   <div class="scrim" id="scrim"></div>
