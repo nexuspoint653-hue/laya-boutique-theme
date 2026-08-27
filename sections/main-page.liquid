@@ -1,24 +1,150 @@
 {% render 'section-style', s: section %}
 {% render 'section-bg', s: section %}
 {% render 'section-copy', s: section, place: 'top' %}
+{%- liquid
+  assign p = section.settings
+  assign look = p.doc_style | default: 'plain'
+  assign floral = p.floral | default: 'none'
+  assign fop = p.floral_opacity | plus: 0
+  assign fsize = p.floral_scale | default: 320
+
+  assign doc_cls = ''
+  if look == 'menu'
+    assign doc_cls = ' page-doc'
+  endif
+  assign fl_cls = ''
+  unless floral == 'none'
+    assign fl_cls = ' doc-floral doc-floral--' | append: floral
+  endunless
+-%}
+{%- unless floral == 'none' -%}
+<style>
+  #shopify-section-{{ section.id }} .doc-floral{
+    --fl-ink:{{ p.floral_color | default: '#A98858' }};
+    --fl-op:{{ fop }}%;
+    --fl-size:{{ fsize }}px;
+  }
+</style>
+{%- endunless -%}
+<div class="doc-wrap{{ doc_cls }}{{ fl_cls }}">
 <div class="phead">
   <div class="wrap">
-    {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    {%- if p.eyebrow != blank -%}<span class="eyebrow">{{ p.eyebrow }}</span>{%- endif -%}
     <h1 class="dsp dsp-l">{{ page.title }}</h1>
+    {%- if look == 'menu' -%}<span class="doc-flourish" aria-hidden="true"></span>{%- endif -%}
+    {%- if p.standfirst != blank -%}<p class="doc-stand">{{ p.standfirst }}</p>{%- endif -%}
   </div>
 </div>
-<div class="wrap"><div class="prose rte">
-  {%- if section.settings.updated != blank -%}
-    <p class="updated">Last updated {{ section.settings.updated }}</p>
+<div class="wrap{{ doc_cls }}"><div class="prose rte{% if look == 'menu' %} prose--menu{% endif %}">
+  {%- if p.updated != blank -%}
+    <p class="updated">Last updated {{ p.updated }}</p>
   {%- endif -%}
   {{ page.content }}
+  {%- if p.signoff != blank -%}
+    <p class="doc-signoff">{{ p.signoff }}</p>
+  {%- endif -%}
 </div></div>
+</div>
 {% render 'section-copy', s: section, place: 'bottom' %}
 
 {% schema %}
 {
   "name": "Page",
   "settings": [
+    {
+      "type": "header",
+      "content": "Document style"
+    },
+    {
+      "type": "select",
+      "id": "doc_style",
+      "label": "Look",
+      "default": "plain",
+      "options": [
+        {
+          "value": "plain",
+          "label": "Standard page"
+        },
+        {
+          "value": "menu",
+          "label": "Menu card — fine dining"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "standfirst",
+      "label": "Stand-first line",
+      "info": "A short line under the title."
+    },
+    {
+      "type": "text",
+      "id": "signoff",
+      "label": "Sign-off line",
+      "info": "Shown at the very end."
+    },
+    {
+      "type": "header",
+      "content": "Floral background"
+    },
+    {
+      "type": "select",
+      "id": "floral",
+      "label": "Motif",
+      "default": "none",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "vine",
+          "label": "Trailing vine"
+        },
+        {
+          "value": "bloom",
+          "label": "Scattered blossom"
+        },
+        {
+          "value": "trellis",
+          "label": "Arabesque trellis"
+        },
+        {
+          "value": "laurel",
+          "label": "Laurel sprig"
+        },
+        {
+          "value": "palm",
+          "label": "Palm frond"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "floral_color",
+      "label": "Motif colour",
+      "default": "#A98858"
+    },
+    {
+      "type": "range",
+      "id": "floral_opacity",
+      "label": "Motif strength",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "%",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "floral_scale",
+      "label": "Motif scale",
+      "min": 120,
+      "max": 640,
+      "step": 20,
+      "unit": "px",
+      "default": 320
+    },
     {
       "type": "text",
       "id": "eyebrow",
