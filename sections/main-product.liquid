@@ -172,6 +172,28 @@
       {% endform %}
       </div>
 
+      {%- comment -%}
+        On a phone the Add to Bag button scrolls away as soon as you start
+        reading the detail sections. This bar docks it to the bottom of the
+        screen once that happens, and hands the tap straight to the real
+        submit button so variant selection and checkout behave identically.
+      {%- endcomment -%}
+      {%- if section.settings.sticky_add != false -%}
+        <div class="pdp-dock" data-pdp-dock hidden aria-hidden="true">
+          <div class="pdp-dock-in">
+            {%- if section.settings.sticky_show_price != false -%}
+              <div class="pdp-dock-info">
+                <span class="pdp-dock-title">{{ product.title }}</span>
+                <span class="pdp-dock-price" data-dock-price>{{ product.price | money }}</span>
+              </div>
+            {%- endif -%}
+            <button type="button" class="btn btn-solid pdp-dock-btn" data-dock-add>
+              {{ section.settings.sticky_label | default: 'Add to Bag' }}
+            </button>
+          </div>
+        </div>
+      {%- endif -%}
+
       {%- if section.settings.fitting_link != blank -%}
         <a href="{{ section.settings.fitting_link }}" class="btn" style="width:100%;text-align:center;display:block">Book a Fitting</a>
       {%- endif -%}
@@ -230,6 +252,29 @@
 {
   "name": "Product",
   "settings": [
+    {
+      "type": "header",
+      "content": "Sticky Add to Bag"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_add",
+      "label": "Dock the button on phones",
+      "info": "Once the real button scrolls out of view, a bar holds Add to Bag at the bottom of the screen. Phones only.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_show_price",
+      "label": "Show the name and price in the bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sticky_label",
+      "label": "Bar button label",
+      "default": "Add to Bag"
+    },
     {
       "type": "header",
       "content": "In motion"
