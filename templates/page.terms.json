@@ -4,7 +4,14 @@
       "type": "main-page",
       "settings": {
         "eyebrow": "Legal",
-        "updated": "19 August 2026"
+        "updated": "19 August 2026",
+        "doc_style": "menu",
+        "floral": "trellis",
+        "floral_color": "#A98858",
+        "floral_opacity": 8,
+        "floral_scale": 380,
+        "standfirst": "The agreement between you and the atelier.",
+        "signoff": "Thank you for shopping with Laya."
       }
     }
   },

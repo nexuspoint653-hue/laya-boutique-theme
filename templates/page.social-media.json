@@ -4,7 +4,14 @@
       "type": "main-page",
       "settings": {
         "eyebrow": "Legal",
-        "updated": "19 August 2026"
+        "updated": "19 August 2026",
+        "doc_style": "menu",
+        "floral": "bloom",
+        "floral_color": "#A98858",
+        "floral_opacity": 6,
+        "floral_scale": 260,
+        "standfirst": "How we behave online, and what we ask of you.",
+        "signoff": "Find us @layaboutique."
       }
     }
   },

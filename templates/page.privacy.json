@@ -4,7 +4,14 @@
       "type": "main-page",
       "settings": {
         "eyebrow": "Legal",
-        "updated": "19 August 2026"
+        "updated": "19 August 2026",
+        "doc_style": "menu",
+        "floral": "vine",
+        "floral_color": "#A98858",
+        "floral_opacity": 9,
+        "floral_scale": 340,
+        "standfirst": "How we handle what you share with us.",
+        "signoff": "Questions about any of this? Write to privacy@layaboutique.com."
       }
     }
   },
