@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -8,12 +17,10 @@
         "doc_style": "menu",
         "floral": "bloom",
         "floral_color": "#A98858",
-        "floral_opacity": 9,
-        "floral_scale": 104,
+        "floral_opacity": 6,
+        "floral_scale": 260,
         "standfirst": "How we behave online, and what we ask of you.",
-        "signoff": "Find us @layaboutique.",
-        "floral_pos": "left",
-        "doc_nav": true
+        "signoff": "Find us @layaboutique."
       }
     }
   },

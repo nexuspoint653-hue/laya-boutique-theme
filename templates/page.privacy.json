@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -9,11 +18,9 @@
         "floral": "vine",
         "floral_color": "#A98858",
         "floral_opacity": 9,
-        "floral_scale": 108,
+        "floral_scale": 340,
         "standfirst": "How we handle what you share with us.",
-        "signoff": "Questions about any of this? Write to privacy@layaboutique.com.",
-        "floral_pos": "right",
-        "doc_nav": true
+        "signoff": "Questions about any of this? Write to privacy@layaboutique.com."
       }
     }
   },

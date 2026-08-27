@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -9,11 +18,9 @@
         "floral": "trellis",
         "floral_color": "#A98858",
         "floral_opacity": 8,
-        "floral_scale": 112,
+        "floral_scale": 380,
         "standfirst": "The agreement between you and the atelier.",
-        "signoff": "Thank you for shopping with Laya.",
-        "floral_pos": "both",
-        "doc_nav": true
+        "signoff": "Thank you for shopping with Laya."
       }
     }
   },
