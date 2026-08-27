@@ -8,6 +8,42 @@
 
 <div class="wrap" style="padding-top:18px;padding-bottom:clamp(50px,6vw,90px)">
   <div class="pdp">
+    {%- liquid
+      assign gal_style = section.settings.gallery_style | default: 'spotlight'
+      assign stage_ratio = section.settings.stage_ratio | default: '4-5'
+      assign mosaic_pos = section.settings.mosaic_pos | default: 'tr'
+      assign mosaic_w = section.settings.mosaic_width | default: 138
+      assign motion_place = section.settings.motion_place | default: 'below'
+      assign motion_w = section.settings.motion_width | default: 46
+      assign img_limit = section.settings.image_limit | default: 0
+      if img_limit == 0
+        assign img_limit = 12
+      endif
+
+      case stage_ratio
+        when '1-1'
+          assign stage_pad = '100%'
+        when '4-5'
+          assign stage_pad = '125%'
+        when '3-4'
+          assign stage_pad = '133.33%'
+        when '2-3'
+          assign stage_pad = '150%'
+        else
+          assign stage_pad = '125%'
+      endcase
+    -%}
+
+    {%- comment -%}
+      Split the media: stills carry the spotlight, film goes to its own smaller
+      card. A two-piece set ships three stills and a film, an abaya can ship
+      four and no film — the same markup covers both without a switch.
+    {%- endcomment -%}
+    {%- assign stills = product.media | where: 'media_type', 'image' -%}
+    {%- assign films = product.media | where: 'media_type', 'video' -%}
+    {%- assign ext_films = product.media | where: 'media_type', 'external_video' -%}
+
+    {%- if gal_style == 'stack' -%}
     <div class="pdp-gal">
       {%- for media in product.media limit: 7 -%}
         <figure>
@@ -23,6 +59,65 @@
         <figure>{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</figure>
       {%- endfor -%}
     </div>
+    {%- else -%}
+    <div class="pdp-gal pdp-gal--spot" data-gallery>
+      <div class="pdp-stage" style="--stage-pad:{{ stage_pad }};--mosaic-w:{{ mosaic_w }}px">
+        {%- if stills.size > 0 -%}
+          {%- for media in stills limit: img_limit -%}
+            <img class="pdp-shot{% if forloop.first %} on{% endif %}"
+                 data-shot="{{ forloop.index0 }}"
+                 src="{{ media | image_url: width: 1600 }}"
+                 srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1600 }} 1600w"
+                 sizes="(max-width:749px) 100vw, 55vw"
+                 alt="{{ media.alt | escape }}" width="1000" height="1250"
+                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                 {% if forloop.first %}fetchpriority="high"{% endif %}>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign ph = section.settings.stage_placeholder | default: 'product-1' -%}
+          {%- capture ph_svg %}{{ ph | placeholder_svg_tag: 'placeholder-svg' }}{% endcapture -%}
+          {{ ph_svg | replace: '<svg', '<svg preserveAspectRatio="xMidYMid slice"' }}
+        {%- endif -%}
+
+        {%- if stills.size > 1 and section.settings.show_mosaic != false -%}
+          <div class="pdp-mosaic pdp-mosaic--{{ mosaic_pos }}" role="group" aria-label="{{ section.settings.mosaic_label | default: 'Product views' | escape }}">
+            {%- for media in stills limit: img_limit -%}
+              <button type="button" class="pdp-chip{% if forloop.first %} on{% endif %}" data-chip="{{ forloop.index0 }}"
+                      aria-label="{{ section.settings.mosaic_label | default: 'View' }} {{ forloop.index }}">
+                <img src="{{ media | image_url: width: 220 }}" alt="" width="110" height="138" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if motion_place == 'below' and section.settings.show_motion != false -%}
+        {%- if films.size > 0 or ext_films.size > 0 -%}
+        <div class="pdp-motion" style="--motion-w:{{ motion_w }}%">
+          {%- if section.settings.motion_label != blank -%}
+            <span class="pdp-motion-h eyebrow">{{ section.settings.motion_label }}</span>
+          {%- endif -%}
+          <div class="pdp-motion-frame">
+            {%- if films.size > 0 -%}
+              {%- assign film = films | first -%}
+              {{ film | video_tag:
+                 image_size: '900x',
+                 autoplay: section.settings.motion_autoplay,
+                 loop: true,
+                 muted: true,
+                 controls: section.settings.motion_controls,
+                 playsinline: true,
+                 preload: 'metadata' }}
+            {%- else -%}
+              {%- assign film = ext_films | first -%}
+              {{ film | external_video_tag }}
+            {%- endif -%}
+          </div>
+        </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+    {%- endif -%}
 
     <div class="pdp-side">
       <div>
@@ -135,6 +230,133 @@
 {
   "name": "Product",
   "settings": [
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "select",
+      "id": "gallery_style",
+      "label": "Layout",
+      "info": "Spotlight puts one large picture up front with a small mosaic of the others over its corner. Stack shows every picture down the page.",
+      "options": [
+        { "value": "spotlight", "label": "Spotlight with mosaic" },
+        { "value": "stack", "label": "Stacked pictures" }
+      ],
+      "default": "spotlight"
+    },
+    {
+      "type": "select",
+      "id": "stage_ratio",
+      "label": "Main picture shape",
+      "options": [
+        { "value": "1-1", "label": "Square" },
+        { "value": "4-5", "label": "Portrait 4:5" },
+        { "value": "3-4", "label": "Portrait 3:4" },
+        { "value": "2-3", "label": "Tall 2:3" }
+      ],
+      "default": "4-5"
+    },
+    {
+      "type": "text",
+      "id": "stage_placeholder",
+      "label": "Placeholder artwork",
+      "info": "Shown only while a product has no pictures. e.g. product-1",
+      "default": "product-1"
+    },
+    {
+      "type": "range",
+      "id": "image_limit",
+      "label": "Pictures shown",
+      "info": "0 shows every picture on the product.",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mosaic",
+      "label": "Show the mosaic switcher",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "mosaic_pos",
+      "label": "Mosaic corner",
+      "options": [
+        { "value": "tr", "label": "Top right" },
+        { "value": "tl", "label": "Top left" },
+        { "value": "br", "label": "Bottom right" },
+        { "value": "bl", "label": "Bottom left" }
+      ],
+      "default": "tr"
+    },
+    {
+      "type": "range",
+      "id": "mosaic_width",
+      "label": "Mosaic size",
+      "min": 90,
+      "max": 240,
+      "step": 6,
+      "unit": "px",
+      "default": 138
+    },
+    {
+      "type": "text",
+      "id": "mosaic_label",
+      "label": "Mosaic label for screen readers",
+      "default": "View"
+    },
+    {
+      "type": "header",
+      "content": "In motion"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_motion",
+      "label": "Show the film card",
+      "info": "Plays the product video on its own, smaller card instead of inside the picture stack.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "motion_place",
+      "label": "Film sits",
+      "options": [
+        { "value": "below", "label": "Below the main picture" },
+        { "value": "off", "label": "Nowhere — hide it" }
+      ],
+      "default": "below"
+    },
+    {
+      "type": "range",
+      "id": "motion_width",
+      "label": "Film width",
+      "min": 24,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "default": 46
+    },
+    {
+      "type": "text",
+      "id": "motion_label",
+      "label": "Film caption",
+      "default": "In motion"
+    },
+    {
+      "type": "checkbox",
+      "id": "motion_autoplay",
+      "label": "Play the film automatically",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "motion_controls",
+      "label": "Show film controls",
+      "default": false
+    },
     {
       "type": "url",
       "id": "size_guide",
