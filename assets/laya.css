@@ -82,7 +82,7 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 
 /* logo */
 .logo{display:flex;flex-direction:column;align-items:center;line-height:1;justify-self:center;padding:4px 0}
-.logo-mark{font-family:var(--script);font-size:clamp(26px,2.6vw,36px);letter-spacing:.01em;line-height:1;background:linear-gradient(96deg,#8E6C3A 0%,#D9BC85 32%,#A9884F 55%,#E6D2A8 78%,#8E6C3A 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 2px 3px}
+.logo-mark{font-family:var(--script);font-size:clamp(34px,3.6vw,50px);letter-spacing:.01em;line-height:1;background:linear-gradient(96deg,#8E6C3A 0%,#D9BC85 32%,#A9884F 55%,#E6D2A8 78%,#8E6C3A 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 2px 3px}
 .logo-sub{font-size:8.5px;letter-spacing:.42em;text-transform:uppercase;margin-top:2px;display:flex;align-items:center;gap:7px;color:currentColor;opacity:.85}
 .logo-sub::before,.logo-sub::after{content:"";width:14px;height:1px;background:currentColor;opacity:.6}
 .hdr.on-hero .logo-mark{background:linear-gradient(96deg,#F2E4C6 0%,#FFFFFF 40%,#EBD7AD 70%,#FFF8E7 100%);-webkit-background-clip:text;background-clip:text}
