@@ -993,3 +993,17 @@ a.doc-jump-i:hover::before{width:11px;opacity:1}
 @media(prefers-reduced-motion:reduce){
   .doc-jump{animation:none;opacity:1;transform:none}
 }
+/* ---- hero: optically centre the copy in the visible area ---- */
+.hero-copy.pos-center{top:calc(50% + (var(--hdr) / 2))}
+
+/* ---- mega menu: white panel, gold accents ---- */
+:root{--menu:#FFFFFF;--menu-ink:#1B1A18}
+.hdr.menu-open{box-shadow:0 1px 0 var(--line)}
+.hdr.menu-open .logo-mark{
+  background:linear-gradient(96deg,#8E6C3A 0%,#D9BC85 32%,#A9884F 55%,#E6D2A8 78%,#8E6C3A 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent}
+.mega .mega-title,.mega h4{color:#A98858}
+.mega .mega-title::after,.mega h4::after{background:#A98858}
+.mega a{color:#1B1A18}
+.mega a:hover{color:#A98858}
