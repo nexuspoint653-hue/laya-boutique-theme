@@ -76,8 +76,10 @@
     {%- for link in menu.links limit: 4 -%}
       {%- if link.links.size > 0 -%}
         {%- assign img = blank -%}
+        {%- assign vid = blank -%}
+        {%- assign vurl = blank -%}
         {%- for block in section.blocks -%}
-          {%- if block.settings.position == forloop.parentloop.index -%}{%- assign img = block.settings.image -%}{%- endif -%}
+          {%- if block.settings.position == forloop.parentloop.index -%}{%- assign img = block.settings.image -%}{%- assign vid = block.settings.video -%}{%- assign vurl = block.settings.video_url -%}{%- endif -%}
         {%- endfor -%}
         <div class="mega-in" id="mega-{{ forloop.index }}">
           {%- for col in link.links limit: 4 -%}
@@ -94,11 +96,21 @@
           {%- endfor -%}
           {%- if link.links.size < 4 -%}{%- for i in (link.links.size..3) -%}<div class="mega-col"></div>{%- endfor -%}{%- endif -%}
           <a class="mega-fig" href="{{ link.url }}">
-            {%- if img != blank -%}
-              <img src="{{ img | image_url: width: 900 }}" alt="" loading="lazy" width="900" height="700">
+            {%- if vid != blank -%}
+              {{ vid | video_tag: image_size: '900x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'mega-media' }}
+            {%- elsif vurl != blank -%}
+              <iframe class="mega-media" src="{{ vurl }}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&background=1" title="" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            {%- elsif img != blank -%}
+              <img class="mega-media" src="{{ img | image_url: width: 900 }}" alt="" loading="lazy" width="900" height="700">
             {%- else -%}
-              <img src="{{ 'laya-menu-1.jpg' | asset_url }}" alt="" loading="lazy" width="900" height="700">
+              <img class="mega-media" src="{{ 'laya-menu-1.jpg' | asset_url }}" alt="" loading="lazy" width="900" height="700">
             {%- endif -%}
+            <style>
+              .mega-fig{position:relative;overflow:hidden;display:block}
+              .mega-fig .mega-media,
+              .mega-fig video,
+              .mega-fig iframe{width:100%;height:100%;object-fit:cover;display:block;border:0}
+            </style>
           </a>
           <span class="mega-title">{{ link.title }}</span>
         </div>
@@ -525,6 +537,19 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Menu video",
+          "info": "Plays muted on loop. Overrides the image. Upload under Content > Files."
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Or a video URL",
+          "accept": ["youtube", "vimeo"],
+          "info": "Used only if no uploaded video is set."
         }
       ]
     }
