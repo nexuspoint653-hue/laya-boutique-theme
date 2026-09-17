@@ -60,9 +60,12 @@
   #shopify-section-{{ section.id }} .mega-fig iframe{
     width:100%;
     height:{{ mmh }}px;
-    object-fit:cover;
+    object-fit:{{ section.settings.menu_media_fit | default: 'contain' }};
+    object-position:center;
     display:block;
-    border:0}
+    border:0;
+    margin:0 auto;
+    max-width:{{ section.settings.menu_media_width | default: 100 }}%}
 </style>
   <div class="hdr-in">
     <nav class="nav-l">
@@ -230,6 +233,8 @@
     },
     { "type": "range", "id": "menu_media_height", "label": "Menu image / video height", "min": 160, "max": 520, "step": 8, "unit": "px", "default": 296, "info": "Height of the picture or video in the mega menu. The panel grows to fit." },
     { "type": "range", "id": "menu_media_pad", "label": "Menu image padding", "min": 0, "max": 64, "step": 4, "unit": "px", "default": 24, "info": "Space around the picture inside the menu panel." },
+    { "type": "select", "id": "menu_media_fit", "label": "Picture fit", "default": "contain", "options": [ { "value": "contain", "label": "Show the whole picture" }, { "value": "cover", "label": "Fill the box (crops edges)" } ], "info": "Show the whole picture keeps the full figure head to toe. Fill crops to the box." },
+    { "type": "range", "id": "menu_media_width", "label": "Picture width", "min": 40, "max": 100, "step": 5, "unit": "%", "default": 100, "info": "Narrow this to tighten the space either side when showing the whole picture." },
     {
       "type": "url",
       "id": "care_page",
