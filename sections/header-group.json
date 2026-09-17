@@ -72,35 +72,52 @@
     "header": {
       "type": "header",
       "blocks": {
+        "menu_image_qzxygh": {
+          "type": "menu_image",
+          "settings": {
+            "position": 1,
+            "image": "shopify://shop_images/ruba-taupe-knit-wrap-set.jpg",
+            "video_url": ""
+          }
+        },
         "m1": {
           "type": "menu_image",
           "settings": {
-            "position": 1
+            "position": 1,
+            "image": "shopify://shop_images/malak-mocha-blazer-trouser-suit.jpg",
+            "video_url": ""
           }
         },
         "m2": {
           "type": "menu_image",
           "settings": {
-            "position": 2
+            "position": 2,
+            "image": "shopify://shop_images/nada-white-varsity-trim-lounge-set.jpg",
+            "video_url": ""
           }
         },
         "m3": {
           "type": "menu_image",
           "settings": {
-            "position": 3
+            "position": 3,
+            "image": "shopify://shop_images/reem-fuchsia-and-purple-pleated-skirt-set.jpg",
+            "video_url": ""
           }
         }
       },
       "block_order": [
+        "menu_image_qzxygh",
         "m1",
         "m2",
         "m3"
       ],
       "settings": {
         "menu": "main-menu",
-        "logo_height": 62,
+        "logo_height": 90,
         "logo_word": "Laya",
         "logo_sub": "Boutique",
+        "menu_media_height": 296,
+        "menu_media_pad": 24,
         "care_page": "/pages/client-care",
         "care_label": "Client Care",
         "popular": "New In, Abayas, Dresses, Two-Piece Sets",
