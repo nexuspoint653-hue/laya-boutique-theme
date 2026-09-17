@@ -38,6 +38,32 @@
 </style>
 {%- endif -%}
 <header class="hdr{% if over_hero %} on-hero{% else %} solid{% endif %}" id="hdr">
+{%- liquid
+  assign mmh = section.settings.menu_media_height | default: 296
+  assign mmp = section.settings.menu_media_pad | default: 24
+  assign inner = mmh | plus: mmp | plus: mmp
+  assign panel = inner | plus: 288
+  if panel < 640
+    assign panel = 640
+  endif
+  assign minrow = inner | plus: 78
+-%}
+<style>
+  #shopify-section-{{ section.id }} .mega.show{max-height:{{ panel }}px}
+  #shopify-section-{{ section.id }} .mega-in{min-height:{{ minrow }}px}
+  #shopify-section-{{ section.id }} .mega-fig{
+    position:relative;display:block;overflow:hidden;
+    padding:{{ mmp }}px;
+    box-sizing:border-box}
+  #shopify-section-{{ section.id }} .mega-fig .mega-media,
+  #shopify-section-{{ section.id }} .mega-fig video,
+  #shopify-section-{{ section.id }} .mega-fig iframe{
+    width:100%;
+    height:{{ mmh }}px;
+    object-fit:cover;
+    display:block;
+    border:0}
+</style>
   <div class="hdr-in">
     <nav class="nav-l">
       <button class="burger" id="burger" aria-label="Menu"><i></i><i></i></button>
@@ -105,12 +131,6 @@
             {%- else -%}
               <img class="mega-media" src="{{ 'laya-menu-1.jpg' | asset_url }}" alt="" loading="lazy" width="900" height="700">
             {%- endif -%}
-            <style>
-              .mega-fig{position:relative;overflow:hidden;display:block}
-              .mega-fig .mega-media,
-              .mega-fig video,
-              .mega-fig iframe{width:100%;height:100%;object-fit:cover;display:block;border:0}
-            </style>
           </a>
           <span class="mega-title">{{ link.title }}</span>
         </div>
@@ -208,6 +228,8 @@
       "label": "Wordmark sub-line",
       "default": "Boutique"
     },
+    { "type": "range", "id": "menu_media_height", "label": "Menu image / video height", "min": 160, "max": 520, "step": 8, "unit": "px", "default": 296, "info": "Height of the picture or video in the mega menu. The panel grows to fit." },
+    { "type": "range", "id": "menu_media_pad", "label": "Menu image padding", "min": 0, "max": 64, "step": 4, "unit": "px", "default": 24, "info": "Space around the picture inside the menu panel." },
     {
       "type": "url",
       "id": "care_page",
