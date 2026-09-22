@@ -5,12 +5,14 @@
   <span class="eyebrow">Search</span>
   <h1 class="dsp dsp-l">{% if search.performed %}{{ search.results_count }} results{% else %}Search{% endif %}</h1>
   <form action="{{ routes.search_url }}" method="get" class="nl-field" style="margin:22px auto 0">
+    <input type="hidden" name="type" value="product">
     <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="What are you looking for?">
     <button type="submit" aria-label="Search"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
   </form>
 </div></div>
 <div class="wrap" style="padding-block:36px">
   {%- if search.performed -%}
+    {%- paginate search.results by 24 -%}
     <div class="grid-4 stag in">
       {%- for item in search.results -%}
         {%- if item.object_type == 'product' -%}{% render 'product-card', product: item %}{%- endif -%}
@@ -18,6 +20,10 @@
         <p class="lede">Nothing found for “{{ search.terms }}”.</p>
       {%- endfor -%}
     </div>
+    {%- if paginate.pages > 1 -%}
+      <div class="pagination">{{ paginate | default_pagination }}</div>
+    {%- endif -%}
+    {%- endpaginate -%}
   {%- endif -%}
 </div>
 {% render 'section-copy', s: section, place: 'bottom' %}

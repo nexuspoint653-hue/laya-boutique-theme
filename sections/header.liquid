@@ -173,6 +173,7 @@
   <div class="drawer-h"><span class="ui">Search</span><button class="x" id="searchX" aria-label="Close"></button></div>
   <div class="drawer-b">
     <form action="{{ routes.search_url }}" method="get" class="nl-field" style="max-width:none">
+      <input type="hidden" name="type" value="product">
       <input type="search" name="q" placeholder="What are you looking for?" autocomplete="off">
       <button type="submit" aria-label="Search"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
     </form>
@@ -181,7 +182,7 @@
       <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
         {%- assign terms = section.settings.popular | split: ',' -%}
         {%- for t in terms -%}
-          <li><a style="font-size:14px" href="{{ routes.search_url }}?q={{ t | strip | url_encode }}">{{ t | strip }}</a></li>
+          <li><a style="font-size:14px" href="{{ routes.search_url }}?q={{ t | strip | url_encode }}&type=product">{{ t | strip }}</a></li>
         {%- endfor -%}
       </ul>
     {%- endif -%}

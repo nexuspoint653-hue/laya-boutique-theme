@@ -25,7 +25,7 @@ body{
 img,video{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
-input{font:inherit;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
 ::selection{background:var(--gold);color:#fff}
 
 /* scrollbar */
@@ -522,6 +522,12 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .media--ratio > img,.media--ratio > video,.media--ratio > picture,
 .media--ratio > .media-tile,.media--ratio > .placeholder-svg{
   position:absolute;inset:0;width:100%;height:100%}
+/* On phones a ratio'd banner film leaves the fixed-height .banner mostly empty;
+   let the media cover the banner box there (desktop keeps the film's own aspect) */
+@media(max-width:749px){
+  .banner > .media--ratio{position:absolute;inset:0;height:100%}
+  .banner > .media--ratio::before{display:none}
+}
 .media > img,.media > video,.media > picture img{width:100%;height:100%;display:block;
   object-fit:cover;object-position:center}
 .media[data-media-fit="contain"] > img,
