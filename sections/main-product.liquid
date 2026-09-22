@@ -218,7 +218,7 @@
 <div class="wrap" style="padding-bottom:clamp(50px,6vw,90px)">
   <div class="row-head"><h2 class="dsp dsp-s">Complete the Look</h2></div>
   <div class="grid-4 stag in">
-    {%- assign rel = section.settings.related_collection.products | default: collection.products -%}
+    {%- assign rel = section.settings.related_collection.products | default: collection.products -%}{%- unless rel.size > 1 -%}{%- assign rel = collections.all.products -%}{%- endunless -%}
     {%- assign n = 0 -%}
     {%- for p in rel -%}
       {%- if p.id != product.id and n < 4 -%}
