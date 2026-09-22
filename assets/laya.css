@@ -1046,3 +1046,14 @@ a.doc-jump-i:hover::before{width:11px;opacity:1}
 .template-page .doc-jump-h{margin:0}
 .template-page .doc-jump-i{padding-left:0;font-size:16px}
 .template-page .doc-jump-i::before{display:none}
+/* ---- shipping & returns: same ledger card ---- */
+#shopify-section-template--23017845489795__main .doc-wrap{background:var(--bone);padding-bottom:clamp(56px,7vw,110px)}
+#shopify-section-template--23017845489795__main .phead{background:none;border:0;padding:clamp(56px,7vw,112px) 0 clamp(30px,3.4vw,52px);text-align:left}
+#shopify-section-template--23017845489795__main .phead>.wrap{max-width:calc(760px + 2 * var(--gut))!important;margin-inline:auto!important}
+#shopify-section-template--23017845489795__main .phead h1{margin:14px 0 0;font-size:clamp(34px,4.4vw,60px);letter-spacing:.06em;text-align:left}
+#shopify-section-template--23017845489795__main .doc-wrap>.wrap{max-width:calc(760px + 2 * var(--gut))}
+#shopify-section-template--23017845489795__main .prose{max-width:none;margin:0;background:#fff;border:1px solid var(--line);padding:clamp(28px,5vw,72px) clamp(22px,5.5vw,84px)}
+#shopify-section-template--23017845489795__main .prose h2{text-align:left;margin:46px 0 14px;padding-top:30px;border-top:1px solid var(--line);font-family:var(--sans);font-weight:400;font-size:12px;line-height:1.6;letter-spacing:.24em;text-transform:uppercase;color:var(--ink)}
+#shopify-section-template--23017845489795__main .prose h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:20px;letter-spacing:0;text-transform:none;color:var(--gold);margin:28px 0 10px}
+#shopify-section-template--23017845489795__main .prose p,#shopify-section-template--23017845489795__main .prose li{font-family:var(--serif);font-size:18px;line-height:1.75;color:var(--soft)}
+#shopify-section-template--23017845489795__main .prose>p:first-child{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
