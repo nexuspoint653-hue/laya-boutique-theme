@@ -1013,3 +1013,6 @@ a.doc-jump-i:hover::before{width:11px;opacity:1}
 .mega .mega-title::after,.mega h4::after{background:#A98858}
 .mega a{color:#1B1A18}
 .mega a:hover{color:#A98858}
+/* ---- smoothness pass: split images no longer stretch the panel; offscreen sections skip rendering ---- */
+.split-media img{position:absolute;inset:0}
+.template-index main>.shopify-section:nth-child(n+3){content-visibility:auto;contain-intrinsic-size:auto 900px}
