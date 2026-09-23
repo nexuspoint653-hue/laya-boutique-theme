@@ -626,7 +626,7 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
     return out;
   }
   function fixNodes(el){
-    for(var pass=0;pass<3;pass++){
+    for(var pass=0;pass<8;pass++){
       var ws=wordsN(el); if(ws.length<4) return;
       var L=[];
       ws.forEach(function(x){var l=null;for(var k=0;k<L.length;k++)if(Math.abs(L[k].top-x.top)<4)l=L[k];if(l)l.items.push(x);else L.push({top:x.top,items:[x]})});
@@ -661,7 +661,7 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
       var seps=words.map(function(){return ' '});
       function render(){el.textContent=words.map(function(w,i){return i?seps[i-1]+w:w}).join('')}
       render();
-      for(var pass=0;pass<3;pass++){
+      for(var pass=0;pass<8;pass++){
         var L=lines(el); if(L.length<2) break;
         var did=false,idx=0;
         for(var i=0;i<L.length-1;i++){
