@@ -618,9 +618,35 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
     words.forEach(function(x){var l=null;for(var k=0;k<L.length;k++)if(Math.abs(L[k].top-x.top)<4)l=L[k];if(l)l.words.push(x.w);else L.push({top:x.top,words:[x.w]})});
     return L.sort(function(a,b){return a.top-b.top});
   }
+  function wordsN(el){
+    var tn=[],w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n;
+    while(n=w.nextNode())tn.push(n);
+    var out=[];
+    tn.forEach(function(t){var s=t.textContent,i=0;while(i<s.length){while(i<s.length&&/\s/.test(s[i]))i++;var j=i;while(j<s.length&&!/\s/.test(s[j]))j++;if(j>i){var r=document.createRange();r.setStart(t,i);r.setEnd(t,j);var b=r.getBoundingClientRect();if(b.width>0)out.push({w:s.slice(i,j),top:Math.round(b.top),node:t,end:j})}i=j}});
+    return out;
+  }
+  function fixNodes(el){
+    for(var pass=0;pass<3;pass++){
+      var ws=wordsN(el); if(ws.length<4) return;
+      var L=[];
+      ws.forEach(function(x){var l=null;for(var k=0;k<L.length;k++)if(Math.abs(L[k].top-x.top)<4)l=L[k];if(l)l.items.push(x);else L.push({top:x.top,items:[x]})});
+      L.sort(function(a,b){return a.top-b.top});
+      if(L.length<2) return;
+      var did=false;
+      for(var i=0;i<L.length-1;i++){
+        var last=L[i].items[L[i].items.length-1];
+        var lw=last.w.replace(/[.,;:!?]$/,'');
+        if(!SHORT.test(lw)) continue;
+        var node=last.node,s=node.textContent,j=last.end;
+        if(j<s.length&&/\s/.test(s[j])&&s[j]!=='\u00A0'){node.textContent=s.slice(0,j)+'\u00A0'+s.slice(j+1);did=true}
+        else if(j>=s.length&&node.nextSibling&&node.nextSibling.nodeType===3){var s2=node.nextSibling.textContent;if(/^\s/.test(s2)&&s2[0]!=='\u00A0'){node.nextSibling.textContent='\u00A0'+s2.slice(1);did=true}}
+      }
+      if(!did) return;
+    }
+  }
   function fix(){
     [].slice.call(document.querySelectorAll(SEL)).forEach(function(el){
-      if(el.children.length) return;
+      var kids=[].slice.call(el.children);if(kids.length){var ok=kids.every(function(c){return c.tagName!=='BR'&&getComputedStyle(c).display.indexOf('inline')===0});if(ok)fixNodes(el);return;}
       var words=el.textContent.trim().split(/\s+/); if(words.length<4) return;
       var seps=words.map(function(){return ' '});
       function render(){el.textContent=words.map(function(w,i){return i?seps[i-1]+w:w}).join('')}
