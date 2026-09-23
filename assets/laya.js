@@ -641,7 +641,17 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
         if(j<s.length&&/\s/.test(s[j])&&s[j]!=='\u00A0'){node.textContent=s.slice(0,j)+'\u00A0'+s.slice(j+1);did=true}
         else if(j>=s.length&&node.nextSibling&&node.nextSibling.nodeType===3){var s2=node.nextSibling.textContent;if(/^\s/.test(s2)&&s2[0]!=='\u00A0'){node.nextSibling.textContent='\u00A0'+s2.slice(1);did=true}}
       }
-      if(!did) return;
+      if(!did) break;
+    }
+    var ws2=wordsN(el);
+    var L2=[];
+    ws2.forEach(function(x){var l=null;for(var k=0;k<L2.length;k++)if(Math.abs(L2[k].top-x.top)<4)l=L2[k];if(l)l.items.push(x);else L2.push({top:x.top,items:[x]})});
+    L2.sort(function(a,b){return a.top-b.top});
+    if(L2.length>=2&&L2[L2.length-1].items.length===1){
+      var lastW=L2[L2.length-1].items[0];
+      var st=lastW.end-lastW.w.length,nd=lastW.node,ss=nd.textContent;
+      if(st>0&&/\s/.test(ss[st-1])&&ss[st-1]!=='\u00A0'){nd.textContent=ss.slice(0,st-1)+'\u00A0'+ss.slice(st)}
+      else if(st===0){var pv=nd.previousSibling;if(pv&&pv.nodeType===3&&/\s$/.test(pv.textContent)&&pv.textContent.slice(-1)!=='\u00A0'){pv.textContent=pv.textContent.slice(0,-1)+'\u00A0'}}
     }
   }
   function fix(){
