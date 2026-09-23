@@ -607,7 +607,7 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
 
 /* ==== typography pass B: NBSP-bind short words at line ends (user-tested, 2026-09-23) ==== */
 (function(){
-  var SEL='h1,h2,h3,.dsp,.lede p,.split-body p,.hero-copy p,.svc p,.tile p,.doc-stand,.prose p,.rte p';
+  var SEL='h1,h2,h3,.dsp,.lede p,.split-body p,.hero-copy p,.svc p,.tile p,.doc-stand,.prose p,.rte p,.prose li,.rte li';
   var SHORT=/^(a|an|and|as|at|be|by|for|from|in|is|it|of|on|or|our|so|the|to|up|we|with|your|that|&)$/i;
   function lines(el){
     var tn=[],w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n;
