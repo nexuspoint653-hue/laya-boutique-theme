@@ -1057,3 +1057,75 @@ a.doc-jump-i:hover::before{width:11px;opacity:1}
 #shopify-section-template--23017845489795__main .prose h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:20px;letter-spacing:0;text-transform:none;color:var(--gold);margin:28px 0 10px}
 #shopify-section-template--23017845489795__main .prose p,#shopify-section-template--23017845489795__main .prose li{font-family:var(--serif);font-size:18px;line-height:1.75;color:var(--soft)}
 #shopify-section-template--23017845489795__main .prose>p:first-child{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+
+/* ==== Typography wrap pass — 2026-09-23 (design-taste-frontend; detector-driven, no copy changes) ====
+   Line-box scan of h1,h2,h3,p,.lede,.dsp,.eyebrow at 1440/768/390 flagged one-word last
+   lines and lines ending in and/or/the/to/a/of/with. Fixes: balanced display type, pretty
+   prose, hyphenated long-form docs, and per-block ch measure caps tuned by the detector.
+   Known residual (reported, not fixable without copy/brand change): footer .nl-title
+   "SUBSCRIBE TO OUR NEWSLETTER" — balanced two-line split necessarily ends L1 on "TO". */
+h1,h2,h3,.dsp,.eyebrow,.nl-title{text-wrap:balance}
+p,.rte p,li{text-wrap:pretty}
+.lede,.lede p{text-wrap:balance}
+.row-head h2{min-width:max-content}
+.split h2.dsp{min-width:max-content}
+.split .lede{max-width:40ch}
+.split-body.pos-center .lede{margin-inline:auto}
+.acc .rte p,.prose.rte p{hyphens:auto}
+[id$="--22985123332227__svc"] p{max-width:30ch;margin-inline:auto}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(16){max-width:30ch;word-spacing:-.5px}
+@media (max-width:749.98px){
+[id$="--23017845457027__main"] .prose > p:nth-of-type(4){max-width:34ch}
+[id$="--23017845457027__main"] .prose > p:nth-of-type(5){max-width:34ch}
+[id$="--23017845457027__main"] .prose > p:nth-of-type(10){max-width:33ch}
+[id$="--23017845457027__main"] .prose > p:nth-of-type(11){max-width:30ch}
+[id$="--23017845457027__main"] .prose > p:nth-of-type(12){max-width:34ch}
+[id$="--23017845457027__main"] .prose > p:nth-of-type(13){max-width:30ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(4){max-width:31ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(6){max-width:33ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(8){max-width:32ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(12){max-width:33ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(13){max-width:30ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(14){max-width:34ch;word-spacing:.5px}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(2){max-width:31ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(3){max-width:34ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(9){max-width:33ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(10){max-width:26ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(12){max-width:28ch}
+[id$="--23017845489795__main"] .prose > p:nth-of-type(3){max-width:34ch}
+[id$="--23017845489795__main"] .prose > p:nth-of-type(4){max-width:33ch}
+[id$="--23017845489795__main"] .prose > p:nth-of-type(5){max-width:29ch}
+[id$="--23017845489795__main"] .prose > p:nth-of-type(6){max-width:33ch}
+[id$="--22985123233923__main"] .prose > p:nth-of-type(3){max-width:41ch}
+[id$="--22985123332227__main"] .prose > p:nth-of-type(5){max-width:41ch}
+[id$="--22985123266691__main"] .prose > p:nth-of-type(2){max-width:39ch}
+[id$="--22985123201155__main"] .prose > p:nth-of-type(1){max-width:39ch}
+[id$="--23017845588099__main"] h1.dsp{letter-spacing:1.4px;min-width:max-content}
+}
+@media (min-width:750px) and (max-width:989.98px){
+[id$="--23017845457027__main"] .prose > p:nth-of-type(2){max-width:40ch}
+[id$="--23017845457027__main"] .prose > p:nth-of-type(6){max-width:42ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(2){max-width:42ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(4){max-width:42ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(8){max-width:42ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(12){max-width:41ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(13){max-width:41ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(5){max-width:42ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(14){max-width:41ch}
+[id$="--23017845489795__main"] .prose > p:nth-of-type(2){max-width:42ch}
+[id$="--23017845489795__main"] .prose > p:nth-of-type(5){max-width:42ch}
+[id$="--22985123332227__main"] .prose > p:nth-of-type(3){max-width:42ch}
+}
+@media (min-width:990px){
+[id$="--23017845457027__main"] .prose > p:nth-of-type(4){max-width:34ch}
+[id$="--23017845457027__main"] .prose > p:nth-of-type(5){max-width:42ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(8){max-width:42ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(12){max-width:41ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(13){max-width:41ch}
+[id$="--23017845588099__main"] .prose > p:nth-of-type(15){max-width:42ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(4){max-width:42ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(9){max-width:42ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(12){max-width:42ch}
+[id$="--23017845555331__main"] .prose > p:nth-of-type(14){max-width:41ch}
+[id$="--22985123332227__main"] .prose > p:nth-of-type(3){max-width:42ch}
+}
