@@ -604,20 +604,11 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
 })();
 
 
-
-/* ==== typography pass B: NBSP-bind short words at line ends (user-tested, 2026-09-23) ==== */
+/* ==== typography pass B v3: NBSP-bind short line-end words + orphan glue (2026-09-23) ==== */
 (function(){
   var SEL='h1,h2,h3,.dsp,.lede p,.split-body p,.hero-copy p,.svc p,.tile p,.doc-stand,.prose p,.rte p,.prose li,.rte li';
   var SHORT=/^(a|an|and|as|at|be|by|for|from|in|is|it|of|on|or|our|so|the|to|up|we|with|your|that|&)$/i;
-  function lines(el){
-    var tn=[],w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n;
-    while(n=w.nextNode())tn.push(n);
-    var words=[];
-    tn.forEach(function(t){var s=t.textContent,i=0;while(i<s.length){while(i<s.length&&/\s/.test(s[i]))i++;var j=i;while(j<s.length&&!/\s/.test(s[j]))j++;if(j>i){var r=document.createRange();r.setStart(t,i);r.setEnd(t,j);var b=r.getBoundingClientRect();if(b.width>0)words.push({w:s.slice(i,j),top:Math.round(b.top)})}i=j}});
-    var L=[];
-    words.forEach(function(x){var l=null;for(var k=0;k<L.length;k++)if(Math.abs(L[k].top-x.top)<4)l=L[k];if(l)l.words.push(x.w);else L.push({top:x.top,words:[x.w]})});
-    return L.sort(function(a,b){return a.top-b.top});
-  }
+  var NB='\u00A0';
   function wordsN(el){
     var tn=[],w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n;
     while(n=w.nextNode())tn.push(n);
@@ -625,54 +616,44 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
     tn.forEach(function(t){var s=t.textContent,i=0;while(i<s.length){while(i<s.length&&/\s/.test(s[i]))i++;var j=i;while(j<s.length&&!/\s/.test(s[j]))j++;if(j>i){var r=document.createRange();r.setStart(t,i);r.setEnd(t,j);var b=r.getBoundingClientRect();if(b.width>0)out.push({w:s.slice(i,j),top:Math.round(b.top),node:t,end:j})}i=j}});
     return out;
   }
-  function fixNodes(el){
-    for(var pass=0;pass<8;pass++){
-      var ws=wordsN(el); if(ws.length<4) return;
-      var L=[];
-      ws.forEach(function(x){var l=null;for(var k=0;k<L.length;k++)if(Math.abs(L[k].top-x.top)<4)l=L[k];if(l)l.items.push(x);else L.push({top:x.top,items:[x]})});
-      L.sort(function(a,b){return a.top-b.top});
-      if(L.length<2) return;
-      var did=false;
+  function groupLines(ws){
+    var L=[];
+    ws.forEach(function(x){var l=null;for(var k=0;k<L.length;k++)if(Math.abs(L[k].top-x.top)<4)l=L[k];if(l)l.items.push(x);else L.push({top:x.top,items:[x]})});
+    return L.sort(function(a,b){return a.top-b.top});
+  }
+  function glueAfter(it){
+    var s=it.node.textContent,j=it.end;
+    if(j<s.length&&/\s/.test(s[j])&&s[j]!==NB){it.node.textContent=s.slice(0,j)+NB+s.slice(j+1);return true}
+    var nx=it.node.nextSibling;
+    if(j>=s.length&&nx&&nx.nodeType===3){var s2=nx.textContent;if(/^\s/.test(s2)&&s2[0]!==NB){nx.textContent=NB+s2.slice(1);return true}}
+    return false;
+  }
+  function glueBefore(it){
+    var st=it.end-it.w.length,s=it.node.textContent;
+    if(st>0&&/\s/.test(s[st-1])&&s[st-1]!==NB){it.node.textContent=s.slice(0,st-1)+NB+s.slice(st);return true}
+    var pv=it.node.previousSibling;
+    if(st===0&&pv&&pv.nodeType===3){var s2=pv.textContent;if(/\s$/.test(s2)&&s2.slice(-1)!==NB){pv.textContent=s2.slice(0,-1)+NB;return true}}
+    return false;
+  }
+  function fixEl(el){
+    var kids=[].slice.call(el.children);
+    if(kids.length&&!kids.every(function(c){return c.tagName!=='BR'&&getComputedStyle(c).display.indexOf('inline')===0}))return;
+    if(el.textContent.trim().split(/\s+/).length<4)return;
+    for(var pass=0;pass<10;pass++){
+      var L=groupLines(wordsN(el));
+      if(L.length<2)return;
+      var changed=false;
       for(var i=0;i<L.length-1;i++){
-        var last=L[i].items[L[i].items.length-1];
-        var lw=last.w.replace(/[.,;:!?]$/,'');
-        if(!SHORT.test(lw)) continue;
-        var node=last.node,s=node.textContent,j=last.end;
-        if(j<s.length&&/\s/.test(s[j])&&s[j]!=='\u00A0'){node.textContent=s.slice(0,j)+'\u00A0'+s.slice(j+1);did=true}
-        else if(j>=s.length&&node.nextSibling&&node.nextSibling.nodeType===3){var s2=node.nextSibling.textContent;if(/^\s/.test(s2)&&s2[0]!=='\u00A0'){node.nextSibling.textContent='\u00A0'+s2.slice(1);did=true}}
+        var it=L[i].items[L[i].items.length-1];
+        var lw=it.w.replace(/[.,;:!?]$/,'');
+        if(SHORT.test(lw)&&glueAfter(it))changed=true;
       }
-      if(!did) break;
-    }
-    var ws2=wordsN(el);
-    var L2=[];
-    ws2.forEach(function(x){var l=null;for(var k=0;k<L2.length;k++)if(Math.abs(L2[k].top-x.top)<4)l=L2[k];if(l)l.items.push(x);else L2.push({top:x.top,items:[x]})});
-    L2.sort(function(a,b){return a.top-b.top});
-    if(L2.length>=2&&L2[L2.length-1].items.length===1){
-      var lastW=L2[L2.length-1].items[0];
-      var st=lastW.end-lastW.w.length,nd=lastW.node,ss=nd.textContent;
-      if(st>0&&/\s/.test(ss[st-1])&&ss[st-1]!=='\u00A0'){nd.textContent=ss.slice(0,st-1)+'\u00A0'+ss.slice(st)}
-      else if(st===0){var pv=nd.previousSibling;if(pv&&pv.nodeType===3&&/\s$/.test(pv.textContent)&&pv.textContent.slice(-1)!=='\u00A0'){pv.textContent=pv.textContent.slice(0,-1)+'\u00A0'}}
+      var last=L[L.length-1];
+      if(last.items.length===1&&glueBefore(last.items[0]))changed=true;
+      if(!changed)return;
     }
   }
-  function fix(){
-    [].slice.call(document.querySelectorAll(SEL)).forEach(function(el){
-      var kids=[].slice.call(el.children);if(kids.length){var ok=kids.every(function(c){return c.tagName!=='BR'&&getComputedStyle(c).display.indexOf('inline')===0});if(ok)fixNodes(el);return;}
-      var words=el.textContent.trim().split(/\s+/); if(words.length<4) return;
-      var seps=words.map(function(){return ' '});
-      function render(){el.textContent=words.map(function(w,i){return i?seps[i-1]+w:w}).join('')}
-      render();
-      for(var pass=0;pass<8;pass++){
-        var L=lines(el); if(L.length<2) break;
-        var did=false,idx=0;
-        for(var i=0;i<L.length-1;i++){
-          idx+=L[i].words.length;
-          var lw=L[i].words[L[i].words.length-1].replace(/[.,;:!?]$/,'');
-          if(SHORT.test(lw)&&seps[idx-1]===' '){seps[idx-1]='\u00A0';did=true}
-        }
-        if(!did) break; render();
-      }
-    });
-  }
+  function fix(){[].slice.call(document.querySelectorAll(SEL)).forEach(fixEl)}
   var t; function run(){clearTimeout(t);t=setTimeout(fix,150)}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
   addEventListener('load',run); addEventListener('resize',run,{passive:true});
