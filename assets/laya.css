@@ -1129,3 +1129,8 @@ p,.rte p,li{text-wrap:pretty}
 [id$="--23017845555331__main"] .prose > p:nth-of-type(14){max-width:41ch}
 [id$="--22985123332227__main"] .prose > p:nth-of-type(3){max-width:42ch}
 }
+
+/* ==== typography pass B (user-tested, 2026-09-23) ==== */
+h1,h2,h3,h4,.dsp,.eyebrow{text-wrap:balance}
+p,li,figcaption{text-wrap:pretty}
+.lede p,.split-body p,.hero-copy p,.svc p,.tile p,.doc-stand{text-wrap:balance}

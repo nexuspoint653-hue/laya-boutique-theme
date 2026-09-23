@@ -603,3 +603,41 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
   }
 })();
 
+
+
+/* ==== typography pass B: NBSP-bind short words at line ends (user-tested, 2026-09-23) ==== */
+(function(){
+  var SEL='h1,h2,h3,.dsp,.lede p,.split-body p,.hero-copy p,.svc p,.tile p,.doc-stand,.prose p,.rte p';
+  var SHORT=/^(a|an|and|as|at|be|by|for|from|in|is|it|of|on|or|our|so|the|to|up|we|with|your|that|&)$/i;
+  function lines(el){
+    var tn=[],w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n;
+    while(n=w.nextNode())tn.push(n);
+    var words=[];
+    tn.forEach(function(t){var s=t.textContent,i=0;while(i<s.length){while(i<s.length&&/\s/.test(s[i]))i++;var j=i;while(j<s.length&&!/\s/.test(s[j]))j++;if(j>i){var r=document.createRange();r.setStart(t,i);r.setEnd(t,j);var b=r.getBoundingClientRect();if(b.width>0)words.push({w:s.slice(i,j),top:Math.round(b.top)})}i=j}});
+    var L=[];
+    words.forEach(function(x){var l=null;for(var k=0;k<L.length;k++)if(Math.abs(L[k].top-x.top)<4)l=L[k];if(l)l.words.push(x.w);else L.push({top:x.top,words:[x.w]})});
+    return L.sort(function(a,b){return a.top-b.top});
+  }
+  function fix(){
+    [].slice.call(document.querySelectorAll(SEL)).forEach(function(el){
+      if(el.children.length) return;
+      var words=el.textContent.trim().split(/\s+/); if(words.length<4) return;
+      var seps=words.map(function(){return ' '});
+      function render(){el.textContent=words.map(function(w,i){return i?seps[i-1]+w:w}).join('')}
+      render();
+      for(var pass=0;pass<3;pass++){
+        var L=lines(el); if(L.length<2) break;
+        var did=false,idx=0;
+        for(var i=0;i<L.length-1;i++){
+          idx+=L[i].words.length;
+          var lw=L[i].words[L[i].words.length-1].replace(/[.,;:!?]$/,'');
+          if(SHORT.test(lw)&&seps[idx-1]===' '){seps[idx-1]='\u00A0';did=true}
+        }
+        if(!did) break; render();
+      }
+    });
+  }
+  var t; function run(){clearTimeout(t);t=setTimeout(fix,150)}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+  addEventListener('load',run); addEventListener('resize',run,{passive:true});
+})();
