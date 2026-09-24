@@ -12,7 +12,7 @@
     "hero": {
       "type": "hero-video",
       "settings": {
-        "video": "shopify://files/videos/The_Timeline___.mp4",
+        "video": "shopify://files/videos/I_need_the_full_view_that_will.mp4",
         "video_url": "",
         "video_asset": "",
         "poster_asset": "",
@@ -495,6 +495,7 @@
         "link_text": "Discover the Collection",
         "link": "/collections/new-in",
         "fallback": "laya-banner.jpg",
+        "video": "shopify://files/videos/huda-chocolate-tiered-chiffon-dress.mp4",
         "video_url": "",
         "video_asset": "laya-monogram-set.mp4",
         "poster_asset": "laya-monogram-set-poster.jpg",
