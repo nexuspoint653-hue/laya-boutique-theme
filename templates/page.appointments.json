@@ -1,12 +1,46 @@
-{ "sections": {
-    "split": { "type": "split-panel", "settings": {
-      "eyebrow": "Private Service", "heading": "Book an Appointment",
-      "body": "<p>One hour, one stylist, entirely yours. Personal styling, made-to-measure fittings and bridal consultations — in the atelier or by video call.</p>",
-      "scheme": "light", "flip": false, "fallback": "laya-split-1.jpg" } },
-    "main": { "type": "main-page", "settings": {} },
-    "form": { "type": "contact-form", "settings": {
-      "heading": "Request an Appointment",
-      "services": "Personal Styling, Made-to-Measure, Bridal & Nikah, Wardrobe Edit",
-      "show_date": true, "button_label": "Submit Request" } }
+{
+  "sections": {
+    "split": {
+      "type": "split-panel",
+      "settings": {
+        "eyebrow": "Private Service",
+        "heading": "Book an Appointment",
+        "body": "<p>One hour, one stylist, entirely yours. Personal styling, made-to-measure fittings and bridal consultations — in the atelier or by video call.</p>",
+        "scheme": "light",
+        "flip": false,
+        "fallback": "laya-split-1.jpg",
+        "text_align": "center"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "show_title": false,
+        "measure": "wide",
+        "list_style": "cards"
+      }
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {
+        "heading": "Request an Appointment",
+        "services": "Personal Styling, Made-to-Measure, Bridal & Nikah, Wardrobe Edit",
+        "show_date": true,
+        "button_label": "Submit Request",
+        "layout": "split",
+        "eyebrow": "Reserve",
+        "intro": "<p>Choose a service and a preferred date. A member of our team will confirm your time personally.</p>",
+        "address": "13328 Michigan Ave, Dearborn, MI 48126",
+        "map_url": "https://www.google.com/maps/search/?api=1&query=Laya+Boutique+13328+Michigan+Ave+Dearborn+MI+48126",
+        "phone": "(734) 544-5555",
+        "note_label": "Video",
+        "note": "Personal styling and wardrobe edits are also available by video call."
+      }
+    }
   },
-  "order": ["split", "main", "form"] }
+  "order": [
+    "split",
+    "main",
+    "form"
+  ]
+}

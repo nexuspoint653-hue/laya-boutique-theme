@@ -1173,3 +1173,37 @@ p,li,figcaption{text-wrap:pretty}
   .fw-credit-logo{width:110px}
 }
 @media (prefers-reduced-motion:reduce){.fw-credit-by,.fw-credit-logo{transition:none}}
+
+/* ===== Service pages: wider measure, card lists, split contact ===== */
+.prose--wide{max-width:min(760px,100%);padding-block:clamp(40px,5vw,72px) clamp(10px,2vw,24px)}
+.prose--wide p,.prose--wide li{font-size:15px}
+.prose--wide > h2:first-child,.prose--wide > .lede:first-child + h2{margin-top:10px}
+.prose--wide .lede{font-size:clamp(17px,1.6vw,21px);color:var(--soft);margin-bottom:8px}
+.prose--notitle{padding-top:clamp(56px,6vw,96px)}
+.prose--cards ul{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.prose--cards li{margin:0;padding:24px 24px 22px;border:1px solid var(--line);background:var(--paper,#fff);
+  transition:border-color .45s ease,transform .45s cubic-bezier(.22,.61,.36,1)}
+.prose--cards li:hover{border-color:var(--gold);transform:translateY(-2px)}
+.prose--cards li strong{display:block;font-family:var(--serif);font-weight:400;font-size:19px;letter-spacing:.03em;color:var(--ink);margin-bottom:6px}
+.prose--cards li{font-size:13.5px;line-height:1.7}
+.cf-sec{padding-top:clamp(20px,3vw,40px)}
+.cf-sec--split{padding-bottom:clamp(56px,7vw,110px)}
+.cf-split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,6vw,112px);max-width:1120px;margin:0 auto;align-items:start;
+  border-top:1px solid var(--line);padding-top:clamp(40px,5vw,72px)}
+.cf-eyebrow{display:block;margin-bottom:14px}
+.cf-h{margin:0 0 14px}
+.cf-intro{margin:0 0 6px}
+.cf-details{margin:30px 0 0;border-top:1px solid var(--line)}
+.cf-row{display:grid;grid-template-columns:118px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);margin:0}
+.cf-row dt{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.cf-row dd{margin:0;font-size:14px;line-height:1.65;color:var(--soft)}
+.cf-row a{color:var(--ink);text-decoration:none;background:linear-gradient(currentColor,currentColor) left bottom/100% 1px no-repeat;
+  padding-bottom:1px;transition:color .35s ease,background-size .45s cubic-bezier(.65,0,.35,1)}
+.cf-row a:hover{color:var(--gold);background-size:0 1px;background-position:right bottom}
+.cf-split .form,.prose .form{max-width:100%;margin:0}
+.cf-main .form{padding-top:4px}
+.cf-submit{justify-self:start}
+@media (max-width:900px){
+  .cf-split{grid-template-columns:1fr;gap:36px}
+  .prose--cards ul{grid-template-columns:1fr}
+}

@@ -31,6 +31,7 @@
 </style>
 {%- endunless -%}
 <div class="doc-wrap{{ doc_cls }}{{ fl_cls }}">
+{%- unless p.show_title == false -%}
 <div class="phead">
   <div class="wrap">
     {%- if p.eyebrow != blank -%}<span class="eyebrow">{{ p.eyebrow }}</span>{%- endif -%}
@@ -39,7 +40,8 @@
     {%- if p.standfirst != blank -%}<p class="doc-stand">{{ p.standfirst }}</p>{%- endif -%}
   </div>
 </div>
-<div class="wrap{{ doc_cls }}"><div class="prose rte{% if look == 'menu' %} prose--menu{% endif %}"{% if p.doc_nav == false %} data-nonav{% endif %}>
+{%- endunless -%}
+<div class="wrap{{ doc_cls }}"><div class="prose rte{% if look == 'menu' %} prose--menu{% endif %}{% if p.measure == 'wide' %} prose--wide{% endif %}{% if p.list_style == 'cards' %} prose--cards{% endif %}{% if p.show_title == false %} prose--notitle{% endif %}"{% if p.doc_nav == false %} data-nonav{% endif %}>
   {%- if p.updated != blank -%}
     <p class="updated">Last updated {{ p.updated }}</p>
   {%- endif -%}
@@ -83,6 +85,36 @@
 {
   "name": "Page",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "measure",
+      "label": "Text column width",
+      "default": "standard",
+      "options": [
+        {"value": "standard","label": "Standard (documents)"},
+        {"value": "wide","label": "Wide (service pages)"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "list_style",
+      "label": "Bullet lists",
+      "default": "bullets",
+      "options": [
+        {"value": "bullets","label": "Bullets"},
+        {"value": "cards","label": "Cards"}
+      ]
+    },
     {
       "type": "header",
       "content": "Document style"

@@ -1,10 +1,34 @@
 {% render 'section-style', s: section %}
 {% render 'section-bg', s: section %}
-<section class="sec-tight">
+{%- assign cf_split = false -%}{%- if section.settings.layout == 'split' -%}{%- assign cf_split = true -%}{%- endif -%}
+<section class="sec-tight cf-sec{% if cf_split %} cf-sec--split{% endif %}">
 {% render 'section-copy', s: section, place: 'top' %}
-  <div class="wrap"><div class="prose">
-    {%- if section.settings.heading != blank -%}<h2 class="dsp dsp-m" style="margin-bottom:8px">{{ section.settings.heading }}</h2>{%- endif -%}
-    {%- if section.settings.intro != blank -%}<div class="lede rte" style="margin-bottom:26px">{{ section.settings.intro }}</div>{%- endif -%}
+  <div class="wrap"><div class="{% if cf_split %}cf-split{% else %}prose{% endif %}">
+    {%- if cf_split -%}<div class="cf-aside">{%- endif -%}
+    {%- if section.settings.eyebrow != blank -%}<span class="eyebrow cf-eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+    {%- if section.settings.heading != blank -%}<h2 class="dsp dsp-m cf-h">{{ section.settings.heading }}</h2>{%- endif -%}
+    {%- if section.settings.intro != blank -%}<div class="lede rte cf-intro">{{ section.settings.intro }}</div>{%- endif -%}
+    {%- if cf_split -%}
+      {%- if section.settings.address != blank or section.settings.phone != blank or section.settings.email != blank or section.settings.note != blank -%}
+      <dl class="cf-details">
+        {%- if section.settings.address != blank -%}
+          <div class="cf-row"><dt>Boutique</dt><dd>
+            {%- if section.settings.map_url != blank -%}<a href="{{ section.settings.map_url }}" target="_blank" rel="noopener">{{ section.settings.address }}</a>{%- else -%}{{ section.settings.address }}{%- endif -%}
+          </dd></div>
+        {%- endif -%}
+        {%- if section.settings.phone != blank -%}
+          <div class="cf-row"><dt>Telephone</dt><dd><a href="tel:{{ section.settings.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ section.settings.phone }}</a></dd></div>
+        {%- endif -%}
+        {%- if section.settings.email != blank -%}
+          <div class="cf-row"><dt>Email</dt><dd><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></dd></div>
+        {%- endif -%}
+        {%- if section.settings.note != blank -%}
+          <div class="cf-row"><dt>{{ section.settings.note_label | default: 'Hours' }}</dt><dd>{{ section.settings.note }}</dd></div>
+        {%- endif -%}
+      </dl>
+      {%- endif -%}
+      </div><div class="cf-main">
+    {%- endif -%}
 
     {% form 'contact' %}
       {%- if form.posted_successfully? -%}
@@ -37,11 +61,12 @@
           {%- endif -%}
           <div class="field"><label for="cf-body">{{ section.settings.message_label }}</label>
             <textarea id="cf-body" name="contact[body]" rows="4" placeholder="Optional"></textarea></div>
-          <button type="submit" class="btn btn-solid" style="justify-self:start">{{ section.settings.button_label }}</button>
+          <button type="submit" class="btn btn-solid cf-submit">{{ section.settings.button_label }}</button>
           <p class="small">{{ section.settings.footnote }}</p>
         </div>
       {%- endif -%}
     {% endform %}
+    {%- if cf_split -%}</div>{%- endif -%}
   </div></div>
 {% render 'section-copy', s: section, place: 'bottom' %}
 </section>
@@ -50,6 +75,21 @@
 {
   "name": "Contact form",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "stacked",
+      "options": [
+        {"value": "stacked","label": "Stacked"},
+        {"value": "split","label": "Details beside form"}
+      ]
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow"
+    },
     {
       "type": "text",
       "id": "heading",
@@ -91,6 +131,16 @@
       "label": "Footnote",
       "default": "We reply to every request within two business days."
     },
+    {
+      "type": "header",
+      "content": "Boutique details (Details beside form)"
+    },
+    {"type": "text","id": "address","label": "Address","default": "13328 Michigan Ave, Dearborn, MI 48126"},
+    {"type": "url","id": "map_url","label": "Map link"},
+    {"type": "text","id": "phone","label": "Telephone","default": "(734) 544-5555"},
+    {"type": "text","id": "email","label": "Email"},
+    {"type": "text","id": "note_label","label": "Extra row label","default": "Hours"},
+    {"type": "text","id": "note","label": "Extra row text"},
     {
       "type": "header",
       "content": "Appearance"

@@ -3,7 +3,8 @@
     "main": {
       "type": "main-page",
       "settings": {
-        "eyebrow": "We Are Here to Help"
+        "eyebrow": "We Are Here to Help",
+        "measure": "wide"
       }
     },
     "form": {
@@ -14,7 +15,14 @@
         "show_date": false,
         "message_label": "How can we help?",
         "button_label": "Send Message",
-        "footnote": "We reply within one business day."
+        "footnote": "We reply within one business day.",
+        "layout": "split",
+        "eyebrow": "Contact Us",
+        "address": "13328 Michigan Ave, Dearborn, MI 48126",
+        "map_url": "https://www.google.com/maps/search/?api=1&query=Laya+Boutique+13328+Michigan+Ave+Dearborn+MI+48126",
+        "phone": "(734) 544-5555",
+        "note_label": "Appointments",
+        "note": "Available outside opening hours — request below."
       }
     },
     "svc": {
