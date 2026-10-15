@@ -1207,3 +1207,9 @@ p,li,figcaption{text-wrap:pretty}
   .cf-split{grid-template-columns:1fr;gap:36px}
   .prose--cards ul{grid-template-columns:1fr}
 }
+/* align service-page prose to the same 1120 grid as the split contact block */
+.prose--wide{max-width:1120px}
+.prose--wide > *{max-width:760px}
+.prose--cards > ul{max-width:none;grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1100px){.prose--cards > ul{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.prose--cards > ul{grid-template-columns:1fr}}
