@@ -51,7 +51,13 @@
       </div>
     {%- endif -%}
 
-    <hr class="rule" style="margin-top:26px">
+    <div class="ftr-rule-row">
+      <span class="ftr-rule-line" aria-hidden="true"></span>
+      <a class="fw-credit" href="https://frameworksstudio.net/" target="_blank" rel="noopener" aria-label="Powered by FrameWorks Studio">
+        <span class="fw-credit-by">Powered by</span>
+        <span class="fw-credit-logo" role="img" aria-hidden="true" style="--fw-logo:url('{{ 'frameworks-studio-logo.png' | file_img_url: '760x' }}')"></span>
+      </a>
+    </div>
     <div class="ftr-mark" data-rv>
       {%- if section.settings.logo != blank -%}
         <img src="{{ section.settings.logo | image_url: width: 900 }}" alt="{{ shop.name | escape }}" style="max-width:min(560px,80vw);margin:0 auto;height:auto">
@@ -63,10 +69,6 @@
     {% render 'social-icons' %}
     <div class="ftr-base">
       <div class="copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</div>
-      <a class="fw-credit" href="https://frameworksstudio.net/" target="_blank" rel="noopener" aria-label="Powered by FrameWorks Studio">
-        <span class="fw-credit-by">Powered by</span>
-        <span class="fw-credit-logo" role="img" aria-hidden="true" style="--fw-logo:url('{{ 'frameworks-studio-logo.png' | file_img_url: '760x' }}')"></span>
-      </a>
     </div>
     <script>
       (function(){var el=document.querySelector('.fw-credit');if(!el)return;
