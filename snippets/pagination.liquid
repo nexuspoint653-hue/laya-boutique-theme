@@ -1,0 +1,29 @@
+{%- comment -%} Editorial pagination: Prev · 01 02 03 … 20 · Next {%- endcomment -%}
+{%- if paginate.pages > 1 -%}
+<nav class="pg" aria-label="Pagination">
+  {%- if paginate.previous -%}
+    <a class="pg-step" href="{{ paginate.previous.url }}" rel="prev"><span class="pg-arrow" aria-hidden="true">&larr;</span><span class="pg-word">Previous</span></a>
+  {%- else -%}
+    <span class="pg-step is-off" aria-hidden="true"><span class="pg-arrow">&larr;</span><span class="pg-word">Previous</span></span>
+  {%- endif -%}
+  <ol class="pg-nums">
+    {%- for part in paginate.parts -%}
+      {%- assign n = part.title | plus: 0 -%}
+      {%- if n < 10 and n > 0 -%}{%- assign label = '0' | append: part.title -%}{%- else -%}{%- assign label = part.title -%}{%- endif -%}
+      {%- if part.is_link -%}
+        <li><a class="pg-n" href="{{ part.url }}" aria-label="Page {{ part.title }}">{{ label }}</a></li>
+      {%- elsif part.title == paginate.current_page -%}
+        <li><span class="pg-n is-on" aria-current="page">{{ label }}</span></li>
+      {%- else -%}
+        <li><span class="pg-gap" aria-hidden="true">&middot;&middot;&middot;</span></li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ol>
+  {%- if paginate.next -%}
+    <a class="pg-step" href="{{ paginate.next.url }}" rel="next"><span class="pg-word">Next</span><span class="pg-arrow" aria-hidden="true">&rarr;</span></a>
+  {%- else -%}
+    <span class="pg-step is-off" aria-hidden="true"><span class="pg-word">Next</span><span class="pg-arrow">&rarr;</span></span>
+  {%- endif -%}
+  <p class="pg-count">Page {{ paginate.current_page }} of {{ paginate.pages }}</p>
+</nav>
+{%- endif -%}

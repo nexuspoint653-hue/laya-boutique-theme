@@ -58,7 +58,7 @@
       {%- endfor -%}
   </div>
   {%- if paginate.pages > 1 -%}
-    <div class="pagination">{{ paginate | default_pagination }}</div>
+    {% render 'pagination', paginate: paginate %}
   {%- endif -%}
     {%- endpaginate -%}
 </div>

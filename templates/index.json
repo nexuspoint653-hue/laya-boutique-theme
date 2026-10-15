@@ -563,48 +563,8 @@
     },
     "look": {
       "type": "shop-the-look",
-      "blocks": {
-        "l1": {
-          "type": "look",
-          "settings": {
-            "products": [
-              "gid://shopify/Product/9236131774595",
-              "gid://shopify/Product/9236132790403",
-              "gid://shopify/Product/9236132724867",
-              "lina-black-tiered-tulle-gown",
-              "dana-two-piece-linen-set",
-              "amani-black-embellished-chiffon-set"
-            ]
-          }
-        },
-        "l2": {
-          "type": "look",
-          "disabled": true,
-          "settings": {
-            "products": [
-              "gid://shopify/Product/9236131020931",
-              "gid://shopify/Product/9236132692099",
-              "gid://shopify/Product/9236132823171"
-            ]
-          }
-        },
-        "l3": {
-          "type": "look",
-          "disabled": true,
-          "settings": {
-            "products": [
-              "gid://shopify/Product/9236132561027",
-              "gid://shopify/Product/9236132790403",
-              "gid://shopify/Product/9236132692099"
-            ]
-          }
-        }
-      },
-      "block_order": [
-        "l1",
-        "l2",
-        "l3"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "heading": "Shop The Look",
         "subheading": "",
@@ -613,7 +573,7 @@
         "shop_all_link": "",
         "columns": 3,
         "empty_text": "Add products to this look",
-        "collection": "",
+        "collection": "bestsellers",
         "collection_limit": 8,
         "card_ratio": "4-5",
         "card_hover": "video",
