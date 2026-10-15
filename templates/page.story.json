@@ -16,9 +16,9 @@
         "fallback": "laya-storefront.jpg",
         "eyebrow": "Since 2019",
         "heading": "Our Story",
-        "height": 82,
+        "height": 80,
         "focal": "top",
-        "overlay": 32,
+        "overlay": 30,
         "text_align": "center",
         "heading_size": "dsp-l"
       }
@@ -98,8 +98,8 @@
         "width": "narrow",
         "link_text": "Get Directions",
         "link": "https://www.google.com/maps/search/?api=1&query=Laya+Boutique+13328+Michigan+Ave+Dearborn+MI+48126",
-        "pad_top": 30,
-        "pad_bottom": 30,
+        "pad_top": 32,
+        "pad_bottom": 32,
         "look": "address"
       }
     },
