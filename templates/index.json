@@ -563,8 +563,6 @@
     },
     "look": {
       "type": "shop-the-look",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "heading": "Shop The Look",
         "subheading": "",
