@@ -15,13 +15,17 @@
         "fallback": "laya-split-3.jpg",
         "eyebrow": "Since 2019",
         "heading": "Our Story",
-        "height": 65
+        "height": 65,
+        "image": "shopify://shop_images/mira-emerald-jacquard-gown.jpg",
+        "focal": "top",
+        "overlay": 30
       }
     },
     "main": {
       "type": "main-page",
       "settings": {
-        "show_title": false
+        "show_title": false,
+        "measure": "wide"
       }
     },
     "svc": {
