@@ -63,8 +63,9 @@
     {% render 'social-icons' %}
     <div class="ftr-base">
       <div class="copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</div>
-      <a class="fw-credit" href="https://frameworksstudio.net/" target="_blank" rel="noopener" aria-label="Website by FrameWorks Studio">
-        <span class="fw-credit-txt" data-text="Your entire brand forged into one powerful force — FrameWorks Studio">Your entire brand forged into one powerful force — FrameWorks Studio</span>
+      <a class="fw-credit" href="https://frameworksstudio.net/" target="_blank" rel="noopener" aria-label="Powered by FrameWorks Studio">
+        <span class="fw-credit-by">Powered by</span>
+        <span class="fw-credit-logo" role="img" aria-hidden="true" style="--fw-logo:url('{{ 'frameworks-studio-logo.png' | file_img_url: '760x' }}')"></span>
       </a>
     </div>
     <script>
