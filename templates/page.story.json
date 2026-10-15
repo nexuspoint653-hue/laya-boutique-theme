@@ -35,7 +35,7 @@
           "type": "item",
           "settings": {
             "title": "Visit the Atelier",
-            "body": "Private appointments for styling, fittings and bridal commissions.",
+            "body": "Book a private visit for styling, fitting or bridal wear.",
             "link_text": "Book Now",
             "link": "/pages/appointments"
           }
@@ -53,7 +53,7 @@
           "type": "item",
           "settings": {
             "title": "Size Guidance",
-            "body": "Measure with a stylist over video call, free of charge.",
+            "body": "Measure with our stylist over video call, free of charge.",
             "link_text": "Size Guide",
             "link": "/pages/size-guide"
           }

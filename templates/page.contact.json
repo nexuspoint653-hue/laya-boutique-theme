@@ -32,7 +32,7 @@
           "type": "item",
           "settings": {
             "title": "Shipping & Returns",
-            "body": "Delivery timelines, duties, and how to arrange an exchange.",
+            "body": "Delivery timelines, duties, and how to arrange your exchange.",
             "link_text": "Read More",
             "link": "/pages/shipping-returns"
           }
@@ -50,7 +50,7 @@
           "type": "item",
           "settings": {
             "title": "Appointments",
-            "body": "Private styling and made-to-measure fittings.",
+            "body": "Private styling, fitting and bridal wear, all by appointment.",
             "link_text": "Book Now",
             "link": "/pages/appointments"
           }

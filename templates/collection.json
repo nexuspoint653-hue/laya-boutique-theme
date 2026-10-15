@@ -23,7 +23,7 @@
           "type": "item",
           "settings": {
             "title": "Easy Exchanges",
-            "body": "Thirty days to exchange or return unworn pieces in their original condition.",
+            "body": "Thirty full days to exchange or return unworn pieces in their original condition.",
             "link_text": "Returns Policy",
             "link": "/pages/shipping-returns"
           }
@@ -32,7 +32,7 @@
           "type": "item",
           "settings": {
             "title": "Size Guidance",
-            "body": "Unsure of your length? Our stylists will measure with you over video call.",
+            "body": "Unsure about your length? Our stylists will personally measure you by video call.",
             "link_text": "Size Guide",
             "link": "/pages/size-guide"
           }
