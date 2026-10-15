@@ -1,4 +1,4 @@
-/* Laya Boutique — theme behaviours */
+/* Laya Boutique: theme behaviours */
 (function(){
 "use strict";
 var CAN_HOVER = matchMedia("(hover:hover) and (pointer:fine)").matches;
@@ -544,7 +544,7 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
       onScroll();
       return;
     }
-    /* exit intent — pointer leaving the top of the viewport, or a hard
+    /* exit intent: pointer leaving the top of the viewport, or a hard
        back-swipe on touch where there is no cursor to track */
     var exit = function(e){
       if(e.clientY > 0) return;

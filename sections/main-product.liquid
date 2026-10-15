@@ -37,7 +37,7 @@
     {%- comment -%}
       Split the media: stills carry the spotlight, film goes to its own smaller
       card. A two-piece set ships three stills and a film, an abaya can ship
-      four and no film — the same markup covers both without a switch.
+      four and no film: the same markup covers both without a switch.
     {%- endcomment -%}
     {%- assign stills = product.media | where: 'media_type', 'image' -%}
     {%- assign films = product.media | where: 'media_type', 'video' -%}
@@ -146,7 +146,7 @@
           {%- assign oname = opt.name | downcase -%}
           <div style="margin-bottom:18px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-              <span class="ui" style="color:var(--muted)">{{ opt.name }}{% if oname contains 'colour' or oname contains 'color' %} — <span data-colour-label>{{ opt.selected_value }}</span>{% endif %}</span>
+              <span class="ui" style="color:var(--muted)">{{ opt.name }}{% if oname contains 'colour' or oname contains 'color' %}: <span data-colour-label>{{ opt.selected_value }}</span>{% endif %}</span>
               {%- if oname contains 'size' and section.settings.size_guide != blank -%}
                 <a href="{{ section.settings.size_guide }}" class="ul ul-r" style="font-size:10.5px">Size Guide</a>
               {%- endif -%}
@@ -754,15 +754,15 @@
       "options": [
         {
           "value": "normal",
-          "label": "Plain — a white wash"
+          "label": "Plain: a white wash"
         },
         {
           "value": "soft-light",
-          "label": "Soft — barely there"
+          "label": "Soft: barely there"
         },
         {
           "value": "screen",
-          "label": "Bright — a strong beam"
+          "label": "Bright: a strong beam"
         },
         {
           "value": "overlay",
@@ -843,7 +843,7 @@
     {
       "type": "image_picker",
       "id": "bg_image_mobile",
-      "label": "Background image — mobile"
+      "label": "Background image (mobile)"
     },
     {
       "type": "video",

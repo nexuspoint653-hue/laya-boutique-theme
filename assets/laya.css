@@ -631,7 +631,7 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .tiles--zoom .tile-media img{transition:transform 1.5s var(--e-out)}
 .tiles--zoom .tile:hover .tile-media img{transform:scale(1.05)}
 
-/* ======================= POPUPS — CONFIGURABLE (v2) ======================= */
+/* ======================= POPUPS: CONFIGURABLE (v2) ======================= */
 .cnote{background:var(--ck-bg,var(--paper));border:1px solid var(--ck-line,var(--line));
   color:var(--ck-fg,var(--ink));width:min(var(--ck-width,392px),calc(100vw - 28px));
   padding:var(--ck-pad,26px 28px 24px);border-radius:var(--ck-radius,0);box-shadow:var(--ck-shadow)}
@@ -779,7 +779,7 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 
 /* ============================== JUSTIFIED COPY ==============================
    Body prose only. Headings, buttons, nav, prices, eyebrows and anything one
-   line long are left alone — justify does nothing to a single line and would
+   line long are left alone: justify does nothing to a single line and would
    only stretch short labels. A section whose alignment the merchant set to
    centre or right keeps that choice.                                        */
 .t-just :where(.rte,.rte p,.rte li,
@@ -1058,12 +1058,12 @@ a.doc-jump-i:hover::before{width:11px;opacity:1}
 #shopify-section-template--23017845489795__main .prose p,#shopify-section-template--23017845489795__main .prose li{font-family:var(--serif);font-size:18px;line-height:1.75;color:var(--soft)}
 #shopify-section-template--23017845489795__main .prose>p:first-child{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
 
-/* ==== Typography wrap pass — 2026-09-23 (design-taste-frontend; detector-driven, no copy changes) ====
+/* ==== Typography wrap pass: 2026-09-23 (design-taste-frontend; detector-driven, no copy changes) ====
    Line-box scan of h1,h2,h3,p,.lede,.dsp,.eyebrow at 1440/768/390 flagged one-word last
    lines and lines ending in and/or/the/to/a/of/with. Fixes: balanced display type, pretty
    prose, hyphenated long-form docs, and per-block ch measure caps tuned by the detector.
    Known residual (reported, not fixable without copy/brand change): footer .nl-title
-   "SUBSCRIBE TO OUR NEWSLETTER" — balanced two-line split necessarily ends L1 on "TO". */
+   "SUBSCRIBE TO OUR NEWSLETTER": balanced two-line split necessarily ends L1 on "TO". */
 h1,h2,h3,.dsp,.eyebrow,.nl-title{text-wrap:balance}
 p,.rte p,li{text-wrap:pretty}
 .lede,.lede p{text-wrap:balance}

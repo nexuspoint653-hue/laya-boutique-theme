@@ -2,7 +2,7 @@
   assign s = section.settings
 
   comment
-    Booleans are resolved up front — Liquid's and/or are right-associative,
+    Booleans are resolved up front: Liquid's and/or are right-associative,
     so every guard below is a single precomputed flag.
   endcomment
 
@@ -268,7 +268,7 @@
     { "type": "richtext", "id": "offer_body", "label": "Body", "default": "<p>Join our list for early access to new arrivals, atelier notes, and invitations to private appointments.</p>" },
     { "type": "checkbox", "id": "offer_rule", "label": "Show accent rule", "default": true },
 
-    { "type": "header", "content": "Offer — form" },
+    { "type": "header", "content": "Offer: form" },
     { "type": "checkbox", "id": "collect_email", "label": "Collect email address", "default": true, "info": "Turn off to use the popup as an announcement with a single link button." },
     { "type": "checkbox", "id": "collect_name", "label": "Also ask for first name", "default": false },
     { "type": "text", "id": "name_placeholder", "label": "Name placeholder", "default": "First name" },
@@ -278,15 +278,15 @@
     { "type": "text", "id": "offer_cta", "label": "Button label", "default": "Claim Offer" },
     { "type": "url", "id": "button_link", "label": "Button link", "info": "Used only when \"Collect email address\" is off." },
     { "type": "text", "id": "tags", "label": "Customer tags", "default": "newsletter,welcome-offer" },
-    { "type": "text", "id": "offer_thanks", "label": "Thank-you message", "default": "Thank you — your code is on its way." },
+    { "type": "text", "id": "offer_thanks", "label": "Thank-you message", "default": "Thank you. Your code is on its way." },
     { "type": "text", "id": "discount_code", "label": "Discount code to reveal", "info": "Optional. Shown after signup; click copies it." },
     { "type": "text", "id": "code_hint", "label": "Code hint", "default": "Tap to copy" },
-    { "type": "text", "id": "error_text", "label": "Error message", "default": "That email did not go through — please try again." },
+    { "type": "text", "id": "error_text", "label": "Error message", "default": "That email did not go through. Please try again." },
     { "type": "richtext", "id": "offer_fine", "label": "Small print", "default": "<p>By subscribing you agree to our <a href=\"/pages/privacy-policy\">Privacy Policy</a> and <a href=\"/pages/terms-conditions\">Terms</a>. Unsubscribe at any time.</p>" },
     { "type": "checkbox", "id": "dismiss_show", "label": "Show dismiss link", "default": true },
     { "type": "text", "id": "offer_dismiss", "label": "Dismiss link", "default": "No thank you" },
 
-    { "type": "header", "content": "Offer — media" },
+    { "type": "header", "content": "Offer: media" },
     {
       "type": "select", "id": "media_type", "label": "Media", "default": "image",
       "options": [
@@ -363,18 +363,18 @@
     { "type": "color", "id": "media_tint", "label": "Colour panel / placeholder tint", "default": "#EFEBE4" },
     { "type": "text", "id": "media_caption", "label": "Media caption" },
 
-    { "type": "header", "content": "Offer — layout" },
+    { "type": "header", "content": "Offer: layout" },
     {
       "type": "select", "id": "layout", "label": "Style", "default": "panel",
       "options": [
         { "value": "panel", "label": "Centred panel" },
         { "value": "fullscreen", "label": "Full screen" },
-        { "value": "drawer-right", "label": "Drawer — right" },
-        { "value": "drawer-left", "label": "Drawer — left" },
-        { "value": "bar-bottom", "label": "Bar — bottom" },
-        { "value": "bar-top", "label": "Bar — top" },
-        { "value": "corner-right", "label": "Corner card — right" },
-        { "value": "corner-left", "label": "Corner card — left" }
+        { "value": "drawer-right", "label": "Drawer: right" },
+        { "value": "drawer-left", "label": "Drawer: left" },
+        { "value": "bar-bottom", "label": "Bar: bottom" },
+        { "value": "bar-top", "label": "Bar: top" },
+        { "value": "corner-right", "label": "Corner card: right" },
+        { "value": "corner-left", "label": "Corner card: left" }
       ]
     },
     { "type": "range", "id": "max_width", "label": "Panel width", "min": 320, "max": 1200, "step": 20, "unit": "px", "default": 880 },
@@ -409,7 +409,7 @@
     { "type": "range", "id": "speed", "label": "Entrance speed", "min": 100, "max": 1400, "step": 50, "unit": "ms", "default": 700 },
     { "type": "checkbox", "id": "show_close", "label": "Show close button", "default": true },
 
-    { "type": "header", "content": "Offer — colours" },
+    { "type": "header", "content": "Offer: colours" },
     { "type": "color", "id": "offer_bg", "label": "Background", "default": "#FFFFFF" },
     { "type": "color", "id": "offer_text", "label": "Text", "default": "#1B1A18" },
     { "type": "color", "id": "offer_muted", "label": "Secondary text", "default": "#8A837A" },
@@ -425,7 +425,7 @@
     { "type": "range", "id": "backdrop_opacity", "label": "Backdrop opacity", "min": 0, "max": 90, "step": 1, "unit": "%", "default": 44 },
     { "type": "range", "id": "backdrop_blur", "label": "Backdrop blur", "min": 0, "max": 20, "step": 1, "unit": "px", "default": 0 },
 
-    { "type": "header", "content": "Offer — behaviour" },
+    { "type": "header", "content": "Offer: behaviour" },
     {
       "type": "select", "id": "trigger", "label": "Trigger", "default": "delay",
       "options": [

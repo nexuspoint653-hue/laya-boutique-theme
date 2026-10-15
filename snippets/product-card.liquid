@@ -21,9 +21,9 @@
     show_colour    bool   default true
     swatch_limit   number default 5
     align          left | center                        default left
-    index          loop index — rotates the placeholder so a grid is not identical
+    index          loop index: rotates the placeholder so a grid is not identical
 
-  Manual overrides — any of these replace what the product would supply, and
+  Manual overrides: any of these replace what the product would supply, and
   together they let a card exist with no product behind it at all.
     img            image_picker object   replaces the product photograph
     img_hover      image_picker object   replaces the second (hover) image
@@ -108,7 +108,7 @@
 
   # a card can be driven by a product, by hand, or by both.
   # normalise first: a param the caller never passed is nil, and nil does not
-  # compare against blank reliably — default: '' makes every check below honest
+  # compare against blank reliably: default: '' makes every check below honest
   assign img = img | default: ''
   assign img_hover = img_hover | default: ''
   assign title_text = title_text | default: ''

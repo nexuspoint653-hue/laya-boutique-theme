@@ -32,7 +32,7 @@
 
     {% form 'contact' %}
       {%- if form.posted_successfully? -%}
-        <p class="lede">Thank you — we have your request and will reply within two business days.</p>
+        <p class="lede">Thank you. We have your request and will reply within two business days.</p>
       {%- else -%}
         {%- if form.errors -%}
           <p class="small" style="color:#a33">{{ form.errors | default_errors }}</p>
@@ -288,15 +288,15 @@
       "options": [
         {
           "value": "normal",
-          "label": "Plain — a white wash"
+          "label": "Plain: a white wash"
         },
         {
           "value": "soft-light",
-          "label": "Soft — barely there"
+          "label": "Soft: barely there"
         },
         {
           "value": "screen",
-          "label": "Bright — a strong beam"
+          "label": "Bright: a strong beam"
         },
         {
           "value": "overlay",
@@ -377,7 +377,7 @@
     {
       "type": "image_picker",
       "id": "bg_image_mobile",
-      "label": "Background image — mobile"
+      "label": "Background image (mobile)"
     },
     {
       "type": "video",
