@@ -1134,3 +1134,14 @@ p,.rte p,li{text-wrap:pretty}
 h1,h2,h3,h4,.dsp,.eyebrow{text-wrap:balance}
 p,li,figcaption{text-wrap:pretty}
 .lede p,.split-body p,.hero-copy p,.svc p,.tile p,.doc-stand{text-wrap:balance}
+
+/* ===== Split panels: centred block, justified body, centred last line ===== */
+.split-body[style*="text-align:center"]{align-items:center}
+.split-body[style*="text-align:center"] .lede,
+.split-body[style*="text-align:center"] .lede p{
+  text-align:justify;
+  text-justify:inter-word;
+  text-align-last:center;
+  text-wrap:pretty;
+  margin-inline:auto;
+}

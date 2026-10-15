@@ -183,7 +183,7 @@
         "ratio": "auto",
         "overlay": 0,
         "heading_size": "dsp-l",
-        "text_align": "left",
+        "text_align": "center",
         "text_pos": "center",
         "text_width": 100,
         "link_style": "underline",
@@ -372,7 +372,7 @@
         "ratio": "auto",
         "overlay": 0,
         "heading_size": "dsp-l",
-        "text_align": "left",
+        "text_align": "center",
         "text_pos": "center",
         "text_width": 100,
         "link_style": "underline",
@@ -698,7 +698,7 @@
         "ratio": "auto",
         "overlay": 0,
         "heading_size": "dsp-l",
-        "text_align": "left",
+        "text_align": "center",
         "text_pos": "center",
         "text_width": 100,
         "link_style": "underline",
@@ -754,7 +754,7 @@
           "type": "item",
           "settings": {
             "title": "Client Care",
-            "body": "Our client services team is available to assist with online orders, exchanges and any enquiry about your pieces.",
+            "body": "Our care team assists with online orders, exchanges and every question about your purchases.",
             "link_text": "Learn More",
             "link": "/pages/client-care"
           }
@@ -772,7 +772,7 @@
           "type": "item",
           "settings": {
             "title": "Bespoke Atelier",
-            "body": "Made-to-measure and bridal commissions, available by appointment only.",
+            "body": "Made-to-measure and bridal pieces, cut to your size and offered by private appointment only.",
             "link_text": "Learn More",
             "link": "/pages/appointments"
           }
