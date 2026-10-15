@@ -2,7 +2,7 @@
 {% render 'section-bg', s: section %}
 <section class="sec-tight">
 {% render 'section-copy', s: section, place: 'top' %}
-  <div class="wrap"><div class="prose rte" style="text-align:{{ section.settings.align }}">
+  <div class="wrap"><div class="prose rte{% if section.settings.look == 'statement' %} prose--statement{% elsif section.settings.look == 'address' %} prose--address{% endif %}" style="text-align:{{ section.settings.align }}">
     {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
     {%- if section.settings.heading != blank -%}<h2 class="dsp dsp-l" style="margin:12px 0 18px">{{ section.settings.heading }}</h2>{%- endif -%}
     {{ section.settings.body }}
@@ -17,6 +17,17 @@
 {
   "name": "Rich text",
   "settings": [
+    {
+      "type": "select",
+      "id": "look",
+      "label": "Text style",
+      "default": "normal",
+      "options": [
+        {"value": "normal","label": "Normal"},
+        {"value": "statement","label": "Large statement"},
+        {"value": "address","label": "Address / visit"}
+      ]
+    },
     {
       "type": "text",
       "id": "eyebrow",

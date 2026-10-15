@@ -1240,3 +1240,18 @@ p,li,figcaption{text-wrap:pretty}
   .pg-nums{justify-content:center;gap:14px}
   .pg-n{font-size:16px}
 }
+
+/* ===== Our Story (tpl-story) + statement / address text ===== */
+.prose--statement{max-width:900px;padding-block:clamp(70px,9vw,140px)}
+.prose--statement .eyebrow{display:block;margin-bottom:26px;color:var(--gold)}
+.prose--statement p{font-family:var(--serif);font-weight:300;font-size:clamp(24px,3vw,40px);line-height:1.38;letter-spacing:.005em;color:var(--ink);text-align:inherit!important;text-wrap:balance;hyphens:manual}
+.prose--statement p::after{content:"";display:block;width:56px;height:1px;background:var(--gold);margin:40px auto 0}
+.prose--address{max-width:620px;padding-block:clamp(60px,7vw,110px)}
+.prose--address .eyebrow{display:block;margin-bottom:14px;color:var(--gold)}
+.prose--address p{font-family:var(--serif);font-size:clamp(19px,1.8vw,24px);letter-spacing:.03em;color:var(--ink);text-align:inherit!important}
+.prose--address .btn{margin-top:6px}
+.tpl-story .split-body .eyebrow{font-family:var(--serif);font-size:clamp(28px,3vw,44px);letter-spacing:.04em;color:var(--gold);text-transform:none;line-height:1;margin-bottom:6px}
+.tpl-story .split-body .dsp{margin-top:6px}
+.tpl-story .split-body .lede p+p{margin-top:16px}
+.tpl-story .split{min-height:min(88vh,860px)}
+.tpl-story .phead,.tpl-story .page-hero .eyebrow{letter-spacing:.42em}
