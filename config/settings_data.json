@@ -33,7 +33,7 @@
           "button_link": "",
           "tags": "newsletter,welcome-offer",
           "offer_thanks": "Thank you. Your code is on its way.",
-          "discount_code": "",
+          "discount_code": "WELCOME10",
           "code_hint": "Tap to copy",
           "error_text": "That email did not go through. Please try again.",
           "offer_fine": "<p>By subscribing you agree to our <a href=\"/pages/privacy-policy\">Privacy Policy</a> and <a href=\"/pages/terms-conditions\">Terms</a>. Unsubscribe at any time.</p>",
