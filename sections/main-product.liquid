@@ -62,6 +62,11 @@
     {%- else -%}
     <div class="pdp-gal pdp-gal--spot" data-gallery>
       <div class="pdp-stage" style="--stage-pad:{{ stage_pad }};--mosaic-w:{{ mosaic_w }}px">
+        {%- assign cap0 = product.compare_at_price | default: 0 | plus: 0 -%}
+        {%- if cap0 > product.price -%}
+          {%- assign off = cap0 | minus: product.price | times: 100 | divided_by: cap0 -%}
+          <span class="pdp-badge">&minus;{{ off }}%</span>
+        {%- endif -%}
         {%- if stills.size > 0 -%}
           {%- for media in stills limit: img_limit -%}
             <img class="pdp-shot{% if forloop.first %} on{% endif %}"
@@ -119,20 +124,21 @@
     </div>
     {%- endif -%}
 
-    <div class="pdp-side">
-      <div>
-        <h1 class="dsp dsp-m" style="letter-spacing:.06em">{{ product.title }}</h1>
-        <div class="pdp-price" data-price style="margin-top:10px">
-          {%- assign cap = 0 -%}
-          {%- if product.compare_at_price -%}{%- assign cap = product.compare_at_price | plus: 0 -%}{%- endif -%}
-          {%- if cap > product.price -%}<s style="opacity:.55">{{ product.compare_at_price | money }}</s>&nbsp;{%- endif -%}
-          {{ product.price | money }}
-        </div>
+    <div class="pdp-side pdp-side--clean">
+      <h1 class="pdp-title">{{ product.title }}</h1>
+      <div class="pdp-price2" data-price>
+        <span class="pdp-now">{{ product.price | money }}</span>
+        {%- assign cap = product.compare_at_price | default: 0 | plus: 0 -%}
+        {%- if cap > product.price -%}<s class="pdp-was">{{ product.compare_at_price | money }}</s>{%- endif -%}
       </div>
-
-      {%- if product.metafields.custom.short_description != blank -%}
-        <p class="small" style="max-width:46ch">{{ product.metafields.custom.short_description }}</p>
-      {%- endif -%}
+      <hr class="pdp-rule">
+      {%- liquid
+        assign blurb = product.metafields.custom.short_description
+        if blurb == blank
+          assign blurb = product.description | strip_html | strip_newlines | truncate: 190
+        endif
+      -%}
+      {%- if blurb != blank -%}<p class="pdp-blurb">{{ blurb }}</p>{%- endif -%}
 
       <div data-variant-picker>
       {% form 'product', product %}
@@ -142,35 +148,43 @@
           {%- endfor -%}]
         </script>
 
+        {%- unless product.has_only_default_variant -%}
         {%- for opt in product.options_with_values -%}
           {%- assign oname = opt.name | downcase -%}
-          <div style="margin-bottom:18px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-              <span class="ui" style="color:var(--muted)">{{ opt.name }}{% if oname contains 'colour' or oname contains 'color' %}: <span data-colour-label>{{ opt.selected_value }}</span>{% endif %}</span>
+          {%- assign is_col = false -%}{%- if oname contains 'colo' -%}{%- assign is_col = true -%}{%- endif -%}
+          <div class="pdp-opt">
+            <div class="pdp-opt-h">
+              <span>Select {{ opt.name }}{% if is_col %} <em data-colour-label>{{ opt.selected_value }}</em>{% endif %}</span>
               {%- if oname contains 'size' and section.settings.size_guide != blank -%}
-                <a href="{{ section.settings.size_guide }}" class="ul ul-r" style="font-size:10.5px">Size Guide</a>
+                <a href="{{ section.settings.size_guide }}" class="pdp-guide">Size Guide</a>
               {%- endif -%}
             </div>
-            <div class="opt-row">
+            <div class="opt-row{% if is_col %} opt-row--swatch{% else %} opt-row--chip{% endif %}">
               {%- for value in opt.values -%}
-                {%- assign is_swatch = false -%}
-                {%- if value.swatch.color and oname contains 'col' -%}{%- assign is_swatch = true -%}{%- endif -%}
-                <button type="button" class="opt{% if value == opt.selected_value %} on{% endif %}"
-                        data-value="{{ value | escape }}"
-                        {% if is_swatch %}style="padding:0;width:38px;height:38px;border-radius:50%;background:{{ value.swatch.color }};box-shadow:0 0 0 1px rgba(0,0,0,.12) inset" aria-label="{{ value | escape }}"{% endif %}>
-                  {%- unless is_swatch -%}{{ value }}{%- endunless -%}
-                </button>
+                {%- if is_col -%}
+                  {%- if value.swatch.color -%}{%- assign sw = value.swatch.color -%}{%- else -%}{%- capture sw -%}{% render 'swatch-color', name: value %}{%- endcapture -%}{%- assign sw = sw | strip -%}{%- endif -%}
+                  <button type="button" class="opt opt--sw{% if value == opt.selected_value %} on{% endif %}" data-value="{{ value | escape }}" aria-label="{{ value | escape }}" title="{{ value | escape }}" style="--sw:{{ sw | default: '#C9B79B' }}"><span></span></button>
+                {%- else -%}
+                  <button type="button" class="opt opt--chip{% if value == opt.selected_value %} on{% endif %}" data-value="{{ value | escape }}">{{ value }}</button>
+                {%- endif -%}
               {%- endfor -%}
             </div>
           </div>
         {%- endfor -%}
+        {%- endunless -%}
 
         <input type="hidden" name="id" value="{{ v.id }}">
-        <button type="submit" class="btn btn-solid" data-add style="width:100%;text-align:center;margin-top:6px"{% unless v.available %} disabled{% endunless %}>
-          {%- if v.available -%}Add to Bag{%- else -%}Sold Out{%- endif -%}
+        <button type="submit" class="pdp-buy" data-add{% unless v.available %} disabled{% endunless %}>
+          {%- if v.available -%}{{ section.settings.buy_label | default: 'Add to Bag' }}{%- else -%}Sold Out{%- endif -%}
         </button>
       {% endform %}
       </div>
+
+      <ul class="pdp-perks">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>{{ section.settings.perk_1 | default: 'Complimentary shipping on orders over $250' }}</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3 10h18"/></svg>{{ section.settings.perk_2 | default: 'Secure checkout, duties shown before you pay' }}</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4"/></svg>{{ section.settings.perk_3 | default: 'Thirty-day returns and exchanges' }}</li>
+      </ul>
 
       {%- comment -%}
         On a phone the Add to Bag button scrolls away as soon as you start
@@ -212,6 +226,40 @@
       </div>
     </div>
   </div>
+  {%- liquid
+    assign pn_coll = collection
+    if pn_coll == blank
+      assign pn_coll = product.collections | where: 'handle', 'new-in' | first
+      if pn_coll == blank
+        assign pn_coll = product.collections.first
+      endif
+    endif
+    assign prev_p = blank
+    assign next_p = blank
+    if pn_coll
+      assign found = false
+      for p in pn_coll.products limit: 250
+        if found and next_p == blank
+          assign next_p = p
+          break
+        endif
+        if p.id == product.id
+          assign found = true
+        else
+          assign prev_p = p
+        endif
+      endfor
+      unless found
+        assign prev_p = blank
+      endunless
+    endif
+  -%}
+  {%- if prev_p or next_p -%}
+  <nav class="pdp-pn" aria-label="More products">
+    {%- if prev_p -%}<a class="pdp-pn-a" href="{{ prev_p.url }}" rel="prev"><span aria-hidden="true">&larr;</span> Previous</a>{%- else -%}<span></span>{%- endif -%}
+    {%- if next_p -%}<a class="pdp-pn-a" href="{{ next_p.url }}" rel="next">Next <span aria-hidden="true">&rarr;</span></a>{%- endif -%}
+  </nav>
+  {%- endif -%}
 </div>
 
 {%- if section.settings.show_related -%}
@@ -252,6 +300,11 @@
 {
   "name": "Product",
   "settings": [
+    {"type": "header","content": "Buy box"},
+    {"type": "text","id": "buy_label","label": "Button label","default": "Add to Bag"},
+    {"type": "text","id": "perk_1","label": "Perk 1","default": "Complimentary shipping on orders over $250"},
+    {"type": "text","id": "perk_2","label": "Perk 2","default": "Secure checkout, duties shown before you pay"},
+    {"type": "text","id": "perk_3","label": "Perk 3","default": "Thirty-day returns and exchanges"},
     {
       "type": "header",
       "content": "Sticky Add to Bag"

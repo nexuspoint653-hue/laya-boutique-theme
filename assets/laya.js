@@ -190,10 +190,10 @@ function initProduct(root){
         label=document.querySelector("[data-colour-label]");
     if(match){
       if(idEl) idEl.value=match.id;
-      if(price && match.price_formatted) price.innerHTML=match.price_formatted;
-      if(btn){ btn.disabled=!match.available; btn.textContent=match.available?"Add to Bag":"Sold Out"; }
+      if(price && match.price_formatted){ var now=price.querySelector(".pdp-now"); if(now) now.textContent=match.price_formatted; else price.innerHTML=match.price_formatted; }
+      if(btn){ btn.disabled=!match.available; btn.dataset.label=btn.dataset.label||btn.textContent.trim(); btn.textContent=match.available?(btn.dataset.label==="Sold Out"?"Add to Bag":btn.dataset.label):"Sold Out"; }
     } else if(btn){ btn.disabled=true; btn.textContent="Unavailable"; }
-    if(label && chosen[0]) label.textContent=chosen[0];
+    if(label){ var orow=label.closest(".pdp-opt"); var on=orow&&orow.querySelector(".opt.on"); if(on) label.textContent=on.dataset.value; else if(chosen[0]) label.textContent=chosen[0]; }
   }
 }
 
