@@ -76,32 +76,27 @@
       {
         "type": "url",
         "id": "social_instagram",
-        "label": "Instagram URL",
-        "default": "https://www.instagram.com/layaboutique"
+        "label": "Instagram URL"
       },
       {
         "type": "url",
         "id": "social_tiktok",
-        "label": "TikTok URL",
-        "default": "https://www.tiktok.com/@layaboutique"
+        "label": "TikTok URL"
       },
       {
         "type": "url",
         "id": "social_pinterest",
-        "label": "Pinterest URL",
-        "default": "https://www.pinterest.com/layaboutique"
+        "label": "Pinterest URL"
       },
       {
         "type": "url",
         "id": "social_youtube",
-        "label": "YouTube URL",
-        "default": "https://www.youtube.com/@layaboutique"
+        "label": "YouTube URL"
       },
       {
         "type": "url",
         "id": "social_threads",
-        "label": "Threads URL",
-        "default": "https://www.threads.net/@layaboutique"
+        "label": "Threads URL"
       }
     ]
   }
