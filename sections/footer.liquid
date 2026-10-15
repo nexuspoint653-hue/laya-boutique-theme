@@ -61,7 +61,17 @@
       {%- endif -%}
     </div>
     {% render 'social-icons' %}
-    <div class="copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</div>
+    <div class="ftr-base">
+      <div class="copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</div>
+      <a class="fw-credit" href="https://frameworksstudio.net/" target="_blank" rel="noopener" aria-label="Website by FrameWorks Studio">
+        <span class="fw-credit-txt" data-text="Your entire brand forged into one powerful force — FrameWorks Studio">Your entire brand forged into one powerful force — FrameWorks Studio</span>
+      </a>
+    </div>
+    <script>
+      (function(){var el=document.querySelector('.fw-credit');if(!el)return;
+        if(!('IntersectionObserver' in window)){el.classList.add('is-in');return;}
+        var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){el.classList.add('is-in');io.disconnect();}},{threshold:.6});io.observe(el);})();
+    </script>
   </div>
 </footer>
 
