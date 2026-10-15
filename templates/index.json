@@ -251,7 +251,7 @@
           "settings": {
             "collection": "dresses",
             "fallback": "laya-tile-2.jpg",
-            "label": "Dressy Dresses",
+            "label": "Dresses",
             "link": "",
             "video_url": "",
             "video_asset": ""
@@ -262,7 +262,7 @@
           "settings": {
             "collection": "two-piece",
             "fallback": "laya-tile-1.jpg",
-            "label": "Two-Piece Sets",
+            "label": "Matching Sets",
             "link": "",
             "video_url": "",
             "video_asset": ""
@@ -274,7 +274,7 @@
             "collection": "accessories",
             "image": "shopify://shop_images/rana-blush-ruched-chiffon-gown.jpg",
             "fallback": "laya-tile-4.jpg",
-            "label": "Accessories",
+            "label": "Hijabs & Accessories",
             "link": "",
             "video_url": "",
             "video_asset": ""
@@ -572,7 +572,7 @@
         "columns": 3,
         "empty_text": "Add products to this look",
         "collection": "bestsellers",
-        "collection_limit": 8,
+        "collection_limit": 6,
         "card_ratio": "4-5",
         "card_hover": "video",
         "card_align": "left",

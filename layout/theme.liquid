@@ -37,5 +37,17 @@
   {% sections 'footer-group' %}
   {% section 'site-popups' %}
   {{ 'laya.js' | asset_url | script_tag }}
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded',function(){
+      if(!window.Lenis||matchMedia('(prefers-reduced-motion: reduce)').matches||Shopify.designMode) return;
+      var lenis=new Lenis({lerp:.09,wheelMultiplier:.9,smoothWheel:true,syncTouch:false,
+        prevent:function(n){return n.closest&&n.closest('[data-lenis-prevent],.mega,.drawer,.offer,.pop,dialog,[role=dialog],.acc-b')}});
+      window.__lenis=lenis;
+      function raf(t){lenis.raf(t);requestAnimationFrame(raf)} requestAnimationFrame(raf);
+      new MutationObserver(function(){var lock=getComputedStyle(document.body).overflow==='hidden'||document.documentElement.classList.contains('no-scroll')||document.body.classList.contains('no-scroll');lock?lenis.stop():lenis.start()}).observe(document.body,{attributes:true,attributeFilter:['class','style']});
+      document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#"]');if(!a||a.getAttribute('href').length<2)return;var t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();lenis.scrollTo(t,{offset:-90})}});
+    });
+  </script>
 </body>
 </html>

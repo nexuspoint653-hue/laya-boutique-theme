@@ -99,5 +99,17 @@
         "label": "Threads URL"
       }
     ]
+  },
+  {
+    "name": "Pricing",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_sale_pricing",
+        "label": "Show sale pricing",
+        "default": false,
+        "info": "Shows compare-at prices, Sale labels and % off badges. Leave off until discounts are approved."
+      }
+    ]
   }
 ]

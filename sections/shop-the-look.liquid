@@ -153,7 +153,20 @@
 
     {%- when 'collection' -%}
       <div class="{{ grid_class }} stag in">
-        {%- assign lim = s.collection_limit | default: 8 -%}
+        {%- liquid
+          assign lim = s.collection_limit | default: 6
+          if lim > 6
+            assign lim = 6
+          endif
+          assign avail = coll.products.size
+          if avail < lim
+            assign lim = avail
+          endif
+          if lim >= ncols
+            assign rem = lim | modulo: ncols
+            assign lim = lim | minus: rem
+          endif
+        -%}
         {%- for product in coll.products limit: lim -%}
           {% render 'product-card', product: product, index: forloop.index,
              ratio: s.card_ratio, placeholder: s.card_placeholder, fallback: s.card_fallback,

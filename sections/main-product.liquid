@@ -2,8 +2,26 @@
 {% render 'section-bg', s: section %}
 {% render 'section-copy', s: section, place: 'top' %}
 {%- assign v = product.selected_or_first_available_variant -%}
-<div class="wrap" style="padding-top:34px">
-  <div class="crumb"><a href="{{ routes.root_url }}">Home</a> &nbsp;/&nbsp; {%- if collection %}<a href="{{ collection.url }}">{{ collection.title }}</a> &nbsp;/&nbsp; {% endif -%}{{ product.title }}</div>
+{%- liquid
+  assign bc = collection
+  if bc == blank
+    for c in product.collections
+      unless c.handle == 'new-in' or c.handle == 'bestsellers' or c.handle == 'frontpage'
+        assign bc = c
+        break
+      endunless
+    endfor
+  endif
+-%}
+<div class="wrap" style="padding-top:28px">
+  <nav class="crumb2" aria-label="Breadcrumb">
+    {%- if bc -%}<a class="crumb2-back" href="{{ bc.url }}"><span aria-hidden="true">&larr;</span> Back to {{ bc.title }}</a>{%- endif -%}
+    <ol class="crumb2-trail">
+      <li><a href="{{ routes.root_url }}">Home</a></li>
+      {%- if bc -%}<li><a href="{{ bc.url }}">{{ bc.title }}</a></li>{%- endif -%}
+      <li aria-current="page">{{ product.title }}</li>
+    </ol>
+  </nav>
 </div>
 
 <div class="wrap" style="padding-top:18px;padding-bottom:clamp(50px,6vw,90px)">
@@ -63,7 +81,7 @@
     <div class="pdp-gal pdp-gal--spot" data-gallery>
       <div class="pdp-stage" style="--stage-pad:{{ stage_pad }};--mosaic-w:{{ mosaic_w }}px">
         {%- assign cap0 = product.compare_at_price | default: 0 | plus: 0 -%}
-        {%- if cap0 > product.price -%}
+        {%- if cap0 > product.price and settings.show_sale_pricing -%}
           {%- assign off = cap0 | minus: product.price | times: 100 | divided_by: cap0 -%}
           <span class="pdp-badge">&minus;{{ off }}%</span>
         {%- endif -%}
@@ -129,7 +147,7 @@
       <div class="pdp-price2" data-price>
         <span class="pdp-now">{{ product.price | money }}</span>
         {%- assign cap = product.compare_at_price | default: 0 | plus: 0 -%}
-        {%- if cap > product.price -%}<s class="pdp-was">{{ product.compare_at_price | money }}</s>{%- endif -%}
+        {%- if cap > product.price and settings.show_sale_pricing -%}<s class="pdp-was">{{ product.compare_at_price | money }}</s>{%- endif -%}
       </div>
       <hr class="pdp-rule">
       {%- liquid

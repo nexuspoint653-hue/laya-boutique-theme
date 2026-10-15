@@ -96,7 +96,7 @@
   endif
 
   assign cap = 0
-  if product.compare_at_price
+  if product.compare_at_price and settings.show_sale_pricing
     assign cap = product.compare_at_price | plus: 0
   endif
 
@@ -202,7 +202,7 @@
         <span class="card-badge">{{ product.metafields.custom.badge }}</span>
       {%- elsif product.available == false -%}
         <span class="card-badge">Sold Out</span>
-      {%- elsif cap > product.price -%}
+      {%- elsif cap > product.price and settings.show_sale_pricing -%}
         <span class="card-badge">Sale</span>
       {%- elsif product.tags contains 'Bestseller' -%}
         <span class="card-badge">Bestseller</span>
