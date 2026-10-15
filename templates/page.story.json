@@ -17,7 +17,7 @@
         "heading": "Our Story",
         "height": 65,
         "image": "shopify://shop_images/mira-emerald-jacquard-gown.jpg",
-        "focal": "top",
+        "focal": "center",
         "overlay": 30
       }
     },
