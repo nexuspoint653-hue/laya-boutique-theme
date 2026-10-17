@@ -274,3 +274,8 @@
   .srch{width:100%;transform:translateY(-102%);box-shadow:none}
   .srch.on{transform:none}
 }
+.srch-clear[hidden]{display:none}
+@media (max-width:900px){
+  .toolbar select{max-width:none!important;min-width:132px;width:auto}
+  .phead,.phead p,.phead .lede,.phead .lede p{text-align:center!important}
+}
