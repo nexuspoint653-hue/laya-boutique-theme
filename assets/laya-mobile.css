@@ -281,3 +281,44 @@
 }
 
 /* sync */
+
+/* ===================== Mobile footer: dark, centred, compact ===================== */
+@media (max-width:749px){
+  .ftr{--fi:#F2ECE2;--fm:rgba(242,236,226,.66);--fl:rgba(242,236,226,.16);background:#1F1D1A!important;color:var(--fi);padding:44px 0 calc(26px + env(safe-area-inset-bottom))!important;margin-top:0;border-top:3px solid var(--gold)}
+  .ftr *{color:inherit}
+  .ftr .wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding-inline:20px}
+  .ftr-grid{display:flex!important;flex-direction:column;width:100%;gap:0!important}
+  .ftr-grid>div:first-child{display:flex;flex-direction:column;align-items:center;padding-bottom:30px;margin-bottom:6px;border-bottom:1px solid var(--fl)}
+  .ftr .nl-title{font-size:22px!important;line-height:1.25;letter-spacing:.1em;margin:0 0 6px;color:var(--fi)}
+  .ftr .nl-title br{display:none}
+  .ftr form{width:100%;max-width:360px}
+  .ftr .nl-field{margin-top:14px;height:50px;border:1px solid var(--fl)!important;border-radius:999px;padding:0 6px 0 20px;background:rgba(255,255,255,.04)}
+  .ftr .nl-field input{color:var(--fi);text-align:left}
+  .ftr .nl-field input::placeholder{color:var(--fm)}
+  .ftr .nl-field button{width:40px;height:40px;border-radius:50%;background:var(--gold);display:grid;place-items:center}
+  .ftr .nl-field button svg{stroke:#fff;width:16px}
+  .ftr .consent{max-width:360px;margin-top:12px;text-align:left;gap:10px}
+  .ftr .consent label{font-size:11.5px!important;line-height:1.55;color:var(--fm)!important}
+  .ftr .consent input{accent-color:var(--gold);width:18px;height:18px;flex:none}
+  .ftr-grid>div:first-child>.small{margin-top:18px!important;color:var(--fm);font-size:13px!important}
+  .ftr-grid>div:first-child>.ul{color:var(--gold-lt,#C9AE83);border-color:currentColor}
+  .ftr-col{width:100%;border-top:0!important;border-bottom:1px solid var(--fl)}
+  .ftr-col h4{margin:0!important}
+  .ftr .ftr-h{justify-content:center!important;gap:10px;min-height:54px;font-size:12px!important;letter-spacing:.24em;color:var(--fi)}
+  .ftr .ftr-h::after{border-color:var(--fi)!important;opacity:.8!important}
+  .ftr-col ul{text-align:center;padding:0 0 16px!important}
+  .ftr-col li{margin:0!important}
+  .ftr-col li a{display:flex!important;justify-content:center;min-height:42px;font-size:15px!important;color:var(--fm)}
+  .ftr-col li a:hover,.ftr-col li a:focus-visible{color:var(--fi)}
+  .ftr-mark{order:2;margin:30px 0 4px}
+  .ftr-mark .logo-mark{font-size:46px!important}
+  .ftr-mark .logo-sub{color:var(--fm)!important}
+  .ftr .soc-row{order:3;margin-top:18px;gap:12px}
+  .ftr .soc{width:44px;height:44px;border-color:var(--fl);color:var(--fi)}
+  .ftr-rule-row{order:4;width:100%;justify-content:center!important;margin-top:28px;padding-top:22px;border-top:1px solid var(--fl)}
+  .ftr-rule-line{display:none!important}
+  .ftr .fw-credit.is-in .fw-credit-by,.ftr .fw-credit.is-in .fw-credit-logo{background-color:var(--fi)}
+  .ftr-base{order:5;padding:14px 0 0!important}
+  .ftr .copy{font-size:11.5px;color:var(--fm);letter-spacing:.04em}
+  .ftr a:focus-visible,.ftr button:focus-visible,.ftr input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+}
