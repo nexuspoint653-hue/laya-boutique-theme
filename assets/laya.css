@@ -1360,3 +1360,5 @@ html.lenis,html.lenis body{height:auto}
 @media (max-width:900px){
   .split .split-media,.split.flip .split-media{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%)}
 }
+/* taller desktop header so it masks the top of the hero video */
+@media (min-width:901px){:root{--hdr:126px}}
