@@ -678,7 +678,7 @@ function swapMedia(v){
   if(v.media_id){ shots.forEach(function(s,n){ if(String(s.dataset.mediaId)===String(v.media_id)) k=n; });
     if(k<0 && v.img){ k=0; shots[0].removeAttribute("srcset"); shots[0].src=v.img; shots[0].dataset.mediaId=v.media_id; } }
   if(k<0 && col){ var c=col.toLowerCase(); shots.forEach(function(s,n){ if(k<0 && (s.alt||"").toLowerCase().indexOf(c)>-1) k=n; }); }
-  if(k<0 && onSw && sws.length>1){ var idx=sws.indexOf(onSw); if(idx>-1 && idx<shots.length) k=idx; }
+  if(k<0 && onSw && gal._rgb){ var t=hexRgb(getComputedStyle(onSw).getPropertyValue("--sw")); if(t){ var best=1e9; gal._rgb.forEach(function(c,n){ if(!c) return; var d=Math.pow(c[0]-t[0],2)+Math.pow(c[1]-t[1],2)+Math.pow(c[2]-t[2],2); if(d<best){best=d;k=n;} }); } }
   if(k<0) return;
   stage.classList.add("snap");
   shots.forEach(function(s,n){ s.classList.toggle("on",n===k); });
@@ -693,3 +693,18 @@ function swapMedia(v){
 })();
 
 /* sync */
+
+/* read each photo's garment colour (centre of frame) so swatches can find their photo */
+function hexRgb(h){ h=(h||"").trim(); if(h.indexOf("rgb")===0){ var m=h.match(/\d+/g); return m?[+m[0],+m[1],+m[2]]:null; } h=h.replace("#",""); if(h.length===3) h=h.replace(/./g,"$&$&"); if(h.length!==6) return null; return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
+(function sampleShots(){
+  var gal=document.querySelector("[data-gallery]"); if(!gal || !document.querySelector(".opt-row--swatch")) return;
+  var shots=[].slice.call(gal.querySelectorAll(".pdp-shot")); gal._rgb=[];
+  shots.forEach(function(s,n){
+    var im=new Image(); im.crossOrigin="anonymous";
+    im.onload=function(){ try{ var c=document.createElement("canvas"); c.width=40; c.height=50; var x=c.getContext("2d",{willReadFrequently:true});
+      x.drawImage(im,0,0,40,50); var d=x.getImageData(12,14,16,22).data, r=0,g=0,b=0,k=0;
+      for(var i=0;i<d.length;i+=4){ var R=d[i],G=d[i+1],B=d[i+2]; if(R>235&&G>235&&B>235) continue; r+=R;g+=G;b+=B;k++; }
+      gal._rgb[n]=k?[r/k,g/k,b/k]:null; }catch(e){} };
+    var src=(s.currentSrc||s.src).replace(/width=\d+/,"width=200"); im.src=src+(src.indexOf("?")>-1?"&":"?")+"cs=1";
+  });
+})();
