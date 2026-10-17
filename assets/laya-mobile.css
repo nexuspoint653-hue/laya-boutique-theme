@@ -15,8 +15,8 @@
   img,video{max-width:100%}
 
   /* never justify on a phone: it opens rivers of white space */
-  body p,body li,.lede,.lede p,.rte,.rte p,.prose p{text-align:left!important;hyphens:manual!important;word-spacing:normal!important}
-  .sec-head .lede,.sec-head .lede p,.split-body .lede p,.prose.center p,.center .lede,.tile p{text-align:center!important}
+  body p,body li,.lede,.lede p,.rte,.rte p,.prose p{text-align:inherit!important;text-align-last:auto!important;hyphens:manual!important;word-spacing:normal!important}
+  .svc>div,.svc p,.sec-head,.sec-head .lede,.sec-head .lede p,.split-body,.split-body .lede p,.prose.center p,.center .lede,.tile p,.banner-copy p,.hero-copy p{text-align:center!important}
 
   /* inputs at 16px so iOS never zooms */
   input,select,textarea{font-size:16px!important}
