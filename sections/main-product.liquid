@@ -58,6 +58,7 @@
       four and no film: the same markup covers both without a switch.
     {%- endcomment -%}
     {%- assign stills = product.media | where: 'media_type', 'image' -%}
+    {%- assign live_n = 0 -%}{%- for m in stills -%}{%- unless m.alt == 'laya-replaced' -%}{%- assign live_n = live_n | plus: 1 -%}{%- endunless -%}{%- endfor -%}
     {%- assign films = product.media | where: 'media_type', 'video' -%}
     {%- assign ext_films = product.media | where: 'media_type', 'external_video' -%}
 
@@ -86,16 +87,16 @@
           <span class="pdp-badge">&minus;{{ off }}%</span>
         {%- endif -%}
         {%- if stills.size > 0 -%}
-          {%- for media in stills limit: img_limit -%}
+          {%- assign shown = 0 -%}{%- for media in stills -%}{%- if media.alt == 'laya-replaced' or shown >= img_limit -%}{%- continue -%}{%- endif -%}{%- assign shown = shown | plus: 1 -%}
             <figure class="pdp-fig"><img class="pdp-bd" src="{{ media | image_url: width: 120 }}" alt="" aria-hidden="true" loading="lazy" width="120" height="180">
-            <img class="pdp-shot{% if forloop.first %} on{% endif %}"
-                 data-shot="{{ forloop.index0 }}" data-media-id="{{ media.id }}"
+            <img class="pdp-shot{% if shown == 1 %} on{% endif %}"
+                 data-shot="{{ shown | minus: 1 }}" data-media-id="{{ media.id }}"
                  src="{{ media | image_url: width: 1600 }}"
                  srcset="{{ media | image_url: width: 800 }} 800w, {{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 1600 }} 1600w"
                  sizes="(max-width:749px) 100vw, 50vw"
                  alt="{{ media.alt | escape }}" width="1000" height="1250"
-                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                 {% if forloop.first %}fetchpriority="high"{% endif %}></figure>
+                 loading="{% if shown == 1 %}eager{% else %}lazy{% endif %}"
+                 {% if shown == 1 %}fetchpriority="high"{% endif %}></figure>
           {%- endfor -%}
         {%- else -%}
           {%- assign ph = section.settings.stage_placeholder | default: 'product-1' -%}
@@ -103,11 +104,11 @@
           {{ ph_svg | replace: '<svg', '<svg preserveAspectRatio="xMidYMid slice"' }}
         {%- endif -%}
 
-        {%- if stills.size > 1 and section.settings.show_mosaic != false -%}
+        {%- if live_n > 1 and section.settings.show_mosaic != false -%}
           <div class="pdp-mosaic pdp-mosaic--{{ mosaic_pos }}" role="group" aria-label="{{ section.settings.mosaic_label | default: 'Product views' | escape }}">
-            {%- for media in stills limit: img_limit -%}
-              <button type="button" class="pdp-chip{% if forloop.first %} on{% endif %}" data-chip="{{ forloop.index0 }}"
-                      aria-label="{{ section.settings.mosaic_label | default: 'View' }} {{ forloop.index }}">
+            {%- assign shown = 0 -%}{%- for media in stills -%}{%- if media.alt == 'laya-replaced' or shown >= img_limit -%}{%- continue -%}{%- endif -%}{%- assign shown = shown | plus: 1 -%}
+              <button type="button" class="pdp-chip{% if shown == 1 %} on{% endif %}" data-chip="{{ shown | minus: 1 }}"
+                      aria-label="{{ section.settings.mosaic_label | default: 'View' }} {{ shown }}">
                 <img src="{{ media | image_url: width: 220 }}" alt="" width="110" height="138" loading="lazy">
               </button>
             {%- endfor -%}
