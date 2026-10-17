@@ -239,3 +239,8 @@
   .sec--rail .grid-2>*,.sec--rail .grid-3>*,.sec--rail .grid-4>*,.sec--rail .grid-5>*{flex:0 0 64vw!important}
   .toolbar select{max-width:42%;flex:none}
 }
+@media (max-width:900px){
+  main h2.dsp,main .dsp-l,main .dsp-m{font-size:clamp(23px,6.6vw,30px)!important;line-height:1.18!important;letter-spacing:.06em}
+  main h1.dsp{font-size:clamp(26px,8vw,34px)!important;line-height:1.15!important}
+  .offer-card{box-shadow:0 -10px 40px rgba(0,0,0,.18)!important}
+}
