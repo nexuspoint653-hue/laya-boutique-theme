@@ -12,7 +12,7 @@
     "hero": {
       "type": "hero-video",
       "settings": {
-        "video": "shopify://files/videos/gemini_generated_video_d6394b2b.mp4",
+        "video": "shopify://files/videos/laya-hero-walk.mp4",
         "video_url": "",
         "video_asset": "",
         "poster_asset": "",
@@ -31,7 +31,7 @@
         "focal": "center",
         "placeholder": "tile",
         "ratio": "auto",
-        "overlay": 0,
+        "overlay": 20,
         "heading_size": "dsp-xl",
         "text_align": "center",
         "text_pos": "center",
