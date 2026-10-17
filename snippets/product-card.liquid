@@ -80,11 +80,7 @@
     assign show_colour = true
   endif
 
-  # a product with a single photo only zooms: no swap to a video or blank second image
-  if product.id and product.images.size < 2
-    assign hover = 'zoom'
-  endif
-
+  # only products with an uploaded video get a hover swap; everything else just zooms
   assign pvideo = null
   if hover == 'video'
     for m in product.media
@@ -93,6 +89,9 @@
         break
       endif
     endfor
+  endif
+  if product.id and pvideo == null
+    assign hover = 'zoom'
   endif
 
   assign hover_img = null
