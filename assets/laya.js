@@ -685,7 +685,7 @@ function swapMedia(v){
   shots.forEach(function(s,n){ s.classList.toggle("on",n===k); });
   chips.forEach(function(c,n){ c.classList.toggle("on",n===k); });
   gal.dataset.active=k;
-  if(stage.scrollWidth>stage.clientWidth+4) stage.scrollTo({left:shots[k].offsetLeft-stage.offsetLeft,behavior:"auto"});
+  if(stage.scrollWidth>stage.clientWidth+4) stage.scrollTo({left:shots[k].parentElement.offsetLeft,behavior:"auto"});
   requestAnimationFrame(function(){ requestAnimationFrame(function(){ stage.classList.remove("snap"); }); });
 }
 (function preloadVariantImgs(){
