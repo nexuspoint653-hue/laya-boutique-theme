@@ -69,7 +69,8 @@
 </style>
   <div class="hdr-in">
     <nav class="nav-l">
-      <button class="burger" id="burger" aria-label="Menu"><i></i><i></i></button>
+      <button class="burger" id="burger" aria-label="Open menu" aria-controls="drawer"><i></i><i></i></button>
+      <button class="m-ico show-sm" type="button" data-open-search aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button>
       {%- for link in menu.links limit: 4 -%}
         <a href="{{ link.url }}" class="nav-a"{% if link.links.size > 0 %} data-menu="mega-{{ forloop.index }}"{% endif %}>{{ link.title }}</a>
       {%- endfor -%}
@@ -97,7 +98,8 @@
         <a href="{{ section.settings.care_page }}" class="nav-a hide-sm">{{ section.settings.care_label }}</a>
       {%- endif -%}
       {%- unless h.show_account == false -%}<a href="{{ routes.account_url }}" class="nav-a hide-sm">{% if customer %}Account{% else %}{{ h.account_label | default: 'Sign In' }}{% endif %}</a>{%- endunless -%}
-      {%- unless h.show_bag == false -%}<a href="{{ routes.cart_url }}" class="nav-a icon-btn">{{ h.bag_label | default: 'Bag' }}<span class="bag-n">{{ cart.item_count }}</span></a>{%- endunless -%}
+      <a href="{{ routes.account_url }}" class="m-ico show-sm" aria-label="Account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4.2 4.3-6.3 8-6.3s6.8 2.1 8 6.3"/></svg></a>
+      {%- unless h.show_bag == false -%}<a href="{{ routes.cart_url }}" class="nav-a icon-btn bag-link" aria-label="Bag, {{ cart.item_count }} items"><span class="bag-t">{{ h.bag_label | default: 'Bag' }}</span><svg class="bag-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="bag-n">{{ cart.item_count }}</span></a>{%- endunless -%}
     </div>
   </div>
 
@@ -142,32 +144,82 @@
   </div>
 </header>
 
-<aside class="drawer" id="drawer">
-  <div class="drawer-h"><span class="ui">Menu</span><button class="x" id="drawerX" aria-label="Close"></button></div>
-  <div class="drawer-b">
-    <ul>
-      {%- for link in menu.links -%}
-        <li>
-          {%- if link.links.size > 0 -%}
-            <button data-sub="dsub-{{ forloop.index }}">{{ link.title }} <span>+</span></button>
-            <div class="drawer-sub" id="dsub-{{ forloop.index }}">
-              {%- for col in link.links -%}
-                {%- if col.links.size > 0 -%}
-                  {%- for item in col.links -%}<a href="{{ item.url }}">{{ item.title }}</a>{%- endfor -%}
-                {%- else -%}
-                  <a href="{{ col.url }}">{{ col.title }}</a>
-                {%- endif -%}
-              {%- endfor -%}
+<aside class="drawer mnav" id="drawer" aria-label="Menu">
+  <div class="mnav-top">
+    <form action="{{ routes.search_url }}" method="get" class="mnav-search" role="search">
+      <input type="hidden" name="type" value="product">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+      <input type="search" name="q" placeholder="Search Laya Boutique" aria-label="Search" autocomplete="off">
+    </form>
+    <button class="mnav-x" id="drawerX" type="button" aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+  <div class="mnav-panels" data-mnav>
+    <div class="mnav-p is-on" data-panel="root">
+      <ul class="mnav-list">
+        <li><a href="/collections/new-in">New In</a></li>
+        {%- for link in menu.links -%}
+          <li>
+            {%- if link.links.size > 0 -%}
+              <button type="button" data-go="mp-{{ forloop.index }}">{{ link.title }}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+            {%- else -%}
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="mnav-feat">
+        {%- assign fc1 = collections['new-in'] -%}{%- assign fc2 = collections['bestsellers'] -%}
+        <a href="/collections/new-in" class="mnav-tile">
+          {%- if fc1.products.first.featured_image -%}<img src="{{ fc1.products.first.featured_image | image_url: width: 500 }}" alt="" loading="lazy" width="250" height="320">{%- endif -%}
+          <span>New Arrivals</span>
+        </a>
+        <a href="/collections/bestsellers" class="mnav-tile">
+          {%- if fc2.products.first.featured_image -%}<img src="{{ fc2.products.first.featured_image | image_url: width: 500 }}" alt="" loading="lazy" width="250" height="320">{%- endif -%}
+          <span>Bestsellers</span>
+        </a>
+      </div>
+      <ul class="mnav-util">
+        <li><a href="{{ routes.account_url }}"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4.2 4.3-6.3 8-6.3s6.8 2.1 8 6.3"/></svg>{% if customer %}My Account{% else %}Sign In{% endif %}</a></li>
+        <li><a href="/pages/appointments"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="1.5"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Book an Appointment</a></li>
+        <li><a href="/pages/client-care"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 1 16 0v4a2 2 0 0 1-2 2h-1v-6h3M4 12v4a2 2 0 0 0 2 2h1v-6H4"/></svg>Client Care</a></li>
+        <li><a href="tel:+17345445555"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/></svg>(734) 544-5555</a></li>
+      </ul>
+    </div>
+    {%- for link in menu.links -%}
+      {%- if link.links.size > 0 -%}
+        <div class="mnav-p" data-panel="mp-{{ forloop.index }}" aria-hidden="true">
+          <button type="button" class="mnav-back" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Back</button>
+          <h2 class="mnav-h">{{ link.title }}</h2>
+          <a class="mnav-all" href="{{ link.url }}">Shop all {{ link.title }}</a>
+          {%- for col in link.links -%}
+            <div class="mnav-grp">
+              {%- if col.links.size > 0 -%}
+                <span class="mnav-gh">{{ col.title }}</span>
+                {%- for item in col.links -%}<a href="{{ item.url }}">{{ item.title }}</a>{%- endfor -%}
+              {%- else -%}
+                <a href="{{ col.url }}">{{ col.title }}</a>
+              {%- endif -%}
             </div>
-          {%- else -%}
-            <a href="{{ link.url }}">{{ link.title }}</a>
-          {%- endif -%}
-        </li>
-      {%- endfor -%}
-      <li><a href="{{ routes.account_url }}">{% if customer %}Account{% else %}Sign In{% endif %}</a></li>
-    </ul>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 </aside>
+<div class="mnav-scrim" id="mnavScrim"></div>
+<script>
+(function(){
+  var d=document.getElementById('drawer'); if(!d||d.dataset.wired) return; d.dataset.wired='1';
+  var wrap=d.querySelector('[data-mnav]'), sc=document.getElementById('mnavScrim'), b=document.getElementById('burger');
+  function show(id){wrap.querySelectorAll('.mnav-p').forEach(function(p){var on=p.dataset.panel===id;p.classList.toggle('is-on',on);p.classList.toggle('is-left',!on&&p.dataset.panel==='root'&&id!=='root');p.setAttribute('aria-hidden',on?'false':'true');});wrap.scrollTop=0;}
+  wrap.addEventListener('click',function(e){var g=e.target.closest('[data-go]');if(g){show(g.dataset.go);return;}if(e.target.closest('[data-back]'))show('root');});
+  function lock(on){document.documentElement.classList.toggle('no-scroll',on);if(sc)sc.classList.toggle('on',on);if(b)b.setAttribute('aria-expanded',on?'true':'false');}
+  new MutationObserver(function(){var on=d.classList.contains('on');lock(on);if(!on)setTimeout(function(){show('root')},400);}).observe(d,{attributes:true,attributeFilter:['class']});
+  if(sc) sc.addEventListener('click',function(){d.classList.remove('on')});
+  document.querySelectorAll('[data-open-search]').forEach(function(x){x.addEventListener('click',function(){var s=document.getElementById('search');if(!s)return;s.classList.add('on');document.documentElement.classList.add('no-scroll');setTimeout(function(){var i=s.querySelector('input[type=search]');if(i)i.focus()},350);});});
+  var s=document.getElementById('search'); if(s) new MutationObserver(function(){if(!s.classList.contains('on')&&!d.classList.contains('on'))document.documentElement.classList.remove('no-scroll');}).observe(s,{attributes:true,attributeFilter:['class']});
+})();
+</script>
 
 <aside class="drawer" id="search" style="inset:0 auto 0 0;width:min(520px,92vw);box-shadow:20px 0 60px rgba(0,0,0,.12)">
   <div class="drawer-h"><span class="ui">Search</span><button class="x" id="searchX" aria-label="Close"></button></div>

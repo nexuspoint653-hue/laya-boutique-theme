@@ -51,7 +51,7 @@
           "media_placeholder": "tile",
           "media_side": "left",
           "media_width": 47,
-          "media_mobile_show": false,
+          "media_mobile_show": true,
           "media_ratio": "auto",
           "media_fit": "cover",
           "media_focal": "center",

@@ -18,6 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@200;300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
   {{ 'laya.css' | asset_url | stylesheet_tag }}
+  {{ 'laya-mobile.css' | asset_url | stylesheet_tag }}
   <style>
     :root{
       --bone:{{ settings.color_bg }};
@@ -41,6 +42,7 @@
   {% section 'site-popups' %}
   {% render 'a11y-widget' %}
   {{ 'laya.js' | asset_url | script_tag }}
+  <script src="{{ 'laya-mobile.js' | asset_url }}" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script>
     window.addEventListener('DOMContentLoaded',function(){

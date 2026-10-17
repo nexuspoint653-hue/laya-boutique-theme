@@ -269,8 +269,14 @@
             <span class="card-colour">{{ card_colour }}</span>
           {%- elsif product.metafields.custom.colour_label != blank -%}
             <span class="card-colour">{{ product.metafields.custom.colour_label }}</span>
-          {%- elsif product.selected_or_first_available_variant.option1 -%}
-            <span class="card-colour">{{ product.selected_or_first_available_variant.option1 }}</span>
+          {%- else -%}
+            {%- for opt in product.options_with_values -%}
+              {%- assign oname = opt.name | downcase -%}
+              {%- if oname contains 'color' or oname contains 'colour' -%}
+                {%- if opt.selected_value != blank and opt.selected_value != 'Default Title' -%}<span class="card-colour">{{ opt.selected_value }}</span>{%- endif -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
           {%- endif -%}
         {%- endif -%}
       </span>

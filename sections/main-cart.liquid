@@ -89,6 +89,10 @@
       <button type="submit" name="update" class="bag-update" hidden>Update</button>
     </aside>
   </form>
+  <div class="bag-mbar show-sm-flex">
+    <div><small>Total</small><strong>{{ cart.total_price | money }}</strong></div>
+    <button type="submit" form="bag-form" name="checkout" class="bag-checkout">Checkout</button>
+  </div>
   <script>
     (function(){var f=document.getElementById('bag-form');if(!f)return;var t;
       f.querySelectorAll('[data-qty]').forEach(function(q){var i=q.querySelector('input');

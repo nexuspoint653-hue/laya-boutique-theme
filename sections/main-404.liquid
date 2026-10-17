@@ -1,12 +1,37 @@
 {% render 'section-style', s: section %}
 {% render 'section-bg', s: section %}
 {% render 'section-copy', s: section, place: 'top' %}
-<div class="wrap"><div class="prose center" style="padding-block:clamp(70px,10vw,150px)">
-  <span class="eyebrow">Error 404</span>
-  <h1 class="dsp dsp-l" style="margin:14px 0 18px">Page Not Found</h1>
-  <p class="lede">The page you are looking for has moved or no longer exists.</p>
-  <div style="margin-top:30px"><a href="{{ routes.root_url }}" class="btn">Return Home</a></div>
-</div></div>
+<div class="nf wrap">
+  <div class="nf-head">
+    <div class="nf-code">404</div>
+    <h1>This page has moved</h1>
+    <p>The piece or page you were looking for isn't here any more. Search the collection or start from one of our edits below.</p>
+    <form action="{{ routes.search_url }}" method="get" class="nf-search" role="search">
+      <input type="hidden" name="type" value="product">
+      <input type="search" name="q" placeholder="Search abayas, dresses, hijabs" aria-label="Search">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <div class="nf-cats">
+    {%- assign nf_handles = 'abayas,dresses,two-piece,accessories' | split: ',' -%}
+    {%- assign nf_labels = 'Abayas,Dresses,Matching Sets,Hijabs & Accessories' | split: ',' -%}
+    {%- for h in nf_handles -%}
+      {%- assign c = collections[h] -%}
+      <a class="nf-cat" href="/collections/{{ h }}">
+        {%- assign im = c.image | default: c.products.first.featured_image -%}
+        {%- if im -%}<img src="{{ im | image_url: width: 600 }}" alt="" loading="lazy" width="300" height="375">{%- endif -%}
+        <span>{{ nf_labels[forloop.index0] }}</span>
+      </a>
+    {%- endfor -%}
+  </div>
+  {%- assign rec = collections['bestsellers'].products -%}
+  {%- if rec.size > 0 -%}
+    <h2 class="nf-rec-h">Most Loved</h2>
+    <div class="grid-4">
+      {%- for p in rec limit: 4 -%}{% render 'product-card', product: p, index: forloop.index %}{%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
 {% render 'section-copy', s: section, place: 'bottom' %}
 
 {% schema %}
