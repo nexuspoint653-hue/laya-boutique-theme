@@ -669,9 +669,16 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
 function swapMedia(v){
   var gal=document.querySelector("[data-gallery]"); if(!gal) return;
   var stage=gal.querySelector(".pdp-stage"), shots=[].slice.call(gal.querySelectorAll(".pdp-shot")), chips=gal.querySelectorAll(".pdp-chip");
-  if(!shots.length || (!v.media_id && !v.img)) return;
-  var k=-1; shots.forEach(function(s,n){ if(String(s.dataset.mediaId)===String(v.media_id)) k=n; });
-  if(k<0 && v.img){ k=0; shots[0].removeAttribute("srcset"); shots[0].src=v.img; shots[0].dataset.mediaId=v.media_id; }
+  if(!shots.length) return;
+  var row=document.querySelector(".opt-row--swatch"), sws=row?[].slice.call(row.querySelectorAll(".opt")):[], onSw=row?row.querySelector(".opt.on"):null;
+  var col=onSw?onSw.dataset.value:"";
+  if(gal.dataset.col===col && !v.media_id) return;   /* size change only: leave the photo alone */
+  gal.dataset.col=col;
+  var k=-1;
+  if(v.media_id){ shots.forEach(function(s,n){ if(String(s.dataset.mediaId)===String(v.media_id)) k=n; });
+    if(k<0 && v.img){ k=0; shots[0].removeAttribute("srcset"); shots[0].src=v.img; shots[0].dataset.mediaId=v.media_id; } }
+  if(k<0 && col){ var c=col.toLowerCase(); shots.forEach(function(s,n){ if(k<0 && (s.alt||"").toLowerCase().indexOf(c)>-1) k=n; }); }
+  if(k<0 && onSw && sws.length>1){ var idx=sws.indexOf(onSw); if(idx>-1 && idx<shots.length) k=idx; }
   if(k<0) return;
   stage.classList.add("snap");
   shots.forEach(function(s,n){ s.classList.toggle("on",n===k); });
