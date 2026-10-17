@@ -1336,3 +1336,27 @@ html.lenis,html.lenis body{height:auto}
 .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
 .lenis.lenis-stopped{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){html:not(.lenis){scroll-behavior:smooth}}
+
+/* ===== Hero copy: centred + larger ===== */
+.hero-copy.pos-center{left:50%;right:auto;transform:translate(-50%,-50%);max-width:min(980px,90vw);width:100%;align-items:center;text-align:center!important}
+.hero-copy.pos-center .btn-row{justify-content:center}
+.hero-copy .hero-sub{font-size:clamp(12px,1vw,15px);letter-spacing:.42em;margin-bottom:20px}
+.hero-copy .dsp-xl{font-size:clamp(44px,7.2vw,112px);line-height:1.02;letter-spacing:.06em}
+.hero-copy .ul{font-size:clamp(12px,.95vw,14px);letter-spacing:.32em;margin-top:28px;padding-bottom:6px}
+
+/* ===== Header: frosted white + larger logo ===== */
+.hdr.solid,.hdr.on-hero{background:rgba(255,255,255,.84);color:var(--ink);box-shadow:0 1px 0 rgba(27,26,24,.06);-webkit-backdrop-filter:saturate(140%) blur(14px);backdrop-filter:saturate(140%) blur(14px)}
+.hdr.on-hero .logo-mark{background:linear-gradient(96deg,#8E6C3A 0%,#D9BC85 32%,#A9884F 55%,#E6D2A8 78%,#8E6C3A 100%);-webkit-background-clip:text;background-clip:text}
+.logo-mark{font-size:clamp(40px,4.3vw,62px)}
+.logo-sub{font-size:9.5px}
+
+/* ===== Split panels: no hard white blocks, images fade into the page ===== */
+.split{background:var(--bone)}
+.split:not(.dark):not(.tint) .split-body{background:transparent}
+.split.tint{background:var(--stone)}
+.split.dark{background:var(--deep)}
+.split .split-media{-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 72%,transparent 100%);mask-image:linear-gradient(90deg,#000 0%,#000 72%,transparent 100%)}
+.split.flip .split-media{-webkit-mask-image:linear-gradient(270deg,#000 0%,#000 72%,transparent 100%);mask-image:linear-gradient(270deg,#000 0%,#000 72%,transparent 100%)}
+@media (max-width:900px){
+  .split .split-media,.split.flip .split-media{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 78%,transparent 100%)}
+}
