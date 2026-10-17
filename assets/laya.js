@@ -691,3 +691,5 @@ function swapMedia(v){
   var d=document.querySelector("[data-variants]"); if(!d) return;
   try{ JSON.parse(d.textContent).forEach(function(v){ if(v.img){ var i=new Image(); i.decoding="async"; i.src=v.img; } }); }catch(e){}
 })();
+
+/* sync */
