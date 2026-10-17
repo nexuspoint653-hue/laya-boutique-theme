@@ -1543,3 +1543,4 @@ html.lenis,html.lenis body{height:auto}
   .pdp-stage{padding-top:0!important;aspect-ratio:4/5;height:auto;max-height:calc(100svh - var(--hdr) - 48px)}
   .pdp-stage>.pdp-fig{width:100%!important;height:100%!important;aspect-ratio:auto!important}
 }
+/* sync */
