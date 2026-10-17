@@ -1538,3 +1538,8 @@ html.lenis,html.lenis body{height:auto}
 .pdp-stage{background:#fff}
 .pdp-fig .pdp-bd{inset:0;width:100%;height:100%;filter:blur(34px) saturate(1.05) brightness(1.02);transform:scale(1.35) translateZ(0)}
 /* sync */
+/* product stage: never taller than the screen; photo fills the frame */
+@media (min-width:901px){
+  .pdp-stage{padding-top:0!important;aspect-ratio:4/5;height:auto;max-height:calc(100svh - var(--hdr) - 48px)}
+}
+.pdp-stage>.pdp-fig{width:100%!important;height:100%!important;aspect-ratio:auto!important;max-height:none!important}
