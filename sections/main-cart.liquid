@@ -1,37 +1,128 @@
 {% render 'section-style', s: section %}
 {% render 'section-bg', s: section %}
 {% render 'section-copy', s: section, place: 'top' %}
-<div class="phead"><div class="wrap"><span class="eyebrow">{{ shop.name }}</span><h1 class="dsp dsp-l">Your Bag</h1></div></div>
-<div class="wrap" style="padding-block:clamp(34px,4vw,60px)">
+{%- liquid
+  assign free_at = section.settings.free_ship_at | default: 250 | times: 100
+  assign remaining = free_at | minus: cart.total_price
+  assign pct = cart.total_price | times: 100 | divided_by: free_at
+  if pct > 100
+    assign pct = 100
+  endif
+-%}
+<div class="bag wrap">
+  <div class="bag-head">
+    <h1 class="bag-title">Shopping Bag{% if cart.item_count > 0 %} <span>({{ cart.item_count }})</span>{% endif %}</h1>
+    <a class="bag-cont" href="{{ routes.all_products_collection_url }}">Continue Shopping <span aria-hidden="true">&rarr;</span></a>
+  </div>
+
 {%- if cart.item_count > 0 -%}
-  <form action="{{ routes.cart_url }}" method="post" novalidate>
-    {%- for item in cart.items -%}
-      <div class="cart-row">
-        <a href="{{ item.url }}">{% if item.image %}<img src="{{ item.image | image_url: width: 200 }}" alt="">{% endif %}</a>
-        <div>
-          <a href="{{ item.url }}" class="card-name" style="font-size:14px">{{ item.product.title }}</a>
-          <div class="small">{{ item.variant.title | remove: 'Default Title' }}</div>
-        </div>
-        <div class="qty">
-          <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity">
-        </div>
-        <div class="card-price">{{ item.final_line_price | money }}</div>
+  <form action="{{ routes.cart_url }}" method="post" novalidate class="bag-grid" id="bag-form">
+    <div class="bag-items">
+      <div class="bag-ship">
+        {%- if remaining > 0 -%}
+          <p>You are <strong>{{ remaining | money }}</strong> away from complimentary shipping.</p>
+        {%- else -%}
+          <p>Your order qualifies for <strong>complimentary shipping</strong>.</p>
+        {%- endif -%}
+        <div class="bag-bar" aria-hidden="true"><span style="width:{{ pct }}%"></span></div>
       </div>
-    {%- endfor -%}
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:26px 0;flex-wrap:wrap;gap:16px">
-      <button type="submit" name="update" class="ul">Update Bag</button>
-      <div style="text-align:right">
-        <div class="ui" style="color:var(--muted)">Subtotal</div>
-        <div class="dsp dsp-m" style="letter-spacing:.04em">{{ cart.total_price | money }}</div>
-        <p class="small">Shipping and taxes calculated at checkout.</p>
-      </div>
+
+      <ul class="bag-list">
+      {%- for item in cart.items -%}
+        <li class="bag-item">
+          <a class="bag-img" href="{{ item.url }}">
+            {%- if item.image -%}<img src="{{ item.image | image_url: width: 400 }}" alt="{{ item.product.title | escape }}" width="200" height="250" loading="lazy">{%- endif -%}
+          </a>
+          <div class="bag-info">
+            <div class="bag-top">
+              <div>
+                <a href="{{ item.url }}" class="bag-name">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}
+                  <ul class="bag-opts">
+                    {%- for o in item.options_with_values -%}<li>{{ o.name }}: <span>{{ o.value }}</span></li>{%- endfor -%}
+                  </ul>
+                {%- endunless -%}
+                <div class="bag-each">{{ item.final_price | money }}</div>
+              </div>
+              <div class="bag-line">{{ item.final_line_price | money }}</div>
+            </div>
+            <div class="bag-bottom">
+              <div class="bag-qty" data-qty>
+                <button type="button" aria-label="Decrease quantity" data-step="-1">&minus;</button>
+                <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity for {{ item.product.title | escape }}">
+                <button type="button" aria-label="Increase quantity" data-step="1">+</button>
+              </div>
+              <a class="bag-remove" href="{{ item.url_to_remove }}">Remove</a>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+      </ul>
+
+      <details class="bag-note">
+        <summary>Add a note to your order</summary>
+        <textarea name="note" rows="3" placeholder="Gift message, fitting notes or delivery instructions">{{ cart.note }}</textarea>
+      </details>
     </div>
-    <button type="submit" name="checkout" class="btn btn-solid" style="width:100%;text-align:center">Checkout</button>
+
+    <aside class="bag-sum">
+      <h2 class="bag-sum-h">Order Summary</h2>
+      <dl>
+        <div><dt>Subtotal</dt><dd>{{ cart.total_price | money }}</dd></div>
+        <div><dt>Shipping</dt><dd>{% if remaining > 0 %}Calculated at checkout{% else %}Complimentary{% endif %}</dd></div>
+        <div><dt>Duties &amp; taxes</dt><dd>Calculated at checkout</dd></div>
+      </dl>
+      <div class="bag-total"><span>Estimated Total</span><strong>{{ cart.total_price | money }}</strong></div>
+      <p class="bag-code">Discount codes can be entered at checkout.</p>
+      <button type="submit" name="checkout" class="bag-checkout">Secure Checkout</button>
+      {%- if additional_checkout_buttons -%}<div class="bag-express">{{ content_for_additional_checkout_buttons }}</div>{%- endif -%}
+      <ul class="bag-perks">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="1.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Secure, encrypted checkout</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v9H3zM14 9h4l3 3v3h-7"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg>Complimentary shipping over {{ free_at | money_without_trailing_zeros }}</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4"/></svg>Thirty-day returns and exchanges</li>
+      </ul>
+      {%- if shop.enabled_payment_types.size > 0 -%}
+        <ul class="bag-pay" aria-label="Accepted payment methods">
+          {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag }}</li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <button type="submit" name="update" class="bag-update" hidden>Update</button>
+    </aside>
   </form>
+  <script>
+    (function(){var f=document.getElementById('bag-form');if(!f)return;var t;
+      f.querySelectorAll('[data-qty]').forEach(function(q){var i=q.querySelector('input');
+        q.addEventListener('click',function(e){var b=e.target.closest('[data-step]');if(!b)return;
+          i.value=Math.max(0,(parseInt(i.value,10)||0)+parseInt(b.dataset.step,10));clearTimeout(t);t=setTimeout(function(){f.querySelector('.bag-update').click()},450);});
+        i.addEventListener('change',function(){f.querySelector('.bag-update').click()});});
+    })();
+  </script>
 {%- else -%}
-  <div class="prose center">
-    <p class="lede">Your bag is currently empty.</p>
-    <div style="margin-top:30px"><a href="{{ routes.all_products_collection_url }}" class="btn">Continue Shopping</a></div>
+  <div class="bag-empty">
+    <p class="bag-empty-h">Your bag is empty.</p>
+    <p class="bag-empty-p">Discover the new season, or return to the pieces you were considering.</p>
+    <div class="bag-empty-cta">
+      <a class="bag-checkout" href="/collections/new-in">Shop New In</a>
+      <a class="bag-ghost" href="/collections/bestsellers">Bestsellers</a>
+    </div>
+  </div>
+{%- endif -%}
+
+{%- assign rec = collections['bestsellers'].products -%}
+{%- if rec.size > 0 -%}
+  <div class="bag-rec">
+    <h2 class="bag-rec-h">You May Also Like</h2>
+    <div class="grid-4 stag in">
+      {%- assign n = 0 -%}
+      {%- for p in rec -%}
+        {%- assign in_bag = false -%}
+        {%- for it in cart.items -%}{%- if it.product_id == p.id -%}{%- assign in_bag = true -%}{%- endif -%}{%- endfor -%}
+        {%- if in_bag == false and n < 4 -%}
+          {% render 'product-card', product: p, index: forloop.index %}
+          {%- assign n = n | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
   </div>
 {%- endif -%}
 </div>
@@ -41,6 +132,7 @@
 {
   "name": "Cart",
   "settings": [
+    {"type": "number","id": "free_ship_at","label": "Complimentary shipping threshold ($)","default": 250},
     {
       "type": "header",
       "content": "Appearance"
