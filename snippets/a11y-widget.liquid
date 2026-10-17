@@ -1,0 +1,101 @@
+{%- comment -%} Accessibility toolbar: floating button + panel. Preferences persist per visitor. {%- endcomment -%}
+<button type="button" class="a11y-fab" id="a11yFab" aria-haspopup="dialog" aria-controls="a11yPanel" aria-expanded="false" aria-label="Open accessibility options">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.2" r="1.9"/><path d="M12 7.2v6.3h4.6l2.4 5.3M12 9.6H7.4M10.1 13.5a4.6 4.6 0 1 0 5.2 5.6"/></svg>
+</button>
+<div class="a11y-panel" id="a11yPanel" role="dialog" aria-modal="false" aria-labelledby="a11yTitle" hidden data-lenis-prevent>
+  <div class="a11y-head">
+    <h2 id="a11yTitle">Accessibility</h2>
+    <button type="button" class="a11y-x" id="a11yClose" aria-label="Close accessibility options">&times;</button>
+  </div>
+  <div class="a11y-row">
+    <span class="a11y-lbl">Text size</span>
+    <div class="a11y-step" role="group" aria-label="Text size">
+      <button type="button" data-a11y-size="-1" aria-label="Decrease text size">A&minus;</button>
+      <output id="a11ySizeOut">100%</output>
+      <button type="button" data-a11y-size="1" aria-label="Increase text size">A+</button>
+    </div>
+  </div>
+  <div class="a11y-grid">
+    <button type="button" data-a11y="contrast" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16a8 8 0 0 0 0-16z" fill="currentColor"/></svg>High contrast</button>
+    <button type="button" data-a11y="links" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Highlight links</button>
+    <button type="button" data-a11y="readable" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M5 19L10.5 5h1L17 19M7.4 13.5h7.2"/></svg>Readable font</button>
+    <button type="button" data-a11y="spacing" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Text spacing</button>
+    <button type="button" data-a11y="motion" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="7" y="5" width="3.5" height="14" rx="1"/><rect x="13.5" y="5" width="3.5" height="14" rx="1"/></svg>Pause motion</button>
+    <button type="button" data-a11y="gray" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 3.5l5.3 6.2a6.8 6.8 0 1 1-10.6 0z"/></svg>Grayscale</button>
+    <button type="button" data-a11y="cursor" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M6 3l12 9-5.5 1L15 19l-2.5 1.2-2.6-6L6 17z"/></svg>Large cursor</button>
+    <button type="button" data-a11y="images" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="1.5"/><path d="M4 16l5-5 4 4 2-2 5 5M4 4l16 16"/></svg>Hide images</button>
+  </div>
+  <div class="a11y-foot">
+    <button type="button" class="a11y-reset" id="a11yReset">Reset all</button>
+    <a href="/pages/accessibility">Accessibility statement &rarr;</a>
+  </div>
+</div>
+<style>
+.a11y-fab{position:fixed;left:20px;bottom:20px;z-index:60;width:52px;height:52px;border-radius:50%;border:2px solid #fff;background:#1B1A18;color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 22px rgba(27,26,24,.28);transition:transform .35s cubic-bezier(.22,.61,.36,1),background .35s}
+.a11y-fab:hover{transform:scale(1.07);background:#A98858}
+.a11y-fab:focus-visible{outline:3px solid #A98858;outline-offset:3px}
+.a11y-fab svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.a11y-fab svg circle{fill:currentColor;stroke:none}
+.a11y-panel{position:fixed;left:20px;bottom:84px;z-index:61;width:min(360px,calc(100vw - 40px));max-height:calc(100vh - 110px);overflow:auto;background:#fff;color:#1B1A18;border-radius:16px;box-shadow:0 20px 60px rgba(27,26,24,.22);padding:22px;font-family:var(--sans,system-ui);opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
+.a11y-panel.on{opacity:1;transform:none}
+.a11y-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.a11y-head h2{margin:0;font-family:var(--serif,serif);font-weight:400;font-size:22px;letter-spacing:.04em}
+.a11y-x{width:34px;height:34px;border:0;border-radius:50%;background:#F4F1EC;font-size:20px;line-height:1;cursor:pointer;color:inherit}
+.a11y-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #E7E2DA;border-radius:12px;margin-bottom:12px}
+.a11y-lbl{font-size:13px}
+.a11y-step{display:flex;align-items:center;gap:6px}
+.a11y-step button{width:38px;height:34px;border:1px solid #E7E2DA;border-radius:8px;background:#fff;cursor:pointer;font-size:13px;color:inherit}
+.a11y-step output{min-width:46px;text-align:center;font-size:13px}
+.a11y-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.a11y-grid button{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border:1px solid #E7E2DA;border-radius:12px;background:#fff;color:inherit;font-size:12.5px;text-align:left;cursor:pointer;transition:border-color .25s,background .25s}
+.a11y-grid button:hover{border-color:#A98858}
+.a11y-grid button[aria-pressed=true]{background:#1B1A18;border-color:#1B1A18;color:#fff}
+.a11y-grid svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.a11y-panel button:focus-visible,.a11y-panel a:focus-visible{outline:3px solid #A98858;outline-offset:2px}
+.a11y-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid #E7E2DA;font-size:12px}
+.a11y-reset{border:0;background:none;padding:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;color:inherit;text-decoration:underline;text-underline-offset:3px}
+.a11y-foot a{color:#1B1A18;text-decoration:underline;text-underline-offset:3px}
+/* modes */
+html.a11y-contrast body{background:#fff!important;color:#000!important}
+html.a11y-contrast body *:not(.a11y-fab):not(.a11y-fab *):not(img):not(video){color:#000!important;border-color:#000!important;text-shadow:none!important}
+html.a11y-contrast .btn,html.a11y-contrast .bag-checkout,html.a11y-contrast button[type=submit]{background:#000!important;color:#fff!important}
+html.a11y-contrast .hero-copy *, html.a11y-contrast footer *{color:#fff!important}
+html.a11y-contrast footer{background:#000!important}
+html.a11y-links a:not(.a11y-fab){text-decoration:underline!important;text-underline-offset:3px;outline:2px solid #A98858;outline-offset:2px}
+html.a11y-readable body,html.a11y-readable body *:not(svg):not(svg *){font-family:Verdana,Arial,Helvetica,sans-serif!important;letter-spacing:.01em!important}
+html.a11y-spacing body p,html.a11y-spacing body li,html.a11y-spacing body dd{line-height:1.9!important;letter-spacing:.06em!important;word-spacing:.16em!important;text-align:left!important}
+html.a11y-motion *,html.a11y-motion *::before,html.a11y-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html.a11y-gray body>*:not(.a11y-panel):not(.a11y-fab){filter:grayscale(1)}
+html.a11y-cursor,html.a11y-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 24 24'%3E%3Cpath d='M6 3l12 9-5.5 1L15 19l-2.5 1.2-2.6-6L6 17z' fill='%23000' stroke='%23fff' stroke-width='1.2'/%3E%3C/svg%3E") 6 3,auto!important}
+html.a11y-images main img,html.a11y-images main video,html.a11y-images main .hero-media{visibility:hidden!important}
+@media (max-width:560px){.a11y-fab{width:46px;height:46px;left:14px;bottom:14px}.a11y-panel{left:14px;bottom:72px}}
+@media print{.a11y-fab,.a11y-panel{display:none}}
+</style>
+<script>
+(function(){
+  var K='laya-a11y', root=document.documentElement, fab=document.getElementById('a11yFab'), p=document.getElementById('a11yPanel');
+  if(!fab||!p) return;
+  var st={}; try{st=JSON.parse(localStorage.getItem(K))||{}}catch(e){}
+  var modes=['contrast','links','readable','spacing','motion','gray','cursor','images'];
+  function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+  function apply(){
+    modes.forEach(function(m){root.classList.toggle('a11y-'+m,!!st[m]);var b=p.querySelector('[data-a11y="'+m+'"]');if(b)b.setAttribute('aria-pressed',st[m]?'true':'false');});
+    var s=st.size||0; var z=s?(1+s*0.1):''; ['main','footer'].forEach(function(q){document.querySelectorAll(q).forEach(function(el){el.style.zoom=z})});
+    document.getElementById('a11ySizeOut').textContent=(100+s*10)+'%';
+    if(window.__lenis){st.motion?window.__lenis.stop():window.__lenis.start();}
+    if(st.motion) document.querySelectorAll('video').forEach(function(v){v.pause()});
+  }
+  function open(){p.hidden=false;requestAnimationFrame(function(){p.classList.add('on')});fab.setAttribute('aria-expanded','true');p.querySelector('button').focus();}
+  function close(){p.classList.remove('on');fab.setAttribute('aria-expanded','false');setTimeout(function(){p.hidden=true},300);}
+  fab.addEventListener('click',function(){p.hidden?open():close()});
+  document.getElementById('a11yClose').addEventListener('click',function(){close();fab.focus()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!p.hidden){close();fab.focus()}});
+  document.addEventListener('click',function(e){if(!p.hidden&&!p.contains(e.target)&&!fab.contains(e.target))close()});
+  p.addEventListener('click',function(e){
+    var b=e.target.closest('[data-a11y]'); if(b){var m=b.dataset.a11y;st[m]=!st[m];save();apply();return;}
+    var z=e.target.closest('[data-a11y-size]'); if(z){st.size=Math.max(-1,Math.min(5,(st.size||0)+parseInt(z.dataset.a11ySize,10)));save();apply();}
+  });
+  document.getElementById('a11yReset').addEventListener('click',function(){st={};save();apply();});
+  apply();
+})();
+</script>
