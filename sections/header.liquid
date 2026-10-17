@@ -221,30 +221,93 @@
 })();
 </script>
 
-<aside class="drawer" id="search" style="inset:0 auto 0 0;width:min(520px,92vw);box-shadow:20px 0 60px rgba(0,0,0,.12)">
-  <div class="drawer-h"><span class="ui">Search</span><button class="x" id="searchX" aria-label="Close"></button></div>
-  <div class="drawer-b">
-    <form action="{{ routes.search_url }}" method="get" class="nl-field" style="max-width:none">
+<aside class="drawer srch" id="search" aria-label="Search">
+  <div class="srch-top">
+    <form action="{{ routes.search_url }}" method="get" class="srch-form" role="search">
       <input type="hidden" name="type" value="product">
-      <input type="search" name="q" placeholder="What are you looking for?" autocomplete="off">
-      <button type="submit" aria-label="Search"><svg viewBox="0 0 24 16"><path d="M0 8h22M15 1l7 7-7 7"/></svg></button>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+      <input type="search" name="q" placeholder="Search abayas, dresses, hijabs" aria-label="Search" autocomplete="off" data-srch-input>
+      <button type="button" class="srch-clear" data-srch-clear aria-label="Clear" hidden><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </form>
-    {%- if section.settings.popular != blank -%}
-      <h4 style="margin:34px 0 14px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:400">Popular searches</h4>
-      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
-        {%- assign terms = section.settings.popular | split: ',' -%}
-        {%- for t in terms -%}
-          <li><a style="font-size:14px" href="{{ routes.search_url }}?q={{ t | strip | url_encode }}&type=product">{{ t | strip }}</a></li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
+    <button class="srch-cancel" id="searchX" type="button">Cancel</button>
+  </div>
+  <div class="srch-body" data-lenis-prevent>
+    <div class="srch-default" data-srch-default>
+      {%- if section.settings.popular != blank -%}
+        <div class="srch-sec">
+          <h3 class="srch-h">Trending</h3>
+          <div class="srch-chips">
+            {%- assign terms = section.settings.popular | split: ',' -%}
+            {%- for t in terms -%}<a href="{{ routes.search_url }}?q={{ t | strip | url_encode }}&type=product">{{ t | strip }}</a>{%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+      <div class="srch-sec">
+        <h3 class="srch-h">Shop by category</h3>
+        <div class="srch-cats">
+          {%- assign sh = 'abayas,dresses,two-piece,accessories' | split: ',' -%}
+          {%- assign sl = 'Abayas,Dresses,Matching Sets,Hijabs' | split: ',' -%}
+          {%- for h in sh -%}
+            {%- assign c = collections[h] -%}
+            {%- assign im = c.image | default: c.products.first.featured_image -%}
+            <a class="srch-cat" href="/collections/{{ h }}">
+              {%- if im -%}<img src="{{ im | image_url: width: 500 }}" alt="" loading="lazy" width="250" height="160">{%- endif -%}
+              <span>{{ sl[forloop.index0] }}</span>
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- assign tops = collections['bestsellers'].products -%}
+      {%- if tops.size > 0 -%}
+        <div class="srch-sec">
+          <div class="srch-hrow"><h3 class="srch-h">Top sellers</h3><a href="/collections/bestsellers">View all</a></div>
+          <ul class="srch-list">
+            {%- assign n = 0 -%}
+            {%- for p in tops -%}
+              {%- if p.available and n < 3 -%}
+                {%- assign n = n | plus: 1 -%}
+                <li><a href="{{ p.url }}">
+                  {%- if p.featured_image -%}<img src="{{ p.featured_image | image_url: width: 160 }}" alt="" loading="lazy" width="56" height="70">{%- endif -%}
+                  <span class="srch-li-t">{{ p.title }}</span>
+                  <span class="srch-li-p">{{ p.price | money }}</span>
+                </a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="srch-results" data-srch-results hidden></div>
   </div>
 </aside>
+<script>
+(function(){
+  var s=document.getElementById('search'); if(!s||s.dataset.wired) return; s.dataset.wired='1';
+  var inp=s.querySelector('[data-srch-input]'), clr=s.querySelector('[data-srch-clear]'), def=s.querySelector('[data-srch-default]'), res=s.querySelector('[data-srch-results]'), t, ctl;
+  function esc(x){return String(x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function money(v){var n=parseFloat(v);return isNaN(n)?'':'$'+n.toFixed(2)}
+  function reset(){res.hidden=true;res.innerHTML='';def.hidden=false;clr.hidden=true}
+  function run(q){
+    if(ctl) ctl.abort(); ctl=window.AbortController?new AbortController():null;
+    fetch('{{ routes.predictive_search_url }}.json?q='+encodeURIComponent(q)+'&resources[type]=product,collection&resources[limit]=5',ctl?{signal:ctl.signal}:{})
+      .then(function(r){return r.json()}).then(function(d){
+        var r=(d.resources&&d.resources.results)||{}, ps=r.products||[], cs=r.collections||[], h='';
+        if(cs.length){h+='<div class="srch-sec"><h3 class="srch-h">Categories</h3><div class="srch-chips">'+cs.slice(0,4).map(function(c){return '<a href="'+esc(c.url)+'">'+esc(c.title)+'</a>'}).join('')+'</div></div>'}
+        if(ps.length){h+='<div class="srch-sec"><h3 class="srch-h">Products</h3><ul class="srch-list">'+ps.map(function(p){return '<li><a href="'+esc(p.url)+'">'+(p.image?'<img src="'+esc(p.image)+'" alt="" width="56" height="70">':'<i></i>')+'<span class="srch-li-t">'+esc(p.title)+'</span><span class="srch-li-p">'+money(p.price)+'</span></a></li>'}).join('')+'</ul></div>'}
+        if(!h) h='<p class="srch-none">No pieces match "'+esc(q)+'". Try abaya, dress or hijab.</p>';
+        h+='<a class="srch-all" href="{{ routes.search_url }}?q='+encodeURIComponent(q)+'&type=product">See all results for "'+esc(q)+'"</a>';
+        res.innerHTML=h; res.hidden=false; def.hidden=true;
+      }).catch(function(){});
+  }
+  inp.addEventListener('input',function(){var q=inp.value.trim();clr.hidden=!q;clearTimeout(t);if(q.length<2){reset();return;}t=setTimeout(function(){run(q)},180);});
+  clr.addEventListener('click',function(){inp.value='';reset();inp.focus();});
+  new MutationObserver(function(){if(!s.classList.contains('on')){setTimeout(function(){inp.value='';reset();},400);}}).observe(s,{attributes:true,attributeFilter:['class']});
+})();
+</script>
 
 <style>
 .hdr .logo img{display:block}
-.drawer#search{transform:translateX(-100%)}
-.drawer#search.on{transform:none}
+
 </style>
 
 {% schema %}

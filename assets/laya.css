@@ -1484,3 +1484,18 @@ html.lenis,html.lenis body{height:auto}
 .card--zoom.playing .card-media img.still{opacity:1!important}
 .hero-media[data-media-focal="top"] video{object-position:center 16%}
 .hero-media[data-media-focal="bottom"] video{object-position:center bottom}
+
+/* ===== Alignment pass (2026-10-17): centred copy is centred, never justified ===== */
+.t-just :where(.split-body .lede,.split-body .lede p,.banner-copy .lede,.banner-copy .lede p,.hero-copy .lede,.look-lede,.offer-copy,.offer-copy p,.offer-fine,.offer-fine p,.cnote-copy,.cnote-copy p),
+.split-body[style*="text-align:center"] .lede,.split-body[style*="text-align:center"] .lede p,
+.split-body .lede,.split-body .lede p,.banner-copy .lede,.banner-copy .lede p{
+  text-align:inherit!important;text-align-last:auto!important;hyphens:manual!important;-webkit-hyphens:manual!important;word-spacing:normal!important}
+.split-body .lede p,.banner-copy .lede p,.sec-head .lede p{text-wrap:balance}
+.offer-copy,.offer-copy p,.offer-fine,.offer-fine p{text-align:left!important}
+.offer-card--center .offer-copy,.offer-card--center .offer-copy p,.offer-card--center .offer-fine,.offer-card--center .offer-fine p{text-align:center!important}
+.card-colour{text-transform:capitalize}
+.banner-copy{inset:auto 0 clamp(52px,9vw,128px)}
+@media (min-width:750px){
+  .ftr-col h4,.ftr-col .ftr-h{margin-bottom:16px!important}
+  .ftr-col li{margin-bottom:10px}
+}

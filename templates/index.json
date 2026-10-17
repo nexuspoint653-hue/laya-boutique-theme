@@ -94,7 +94,7 @@
         "link_text": "Shop Now",
         "link": "/collections/new-in",
         "link_style": "underline",
-        "show_shop_all": true,
+        "show_shop_all": false,
         "shop_all_text": "Shop all",
         "columns": "4",
         "carousel": true,
