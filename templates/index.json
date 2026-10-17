@@ -28,7 +28,7 @@
         "muted": true,
         "controls": false,
         "fit": "cover",
-        "focal": "center",
+        "focal": "top",
         "placeholder": "tile",
         "ratio": "auto",
         "overlay": 20,

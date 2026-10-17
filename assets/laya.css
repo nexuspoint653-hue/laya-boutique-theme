@@ -1482,3 +1482,5 @@ html.lenis,html.lenis body{height:auto}
 /* zoom cards never hide the photo */
 .card--zoom:hover .card-media img.still{opacity:1!important}
 .card--zoom.playing .card-media img.still{opacity:1!important}
+.hero-media[data-media-focal="top"] video{object-position:center 16%}
+.hero-media[data-media-focal="bottom"] video{object-position:center bottom}
