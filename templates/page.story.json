@@ -89,19 +89,19 @@
       }
     },
     "visit": {
-      "type": "rich-text",
+      "type": "visit-boutique",
       "settings": {
+        "city": "Dearborn, Michigan",
         "eyebrow": "The Boutique",
         "heading": "Visit Us",
-        "body": "<p>13328 Michigan Ave<br>Dearborn, MI 48126</p><p><a href=\"tel:+17345445555\">(734) 544-5555</a></p><p>Private appointments available outside opening hours.</p>",
-        "align": "center",
-        "width": "narrow",
+        "address": "<p>13328 Michigan Ave<br>Dearborn, MI 48126</p>",
+        "phone": "(734) 544-5555",
+        "hours": "",
+        "note": "Private appointments available outside opening hours.",
         "link_text": "Get Directions",
         "link": "https://www.google.com/maps/search/?api=1&query=Laya+Boutique+13328+Michigan+Ave+Dearborn+MI+48126",
-        "pad_top": 0,
-        "pad_bottom": 0,
-        "look": "address",
-        "scheme": "dark"
+        "link2_text": "Book an Appointment",
+        "link2": "/pages/appointments"
       }
     },
     "svc": {

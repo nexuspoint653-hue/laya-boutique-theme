@@ -1,0 +1,49 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="visit2" id="visit-{{ section.id }}">
+  <div class="visit2-in">
+    <div class="visit2-media rv">
+      {%- if s.image -%}
+        {{ s.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 50vw, 100vw', alt: s.heading }}
+      {%- else -%}
+        <img src="{{ 'laya-storefront.jpg' | asset_url }}" alt="{{ s.heading | escape }}" loading="lazy">
+      {%- endif -%}
+      <span class="visit2-tag">{{ s.city }}</span>
+    </div>
+    <div class="visit2-copy rv">
+      {%- if s.eyebrow != blank -%}<span class="visit2-eye">{{ s.eyebrow }}</span>{%- endif -%}
+      <h2 class="visit2-h">{{ s.heading }}</h2>
+      <dl class="visit2-list">
+        <div><dt>Address</dt><dd>{{ s.address }}</dd></div>
+        {%- if s.phone != blank -%}<div><dt>Telephone</dt><dd><a href="tel:{{ s.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ s.phone }}</a></dd></div>{%- endif -%}
+        {%- if s.hours != blank -%}<div><dt>Hours</dt><dd>{{ s.hours }}</dd></div>{%- endif -%}
+        {%- if s.note != blank -%}<div><dt>Appointments</dt><dd>{{ s.note }}</dd></div>{%- endif -%}
+      </dl>
+      <div class="visit2-cta">
+        {%- if s.link != blank -%}<a class="visit2-btn" href="{{ s.link }}" target="_blank" rel="noopener">{{ s.link_text }}</a>{%- endif -%}
+        {%- if s.link2 != blank -%}<a class="visit2-ghost" href="{{ s.link2 }}">{{ s.link2_text }} <span aria-hidden="true">&rarr;</span></a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Visit the boutique",
+  "settings": [
+    {"type": "image_picker","id": "image","label": "Image"},
+    {"type": "text","id": "city","label": "Image label","default": "Dearborn, Michigan"},
+    {"type": "text","id": "eyebrow","label": "Eyebrow","default": "The Boutique"},
+    {"type": "text","id": "heading","label": "Heading","default": "Visit Us"},
+    {"type": "richtext","id": "address","label": "Address","default": "<p>13328 Michigan Ave<br>Dearborn, MI 48126</p>"},
+    {"type": "text","id": "phone","label": "Phone","default": "(734) 544-5555"},
+    {"type": "text","id": "hours","label": "Hours"},
+    {"type": "text","id": "note","label": "Appointments note","default": "Private appointments available outside opening hours."},
+    {"type": "text","id": "link_text","label": "Button label","default": "Get Directions"},
+    {"type": "url","id": "link","label": "Button link"},
+    {"type": "text","id": "link2_text","label": "Second link label","default": "Book an Appointment"},
+    {"type": "url","id": "link2","label": "Second link"}
+  ],
+  "presets": [{"name": "Visit the boutique"}]
+}
+{% endschema %}

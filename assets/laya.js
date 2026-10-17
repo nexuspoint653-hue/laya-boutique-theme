@@ -49,15 +49,20 @@ function initHeader(){
     hdr.classList.toggle("on-hero", onHero && top);
     hdr.classList.toggle("solid", !(onHero && top));
   }
+  var endT=null;
   function close(){
-    if(mega) mega.classList.remove("show");
-    hdr.querySelectorAll(".mega-in").forEach(function(m){m.classList.remove("show");});
     hdr.querySelectorAll(".nav-l .nav-a").forEach(function(a){a.classList.remove("open");});
     hdr.classList.remove("menu-open"); if(scrim) scrim.classList.remove("on"); state();
+    clearTimeout(endT);
+    endT=setTimeout(function(){
+      if(hdr.classList.contains("menu-open")) return;
+      if(mega) mega.classList.remove("show");
+      hdr.querySelectorAll(".mega-in").forEach(function(m){m.classList.remove("show");});
+    },560);
   }
   hdr.querySelectorAll(".nav-l .nav-a[data-menu]").forEach(function(a){
     function open(){
-      clearTimeout(closeT);
+      clearTimeout(closeT); clearTimeout(endT);
       if(!mega) return;
       mega.classList.add("show");
       hdr.querySelectorAll(".mega-in").forEach(function(m){ m.classList.toggle("show", m.id===a.dataset.menu); });
@@ -68,7 +73,7 @@ function initHeader(){
     a.addEventListener("pointerenter",function(){ if(CAN_HOVER) open(); });
     a.addEventListener("focus",open);
   });
-  hdr.addEventListener("pointerleave",function(){ closeT=setTimeout(close,140); });
+  hdr.addEventListener("pointerleave",function(){ closeT=setTimeout(close,220); });
   hdr.addEventListener("pointerenter",function(){ clearTimeout(closeT); });
   if(scrim) scrim.addEventListener("click",close);
   addEventListener("scroll",state,{passive:true});
