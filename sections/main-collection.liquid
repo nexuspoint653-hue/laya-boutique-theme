@@ -62,7 +62,7 @@
       <h3>Sort by</h3>
       <ul class="fs-sort">
         {%- for o in collection.sort_options -%}
-          <li><a class="{% if o.value == collection.sort_by %}on{% endif %}" href="{{ collection.url }}{% if current_tags %}/{{ current_tags | join: '+' | handleize }}{% endif %}?sort_by={{ o.value }}">{{ o.name }}</a></li>
+          {%- assign cur_sort = collection.sort_by | default: collection.default_sort_by -%}<li><a class="{% if o.value == cur_sort %}on{% endif %}" href="{{ collection.url }}{% if current_tags %}/{{ current_tags | join: '+' | handleize }}{% endif %}?sort_by={{ o.value }}">{{ o.name }}</a></li>
         {%- endfor -%}
       </ul>
     </div>

@@ -1499,3 +1499,18 @@ html.lenis,html.lenis body{height:auto}
   .ftr-col h4,.ftr-col .ftr-h{margin-bottom:16px!important}
   .ftr-col li{margin-bottom:10px}
 }
+
+/* ===== Performance pass (2026-10-17): no blur over moving video, composited menu ===== */
+/* backdrop blur re-renders every video frame underneath it, which is what made the hero stutter */
+.scrim.on{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.hdr.solid,.hdr.on-hero,.hdr.menu-open{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(255,255,255,.94)}
+.hdr.menu-open{background:#fff}
+.hero-media{transform:translateZ(0);will-change:transform;contain:paint;backface-visibility:hidden}
+.hero-media video{will-change:auto}
+/* mega menu: slide with transform (GPU) instead of clip-path (repaints) */
+.mega{clip-path:none!important;transform:translate3d(0,-102%,0);visibility:hidden;will-change:transform;transition:transform .5s cubic-bezier(.65,0,.35,1),visibility 0s linear .5s!important;z-index:1}
+.hdr.menu-open .mega.show{transform:translate3d(0,0,0);visibility:visible;transition:transform .55s cubic-bezier(.22,.61,.36,1),visibility 0s!important}
+.hdr:has(.mega.show) .hdr-in{background:#fff}
+.hdr-in{position:relative;z-index:2}
+@media (prefers-reduced-motion:reduce){.mega,.hdr.menu-open .mega.show{transition:none!important}}
+.pdp-stage.snap>.pdp-shot{transition:none!important}

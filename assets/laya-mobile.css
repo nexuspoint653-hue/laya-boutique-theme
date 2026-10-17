@@ -159,7 +159,7 @@
   .opt{min-width:48px;min-height:44px}
   .acc-h{min-height:52px}
   .pdp-pn{margin-top:20px}
-  .pdp-dock{padding:10px 16px calc(10px + env(safe-area-inset-bottom))!important;background:rgba(255,255,255,.96)!important;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+  .pdp-dock{padding:10px 16px calc(10px + env(safe-area-inset-bottom))!important;background:#fff!important;border-top:1px solid var(--line)}
   .pdp-dock-btn{border-radius:8px;min-height:48px}
 
   /* ---------- bag ---------- */
@@ -173,7 +173,7 @@
   .bag-line{font-size:15px}
   .bag-qty{height:38px}
   .bag-sum{border-radius:12px;padding:20px;margin-top:8px}
-  .bag-mbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:14px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+  .bag-mbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;gap:14px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
   .bag-mbar div{display:flex;flex-direction:column;line-height:1.2}
   .bag-mbar small{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
   .bag-mbar strong{font-family:var(--serif);font-weight:400;font-size:20px;color:var(--ink)}
@@ -330,7 +330,7 @@
 /* ===================== Collection: floating Filter & Sort ===================== */
 .fab-filter,.fs-sheet,.fs-scrim{display:none}
 @media (max-width:900px){
-  .fab-filter{display:inline-flex;position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:56;align-items:center;gap:10px;height:50px;padding:0 22px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:12px;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 10px 30px rgba(27,26,24,.28);transform:translate(-50%,140%);opacity:0;transition:transform .45s cubic-bezier(.22,.61,.36,1),opacity .3s;cursor:pointer}
+  .fab-filter{white-space:nowrap;display:inline-flex;position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:56;align-items:center;gap:10px;height:50px;padding:0 22px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:12px;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 10px 30px rgba(27,26,24,.28);transform:translate(-50%,140%);opacity:0;transition:transform .45s cubic-bezier(.22,.61,.36,1),opacity .3s;cursor:pointer}
   .fab-filter.on{transform:translate(-50%,0);opacity:1}
   .fab-filter svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
   .fab-filter svg circle{fill:var(--ink)}

@@ -198,6 +198,7 @@ function initProduct(root){
       if(price && match.price_formatted){ var now=price.querySelector(".pdp-now"); if(now) now.textContent=match.price_formatted; else price.innerHTML=match.price_formatted; }
       if(btn){ btn.disabled=!match.available; btn.dataset.label=btn.dataset.label||btn.textContent.trim(); btn.textContent=match.available?(btn.dataset.label==="Sold Out"?"Add to Bag":btn.dataset.label):"Sold Out"; }
     } else if(btn){ btn.disabled=true; btn.textContent="Unavailable"; }
+    if(match) swapMedia(match);
     if(label){ var orow=label.closest(".pdp-opt"); var on=orow&&orow.querySelector(".opt.on"); if(on) label.textContent=on.dataset.value; else if(chosen[0]) label.textContent=chosen[0]; }
   }
 }
@@ -662,4 +663,24 @@ document.addEventListener("shopify:section:load",function(e){ boot(e.target); in
   var t; function run(){clearTimeout(t);t=setTimeout(fix,150)}
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
   addEventListener('load',run); addEventListener('resize',run,{passive:true});
+})();
+
+/* ---------- variant -> photo: instant swap to the chosen colour ---------- */
+function swapMedia(v){
+  var gal=document.querySelector("[data-gallery]"); if(!gal) return;
+  var stage=gal.querySelector(".pdp-stage"), shots=[].slice.call(gal.querySelectorAll(".pdp-shot")), chips=gal.querySelectorAll(".pdp-chip");
+  if(!shots.length || (!v.media_id && !v.img)) return;
+  var k=-1; shots.forEach(function(s,n){ if(String(s.dataset.mediaId)===String(v.media_id)) k=n; });
+  if(k<0 && v.img){ k=0; shots[0].removeAttribute("srcset"); shots[0].src=v.img; shots[0].dataset.mediaId=v.media_id; }
+  if(k<0) return;
+  stage.classList.add("snap");
+  shots.forEach(function(s,n){ s.classList.toggle("on",n===k); });
+  chips.forEach(function(c,n){ c.classList.toggle("on",n===k); });
+  gal.dataset.active=k;
+  if(stage.scrollWidth>stage.clientWidth+4) stage.scrollTo({left:shots[k].offsetLeft-stage.offsetLeft,behavior:"auto"});
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ stage.classList.remove("snap"); }); });
+}
+(function preloadVariantImgs(){
+  var d=document.querySelector("[data-variants]"); if(!d) return;
+  try{ JSON.parse(d.textContent).forEach(function(v){ if(v.img){ var i=new Image(); i.decoding="async"; i.src=v.img; } }); }catch(e){}
 })();
