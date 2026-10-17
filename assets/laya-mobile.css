@@ -131,7 +131,7 @@
   /* ---------- collection ---------- */
   .phead{padding-block:28px 18px!important}
   .phead .lede{max-width:none}
-  .toolbar{position:sticky;top:var(--hdr);z-index:20;background:var(--bone);margin-inline:-16px;padding:10px 16px!important;gap:10px;flex-wrap:nowrap;border-bottom:1px solid var(--line)}
+  .toolbar{position:static;background:none;margin-inline:-16px;padding:10px 16px!important;gap:10px;flex-wrap:nowrap;border-bottom:1px solid var(--line)}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
   .chips::-webkit-scrollbar{display:none}
   .chip{flex:none;min-height:36px;display:inline-flex;align-items:center;border-radius:999px!important;padding:0 14px!important}
@@ -326,3 +326,35 @@
   .ftr .ftr-mark .logo-mark{background:linear-gradient(96deg,#7E5F30 0%,#B8955E 40%,#9A7A47 70%,#7E5F30 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent}
 }
 /* sync 2 */
+
+/* ===================== Collection: floating Filter & Sort ===================== */
+.fab-filter,.fs-sheet,.fs-scrim{display:none}
+@media (max-width:900px){
+  .fab-filter{display:inline-flex;position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:56;align-items:center;gap:10px;height:50px;padding:0 22px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:12px;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 10px 30px rgba(27,26,24,.28);transform:translate(-50%,140%);opacity:0;transition:transform .45s cubic-bezier(.22,.61,.36,1),opacity .3s;cursor:pointer}
+  .fab-filter.on{transform:translate(-50%,0);opacity:1}
+  .fab-filter svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+  .fab-filter svg circle{fill:var(--ink)}
+  .fab-filter span{min-width:26px;height:22px;padding:0 7px;border-radius:99px;background:rgba(255,255,255,.18);font-size:11px;letter-spacing:0;display:grid;place-items:center}
+  .fab-filter:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+  .fs-scrim{display:block;position:fixed;inset:0;z-index:84;background:rgba(27,26,24,.42);opacity:0;pointer-events:none;transition:opacity .3s}
+  .fs-sheet{display:block;position:fixed;left:0;right:0;bottom:0;z-index:85;max-height:86svh;overflow-y:auto;background:#fff;border-radius:18px 18px 0 0;padding:8px 20px calc(20px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .45s cubic-bezier(.22,.61,.36,1);visibility:hidden}
+  html.fs-on .fs-scrim{opacity:1;pointer-events:auto}
+  html.fs-on .fs-sheet{transform:none;visibility:visible}
+  html.fs-on .fab-filter{opacity:0}
+  .fs-grab{width:40px;height:4px;border-radius:4px;background:var(--line);margin:4px auto 10px}
+  .fs-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:6px}
+  .fs-head h2{margin:0;font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink)}
+  .fs-x{width:40px;height:40px;border:0;border-radius:50%;background:#F3F0EB;display:grid;place-items:center}
+  .fs-x svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:1.6}
+  .fs-sec{padding:14px 0;border-top:1px solid var(--line)}
+  .fs-sec h3{margin:0 0 10px;font-family:inherit;font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .fs-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .fs-chips a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:999px;font-size:13.5px;color:var(--ink)}
+  .fs-chips a.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .fs-sort{list-style:none;margin:0;padding:0}
+  .fs-sort a{display:flex;align-items:center;justify-content:space-between;min-height:46px;font-size:15px;color:var(--ink)}
+  .fs-sort a::after{content:"";width:18px;height:18px;border-radius:50%;border:1px solid var(--line)}
+  .fs-sort a.on::after{border:6px solid var(--ink)}
+  .fs-go{width:100%;height:52px;margin-top:10px;border:0;border-radius:10px;background:var(--ink);color:#fff;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+  body:has(.fab-filter.on) .a11y-fab{bottom:calc(80px + env(safe-area-inset-bottom))}
+}

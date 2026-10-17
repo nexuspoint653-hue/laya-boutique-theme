@@ -33,6 +33,55 @@
     </div>
   </div>
 
+  <button type="button" class="fab-filter" data-fs-open aria-haspopup="dialog" aria-controls="fsSheet">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+    Filter &amp; Sort<span>{{ collection.products_count }}</span>
+  </button>
+  <div class="fs-scrim" data-fs-close></div>
+  <div class="fs-sheet" id="fsSheet" role="dialog" aria-modal="true" aria-labelledby="fsTitle" data-lenis-prevent>
+    <div class="fs-grab" aria-hidden="true"></div>
+    <div class="fs-head"><h2 id="fsTitle">Filter &amp; Sort</h2><button type="button" class="fs-x" data-fs-close aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="fs-sec">
+      <h3>Category</h3>
+      <div class="fs-chips">
+        {%- assign ch = 'new-in,abayas,dresses,two-piece,tops,accessories' | split: ',' -%}
+        {%- assign cl = 'New In,Abayas,Dresses,Matching Sets,Tops,Hijabs & Accessories' | split: ',' -%}
+        {%- for h in ch -%}<a class="{% if collection.handle == h %}on{% endif %}" href="/collections/{{ h }}">{{ cl[forloop.index0] }}</a>{%- endfor -%}
+      </div>
+    </div>
+    {%- if collection.all_tags.size > 0 -%}
+    <div class="fs-sec">
+      <h3>Refine</h3>
+      <div class="fs-chips">
+        <a class="{% unless current_tags %}on{% endunless %}" href="{{ collection.url }}">All</a>
+        {%- for tag in collection.all_tags limit: 8 -%}<a class="{% if current_tags contains tag %}on{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>{%- endfor -%}
+      </div>
+    </div>
+    {%- endif -%}
+    <div class="fs-sec">
+      <h3>Sort by</h3>
+      <ul class="fs-sort">
+        {%- for o in collection.sort_options -%}
+          <li><a class="{% if o.value == collection.sort_by %}on{% endif %}" href="{{ collection.url }}{% if current_tags %}/{{ current_tags | join: '+' | handleize }}{% endif %}?sort_by={{ o.value }}">{{ o.name }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <button type="button" class="fs-go" data-fs-close>Show {{ collection.products_count }} {% if collection.products_count == 1 %}piece{% else %}pieces{% endif %}</button>
+  </div>
+  <script>
+  (function(){
+    var b=document.querySelector('[data-fs-open]'), sh=document.getElementById('fsSheet'); if(!b||!sh) return;
+    var tb=document.querySelector('.toolbar'), ftr=document.querySelector('footer');
+    function open(){document.documentElement.classList.add('fs-on','no-scroll');sh.querySelector('.fs-x').focus();}
+    function close(){document.documentElement.classList.remove('fs-on','no-scroll');b.focus({preventScroll:true});}
+    b.addEventListener('click',open);
+    document.querySelectorAll('[data-fs-close]').forEach(function(x){x.addEventListener('click',close)});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.documentElement.classList.contains('fs-on'))close();});
+    function vis(){var past=tb?tb.getBoundingClientRect().bottom<0:scrollY>300; var nearF=ftr?ftr.getBoundingClientRect().top<innerHeight-40:false; b.classList.toggle('on',past&&!nearF);}
+    addEventListener('scroll',vis,{passive:true}); vis();
+  })();
+  </script>
+
   <div class="grid-4 stag in" style="margin-top:28px">
     {%- paginate collection.products by 24 -%}
       {%- for product in collection.products -%}
