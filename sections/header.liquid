@@ -216,7 +216,7 @@
   function lock(on){document.documentElement.classList.toggle('no-scroll',on);if(sc)sc.classList.toggle('on',on);if(b)b.setAttribute('aria-expanded',on?'true':'false');}
   new MutationObserver(function(){var on=d.classList.contains('on');lock(on);if(!on)setTimeout(function(){show('root')},400);}).observe(d,{attributes:true,attributeFilter:['class']});
   if(sc) sc.addEventListener('click',function(){d.classList.remove('on')});
-  document.querySelectorAll('[data-open-search]').forEach(function(x){x.addEventListener('click',function(){var s=document.getElementById('search');if(!s)return;s.classList.add('on');document.documentElement.classList.add('no-scroll');setTimeout(function(){var i=s.querySelector('input[type=search]');if(i)i.focus()},350);});});
+  document.querySelectorAll('[data-open-search]').forEach(function(x){x.addEventListener('click',function(){var s=document.getElementById('search');if(!s)return;s.classList.add('on');document.documentElement.classList.add('no-scroll');if(window.matchMedia('(min-width:901px)').matches)setTimeout(function(){var i=s.querySelector('input[type=search]');if(i)i.focus()},350);else if(document.activeElement)document.activeElement.blur();});});
   var s=document.getElementById('search'); if(s) new MutationObserver(function(){if(!s.classList.contains('on')&&!d.classList.contains('on'))document.documentElement.classList.remove('no-scroll');}).observe(s,{attributes:true,attributeFilter:['class']});
 })();
 </script>
