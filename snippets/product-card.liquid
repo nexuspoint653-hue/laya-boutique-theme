@@ -80,6 +80,11 @@
     assign show_colour = true
   endif
 
+  # a product with a single photo only zooms: no swap to a video or blank second image
+  if product.id and product.images.size < 2
+    assign hover = 'zoom'
+  endif
+
   assign pvideo = null
   if hover == 'video'
     for m in product.media

@@ -562,7 +562,7 @@ hr.rule{border:0;border-top:1px solid var(--line);margin:0}
 .card--center .card-foot{justify-content:center}
 .card-vendor{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .card--zoom .still{transition:transform 1.4s var(--e-out)}
-.card--zoom:hover .still{transform:scale(1.06)}
+.card--zoom:hover .still{transform:scale(1.08)}
 @media(max-width:900px){
   .grid-5{grid-template-columns:repeat(3,1fr)}
 }
