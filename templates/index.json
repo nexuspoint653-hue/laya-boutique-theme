@@ -353,7 +353,7 @@
     "split_2": {
       "type": "split-panel",
       "settings": {
-        "image": "shopify://shop_images/F28DB3FB-6B23-42CF-BFA1-3C71B4D83610.jpg",
+        "image": "shopify://shop_images/7B2B7214-0748-443B-85FB-3229D4178C3F.jpg",
         "fallback": "laya-split-2.jpg",
         "flip": true,
         "scheme": "dark",
@@ -370,7 +370,7 @@
         "muted": true,
         "controls": false,
         "fit": "cover",
-        "focal": "bottom",
+        "focal": "top",
         "placeholder": "tile",
         "ratio": "auto",
         "overlay": 0,
