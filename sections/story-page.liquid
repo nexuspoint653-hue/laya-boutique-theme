@@ -1,0 +1,213 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<div class="sty" id="sty-{{ section.id }}">
+
+  {%- comment -%} Hero: the photo melts into the page colour, no hard edge {%- endcomment -%}
+  <header class="sty-hero">
+    <div class="sty-hero-media">
+      {%- if s.hero_image != blank -%}
+        {{ s.hero_image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '900,1400,2000,2400', alt: s.heading }}
+      {%- endif -%}
+    </div>
+    <div class="sty-hero-copy">
+      <span class="sty-eye">{{ s.eyebrow }}</span>
+      <h1 class="sty-h1">{{ s.heading }}</h1>
+      <span class="sty-rule" aria-hidden="true"></span>
+      <p class="sty-place">{{ s.place }}</p>
+    </div>
+    <a class="sty-cue" href="#sty-intro-{{ section.id }}" aria-label="Read our story"><i></i></a>
+  </header>
+
+  {%- comment -%} Opening statement {%- endcomment -%}
+  <section class="sty-intro" id="sty-intro-{{ section.id }}" data-rv>
+    <span class="sty-mono" aria-hidden="true">L</span>
+    <div class="sty-intro-copy">{{ s.intro }}</div>
+  </section>
+
+  {%- comment -%} Chapters {%- endcomment -%}
+  <div class="sty-chapters">
+    {%- for block in section.blocks -%}
+      {%- assign b = block.settings -%}
+      <article class="sty-ch{% cycle '', ' flip' %}" {{ block.shopify_attributes }}>
+        <figure class="sty-ch-media" data-rv>
+          {%- if b.image != blank -%}
+            {{ b.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 46vw, 100vw', widths: '600,900,1200,1400', alt: b.heading }}
+          {%- endif -%}
+        </figure>
+        <div class="sty-ch-copy" data-rv>
+          <span class="sty-num">{{ b.number }}</span>
+          <h2 class="sty-h2">{{ b.heading }}</h2>
+          <div class="sty-body">{{ b.body }}</div>
+          {%- if b.link_text != blank -%}<a class="sty-link" href="{{ b.link }}">{{ b.link_text }}</a>{%- endif -%}
+        </div>
+      </article>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Small facts band {%- endcomment -%}
+  {%- if s.f1_value != blank -%}
+  <section class="sty-facts" data-rv>
+    {%- for i in (1..4) -%}
+      {%- capture vk -%}f{{ i }}_value{%- endcapture -%}
+      {%- capture lk -%}f{{ i }}_label{%- endcapture -%}
+      {%- if s[vk] != blank -%}
+        <div class="sty-fact"><strong>{{ s[vk] }}</strong><span>{{ s[lk] }}</span></div>
+      {%- endif -%}
+    {%- endfor -%}
+  </section>
+  {%- endif -%}
+
+  {%- comment -%} Visit: same palette as the page {%- endcomment -%}
+  <section class="sty-visit">
+    <div class="sty-visit-media" data-rv>
+      {%- if s.visit_image != blank -%}
+        {{ s.visit_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 50vw, 100vw', alt: s.visit_heading }}
+      {%- else -%}
+        <img src="{{ 'laya-storefront.jpg' | asset_url }}" alt="{{ s.visit_heading | escape }}" loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="sty-visit-copy" data-rv>
+      <span class="sty-eye">{{ s.visit_eyebrow }}</span>
+      <h2 class="sty-h2">{{ s.visit_heading }}</h2>
+      <dl class="sty-dl">
+        <div><dt>Address</dt><dd>{{ s.address }}</dd></div>
+        {%- if s.phone != blank -%}<div><dt>Telephone</dt><dd><a href="tel:{{ s.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ s.phone }}</a></dd></div>{%- endif -%}
+        {%- if s.note != blank -%}<div><dt>Appointments</dt><dd>{{ s.note }}</dd></div>{%- endif -%}
+      </dl>
+      <div class="sty-cta">
+        {%- if s.link != blank -%}<a class="sty-btn" href="{{ s.link }}" target="_blank" rel="noopener">{{ s.link_text }}</a>{%- endif -%}
+        {%- if s.link2 != blank -%}<a class="sty-link" href="{{ s.link2 }}">{{ s.link2_text }}</a>{%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+#sty-{{ section.id }}{--sty-a:#FAF8F5;--sty-b:#F3EEE6;--sty-c:#EDE5D9}
+.sty{background:var(--sty-a);color:var(--ink)}
+.sty-eye{display:block;font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold)}
+.sty-rule{display:block;width:44px;height:1px;background:var(--gold);margin:22px auto}
+.sty-h1{font-family:var(--serif);font-weight:300;font-size:clamp(46px,7.4vw,112px);letter-spacing:.12em;text-transform:uppercase;line-height:1;margin:18px 0 0}
+.sty-h2{font-family:var(--serif);font-weight:300;font-size:clamp(32px,3.6vw,54px);letter-spacing:.10em;text-transform:uppercase;line-height:1.08;margin:14px 0 22px}
+
+/* hero */
+.sty-hero{position:relative;height:calc(100svh - 38px);min-height:560px;max-height:980px;margin-top:calc(-1 * var(--hdr));overflow:hidden;display:flex;align-items:center;justify-content:flex-end}
+.sty-hero-media{position:absolute;inset:0}
+.sty-hero-media img{width:100%;height:100%;object-fit:cover;object-position:30% 50%}
+/* soft veil over the empty wall for the copy, then a long fade into the page colour */
+.sty-hero::before{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 48% 60% at 74% 52%,rgba(250,248,245,.62),rgba(250,248,245,0) 70%)}
+.sty-hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;z-index:1;background:linear-gradient(to bottom,rgba(250,248,245,0),rgba(250,248,245,.55) 55%,var(--sty-a))}
+.sty-hero-copy{position:relative;z-index:2;width:min(46%,640px);margin-right:clamp(24px,6vw,120px);text-align:center;padding-top:var(--hdr)}
+.sty-place{font-family:var(--serif);font-style:italic;font-size:clamp(18px,1.6vw,23px);color:var(--soft);margin:0}
+.sty-cue{position:absolute;z-index:2;left:50%;bottom:28px;transform:translateX(-50%);width:20px;height:46px}
+.sty-cue i{position:absolute;left:50%;top:0;width:1px;height:100%;background:linear-gradient(var(--gold),rgba(169,136,88,0));animation:cue 2.4s var(--e-io) infinite}
+
+/* intro */
+.sty-intro{position:relative;max-width:980px;margin:0 auto;padding:clamp(60px,9vw,140px) var(--gut) clamp(70px,9vw,130px);text-align:center}
+.sty-mono{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--script);font-size:clamp(220px,28vw,380px);line-height:1;color:var(--gold);opacity:.07;pointer-events:none}
+.sty-intro-copy{position:relative}
+.sty-intro-copy p{font-family:var(--serif);font-weight:300;font-size:clamp(26px,3.1vw,44px);line-height:1.38;margin:0;text-align:center!important}
+
+/* chapters: the background drifts ivory → sand → ivory, no bands */
+.sty-chapters{background:linear-gradient(to bottom,var(--sty-a) 0%,var(--sty-b) 22%,var(--sty-c) 50%,var(--sty-b) 78%,var(--sty-a) 100%);padding:clamp(20px,3vw,40px) 0 clamp(60px,8vw,120px)}
+.sty-ch{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);align-items:center;gap:clamp(36px,6vw,110px);max-width:1360px;margin:0 auto;padding:clamp(40px,6vw,90px) var(--gut)}
+.sty-ch.flip{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.sty-ch.flip .sty-ch-media{order:2}
+.sty-ch-media{margin:0;aspect-ratio:4/5;overflow:hidden;background:var(--sty-b);box-shadow:0 30px 80px -40px rgba(60,45,25,.28)}
+.sty-ch-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform 1.8s var(--e-out)}
+.sty-ch-media.in img{transform:scale(1)}
+.sty-ch:nth-child(2) .sty-ch-media{aspect-ratio:4/5;margin-top:clamp(0px,4vw,60px)}
+.sty-ch-copy{max-width:470px;text-align:left}
+.sty-ch.flip .sty-ch-copy{justify-self:end}
+.sty-num{display:block;font-family:var(--serif);font-style:italic;font-size:clamp(40px,4vw,60px);line-height:1;color:var(--gold-lt)}
+.sty-body p{font-size:15px;line-height:1.9;color:var(--soft);margin:0 0 14px;text-align:left!important}
+.sty-link{display:inline-block;margin-top:14px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink);padding-bottom:6px;background:linear-gradient(var(--gold),var(--gold)) left bottom/100% 1px no-repeat;transition:background-size .5s var(--e-out),color .3s}
+.sty-link:hover{color:var(--gold);background-size:40% 1px}
+
+/* facts */
+.sty-facts{display:grid;grid-template-columns:repeat(4,1fr);max-width:1180px;margin:0 auto;padding:clamp(10px,2vw,20px) var(--gut) clamp(70px,8vw,120px)}
+.sty-fact{text-align:center;padding:10px 18px;border-left:1px solid var(--line)}
+.sty-fact:first-child{border-left:0}
+.sty-fact strong{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.4vw,52px);line-height:1.05;color:var(--ink)}
+.sty-fact span{display:block;margin-top:10px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+
+/* visit */
+.sty-visit{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;background:var(--sty-b);background:linear-gradient(to bottom,var(--sty-a),var(--sty-b) 18%)}
+.sty-visit-media{position:relative;min-height:560px;overflow:hidden}
+.sty-visit-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,#000 55%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 14%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,#000 55%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 14%);mask-composite:intersect}
+.sty-visit-copy{display:flex;flex-direction:column;justify-content:center;padding:clamp(56px,6vw,110px) clamp(28px,6vw,110px)}
+.sty-dl{margin:6px 0 30px;border-top:1px solid rgba(169,136,88,.28)}
+.sty-dl div{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid rgba(169,136,88,.28)}
+.sty-dl dt{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);padding-top:4px}
+.sty-dl dd{margin:0;font-family:var(--serif);font-size:19px;line-height:1.45;color:var(--ink)}
+.sty-dl dd p{margin:0;text-align:left!important}
+.sty-dl a{color:inherit}
+.sty-cta{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.sty-btn{display:inline-block;padding:15px 30px;background:var(--ink);color:var(--bone);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;transition:background .4s var(--e-out)}
+.sty-btn:hover{background:var(--gold)}
+.sty .sty-cta .sty-link{margin-top:0}
+
+@media (max-width:900px){
+  .sty-hero{justify-content:center;align-items:flex-end;min-height:0;height:88svh}
+  .sty-hero-media img{object-position:28% 50%}
+  .sty-hero::before{background:linear-gradient(to bottom,rgba(250,248,245,0) 35%,rgba(250,248,245,.75) 75%)}
+  .sty-hero-copy{width:auto;margin:0 20px 70px}
+  .sty-ch,.sty-ch.flip{grid-template-columns:1fr;gap:28px;padding:36px 20px}
+  .sty-ch.flip .sty-ch-media{order:0}
+  .sty-ch:nth-child(2) .sty-ch-media{margin-top:0}
+  .sty-ch-copy,.sty-ch.flip .sty-ch-copy{justify-self:center;text-align:center;max-width:540px}
+  .sty-body p{text-align:center!important}
+  .sty-facts{grid-template-columns:1fr 1fr;row-gap:30px}
+  .sty-fact:nth-child(3){border-left:0}
+  .sty-visit{grid-template-columns:1fr}
+  .sty-visit-media{min-height:0;aspect-ratio:4/3}
+  .sty-visit-media img{-webkit-mask-image:linear-gradient(to bottom,#000 70%,transparent);mask-image:linear-gradient(to bottom,#000 70%,transparent)}
+  .sty-visit-copy{padding:20px 20px 64px;text-align:center}
+  .sty-dl div{grid-template-columns:1fr;gap:6px;text-align:center}
+  .sty-dl dd p{text-align:center!important}
+  .sty-cta{justify-content:center}
+}
+</style>
+
+{% schema %}
+{
+  "name": "Our story page",
+  "settings": [
+    {"type":"header","content":"Hero"},
+    {"type":"image_picker","id":"hero_image","label":"Hero image"},
+    {"type":"text","id":"eyebrow","label":"Eyebrow","default":"Since 2019"},
+    {"type":"text","id":"heading","label":"Heading","default":"Our Story"},
+    {"type":"text","id":"place","label":"Line under heading","default":"Dearborn, Michigan"},
+    {"type":"header","content":"Opening"},
+    {"type":"richtext","id":"intro","label":"Statement"},
+    {"type":"header","content":"Facts"},
+    {"type":"text","id":"f1_value","label":"Fact 1 number"},{"type":"text","id":"f1_label","label":"Fact 1 label"},
+    {"type":"text","id":"f2_value","label":"Fact 2 number"},{"type":"text","id":"f2_label","label":"Fact 2 label"},
+    {"type":"text","id":"f3_value","label":"Fact 3 number"},{"type":"text","id":"f3_label","label":"Fact 3 label"},
+    {"type":"text","id":"f4_value","label":"Fact 4 number"},{"type":"text","id":"f4_label","label":"Fact 4 label"},
+    {"type":"header","content":"Visit"},
+    {"type":"image_picker","id":"visit_image","label":"Image"},
+    {"type":"text","id":"visit_eyebrow","label":"Eyebrow","default":"The Boutique"},
+    {"type":"text","id":"visit_heading","label":"Heading","default":"Visit Us"},
+    {"type":"richtext","id":"address","label":"Address","default":"<p>13328 Michigan Ave<br>Dearborn, MI 48126</p>"},
+    {"type":"text","id":"phone","label":"Phone","default":"(734) 544-5555"},
+    {"type":"text","id":"note","label":"Appointments note","default":"Private appointments available outside opening hours."},
+    {"type":"text","id":"link_text","label":"Button label","default":"Get Directions"},
+    {"type":"url","id":"link","label":"Button link"},
+    {"type":"text","id":"link2_text","label":"Second link label","default":"Book an Appointment"},
+    {"type":"url","id":"link2","label":"Second link"}
+  ],
+  "blocks": [
+    {"type":"chapter","name":"Chapter","settings":[
+      {"type":"image_picker","id":"image","label":"Image"},
+      {"type":"text","id":"number","label":"Number","default":"01"},
+      {"type":"text","id":"heading","label":"Heading"},
+      {"type":"richtext","id":"body","label":"Text"},
+      {"type":"text","id":"link_text","label":"Link label"},
+      {"type":"url","id":"link","label":"Link"}
+    ]}
+  ],
+  "presets":[{"name":"Our story page"}]
+}
+{% endschema %}

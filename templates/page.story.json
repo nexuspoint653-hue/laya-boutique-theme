@@ -9,94 +9,66 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "page-hero",
+    "story": {
+      "type": "story-page",
+      "blocks": {
+        "c1": {
+          "type": "chapter",
+          "settings": {
+            "image": "shopify://shop_images/laya-story-fabric.jpg",
+            "number": "01",
+            "heading": "Fabric & Craft",
+            "body": "<p>We work almost entirely in fluid natural blends: silk-touch georgette, matte crepe, washed linen and cupro linings that breathe in heat. Fabrics are chosen for how they fall first and for colour second. Our neutrals are kept to a narrow palette so that pieces bought seasons apart still sit together.</p><p>Every style is sampled on more than one height before it goes into production. Nothing is graded by algorithm alone.</p>",
+            "link_text": "Shop Dresses",
+            "link": "/collections/dresses"
+          }
+        },
+        "c2": {
+          "type": "chapter",
+          "settings": {
+            "image": "shopify://shop_images/laya-story-atelier.jpg",
+            "number": "02",
+            "heading": "The Atelier",
+            "body": "<p>Alongside the collection, our atelier takes a limited number of made-to-measure and bridal commissions each season. These are drafted to your own measurements, with fabric chosen alongside a member of our team, and finished over roughly four weeks.</p>",
+            "link_text": "Book an Appointment",
+            "link": "/pages/appointments"
+          }
+        },
+        "c3": {
+          "type": "chapter",
+          "settings": {
+            "image": "shopify://shop_images/laya-story-make.jpg",
+            "number": "03",
+            "heading": "How We Make",
+            "body": "<p>We produce in small runs. Styles are cut in batches of forty to eighty rather than thousands, which keeps waste low and lets us retire a silhouette quietly when it stops working.</p><p>We are a small team and we answer our own messages. If something you have bought from us is not right, tell us directly and we will fix it.</p>",
+            "link_text": "Client Care",
+            "link": "/pages/client-care"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
       "settings": {
-        "image": "",
-        "fallback": "laya-storefront.jpg",
+        "hero_image": "shopify://shop_images/laya-story-hero.jpg",
         "eyebrow": "Since 2019",
         "heading": "Our Story",
-        "height": 80,
-        "focal": "top",
-        "overlay": 30,
-        "text_align": "center",
-        "heading_size": "dsp-l"
-      }
-    },
-    "intro": {
-      "type": "rich-text",
-      "settings": {
-        "eyebrow": "Dearborn, Michigan",
-        "heading": "",
-        "body": "<p>Laya Boutique began with a single idea: that modest dressing deserves to be engineered as carefully as anything else in a wardrobe.</p>",
-        "align": "center",
-        "width": "narrow",
-        "pad_top": 40,
-        "pad_bottom": 40,
-        "look": "statement"
-      }
-    },
-    "craft": {
-      "type": "split-panel",
-      "settings": {
-        "image": "",
-        "fallback": "mira-emerald-jacquard-gown.jpg",
-        "flip": false,
-        "eyebrow": "01",
-        "heading": "Fabric & Craft",
-        "body": "<p>We work almost entirely in fluid natural blends: silk-touch georgette, matte crepe, washed linen and cupro linings that breathe in heat. Fabrics are chosen for how they fall first and for colour second. Our neutrals are kept to a narrow palette so that pieces bought seasons apart still sit together.</p><p>Every style is sampled on more than one height before it goes into production. Nothing is graded by algorithm alone.</p>",
-        "text_align": "center",
-        "text_pos": "center",
-        "heading_size": "dsp-m",
-        "link_text": "Shop Dresses",
-        "link": "/collections/dresses",
-        "link_style": "underline"
-      }
-    },
-    "atelier": {
-      "type": "split-panel",
-      "settings": {
-        "image": "",
-        "fallback": "salwa-champagne-medallion-gown.jpg",
-        "flip": true,
-        "scheme": "tint",
-        "eyebrow": "02",
-        "heading": "The Atelier",
-        "body": "<p>Alongside the collection, our atelier takes a limited number of made-to-measure and bridal commissions each season. These are drafted to your own measurements, with fabric chosen alongside a member of our team, and finished over roughly four weeks.</p>",
-        "text_align": "center",
-        "text_pos": "center",
-        "heading_size": "dsp-m",
-        "link_text": "Book an Appointment",
-        "link": "/pages/appointments",
-        "link_style": "underline"
-      }
-    },
-    "make": {
-      "type": "split-panel",
-      "settings": {
-        "image": "",
-        "fallback": "dima-slate-chain-print-skirt-set.jpg",
-        "flip": false,
-        "eyebrow": "03",
-        "heading": "How We Make",
-        "body": "<p>We produce in small runs. Styles are cut in batches of forty to eighty rather than thousands, which keeps waste low and lets us retire a silhouette quietly when it stops working.</p><p>We are a small team and we answer our own messages. If something you have bought from us is not right, tell us directly and we will fix it.</p>",
-        "text_align": "center",
-        "text_pos": "center",
-        "heading_size": "dsp-m",
-        "link_text": "Client Care",
-        "link": "/pages/client-care",
-        "link_style": "underline"
-      }
-    },
-    "visit": {
-      "type": "visit-boutique",
-      "settings": {
-        "city": "Dearborn, Michigan",
-        "eyebrow": "The Boutique",
-        "heading": "Visit Us",
+        "place": "Dearborn, Michigan",
+        "intro": "<p>Laya Boutique began with a single idea: that modest dressing deserves to be engineered as carefully as anything else in a wardrobe.</p>",
+        "f1_value": "2019",
+        "f1_label": "Founded",
+        "f2_value": "40–80",
+        "f2_label": "Pieces per run",
+        "f3_value": "4 Weeks",
+        "f3_label": "Bespoke finishing",
+        "f4_value": "Dearborn",
+        "f4_label": "Our Michigan home",
+        "visit_eyebrow": "The Boutique",
+        "visit_heading": "Visit Us",
         "address": "<p>13328 Michigan Ave<br>Dearborn, MI 48126</p>",
         "phone": "(734) 544-5555",
-        "hours": "",
         "note": "Private appointments available outside opening hours.",
         "link_text": "Get Directions",
         "link": "https://www.google.com/maps/search/?api=1&query=Laya+Boutique+13328+Michigan+Ave+Dearborn+MI+48126",
@@ -144,12 +116,7 @@
     }
   },
   "order": [
-    "hero",
-    "intro",
-    "craft",
-    "atelier",
-    "make",
-    "visit",
+    "story",
     "svc"
   ]
 }

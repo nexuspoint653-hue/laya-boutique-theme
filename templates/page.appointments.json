@@ -8,6 +8,7 @@
         "body": "<p>One hour, one stylist, entirely yours. Personal styling, made-to-measure fittings and bridal consultations, in the atelier or by video call.</p>",
         "scheme": "light",
         "flip": false,
+        "image": "shopify://shop_images/laya-appointment.jpg",
         "fallback": "laya-split-1.jpg",
         "text_align": "center"
       }
