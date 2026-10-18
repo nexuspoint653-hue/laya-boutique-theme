@@ -1544,3 +1544,22 @@ html.lenis,html.lenis body{height:auto}
   .pdp-stage>.pdp-fig{width:100%!important;height:100%!important;aspect-ratio:auto!important}
 }
 /* sync */
+
+/* ===== Smoothness pass (2026-10-18): nothing repaints while scrolling ===== */
+/* 1. no live blur anywhere: blur filters re-render on every scroll frame */
+*,*::before,*::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.pdp-dock,.pdp-mosaic{background:#FAF8F5!important}
+.visit2-tag{background:rgba(27,26,24,.42)!important}
+/* photo fill: a 16px copy stretched up is already soft, so no filter is needed */
+.card-bd,.pdp-fig .pdp-bd{filter:saturate(1.05)!important;transform:scale(1.2)!important;opacity:.9}
+.card .card-media{contain:paint}
+/* 2. the hero video moves on its own; zooming it too doubles the work */
+.hero-media video{animation:none!important;transform:none!important}
+/* 4. compact cookie note */
+.cnote{width:min(300px,calc(100vw - 28px))!important;padding:14px 40px 14px 16px!important;box-shadow:0 10px 30px rgba(27,26,24,.10)!important}
+.cnote h4,.cnote-rule{display:none!important}
+.cnote-copy,.cnote-copy p{font-size:11.5px!important;line-height:1.5!important}
+.cnote-act{margin-top:10px!important;gap:12px!important}
+.cnote-act .btn{padding:8px 18px!important;font-size:10px!important}
+.cnote-x{top:10px!important;right:10px!important}
+@media (max-width:749px){.cnote{left:12px!important;right:auto!important;bottom:12px!important;width:min(280px,calc(100vw - 24px))!important}}

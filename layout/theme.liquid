@@ -47,7 +47,7 @@
   <script>
     window.addEventListener('DOMContentLoaded',function(){
       if(!window.Lenis||matchMedia('(prefers-reduced-motion: reduce)').matches||Shopify.designMode) return;
-      var lenis=new Lenis({lerp:.09,wheelMultiplier:.9,smoothWheel:true,syncTouch:false,
+      var lenis=new Lenis({lerp:.12,wheelMultiplier:1,autoResize:true,smoothWheel:true,syncTouch:false,
         prevent:function(n){return n.closest&&n.closest('[data-lenis-prevent],.mega,.drawer,.offer,.pop,dialog,[role=dialog],.acc-b')}});
       window.__lenis=lenis;
       function raf(t){lenis.raf(t);requestAnimationFrame(raf)} requestAnimationFrame(raf);

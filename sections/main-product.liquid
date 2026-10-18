@@ -88,7 +88,7 @@
         {%- endif -%}
         {%- if stills.size > 0 -%}
           {%- assign shown = 0 -%}{%- for media in stills -%}{%- if media.alt == 'laya-replaced' or shown >= img_limit -%}{%- continue -%}{%- endif -%}{%- assign shown = shown | plus: 1 -%}
-            <figure class="pdp-fig"><img class="pdp-bd" src="{{ media | image_url: width: 120 }}" alt="" aria-hidden="true" loading="lazy" width="120" height="180">
+            <figure class="pdp-fig"><img class="pdp-bd" src="{{ media | image_url: width: 20 }}" alt="" aria-hidden="true" loading="lazy" decoding="async" width="20" height="30">
             <img class="pdp-shot{% if shown == 1 %} on{% endif %}"
                  data-shot="{{ shown | minus: 1 }}" data-media-id="{{ media.id }}"
                  src="{{ media | image_url: width: 1600 }}"

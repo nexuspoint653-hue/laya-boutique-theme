@@ -23,16 +23,14 @@ function wireCard(cardEl){
   cardEl.addEventListener("pointerenter",function(){
     clearTimeout(leaveT);
     if(!loaded){ v.load(); loaded=true; }
-    try{ v.currentTime=0; v.playbackRate=SLOW; }catch(e){}
+    try{ if(v.paused) v.currentTime=0; v.playbackRate=1; }catch(e){}
     var p=v.play(); if(p&&p.catch) p.catch(function(){});
-    cardEl.classList.add("playing"); ramp(SLOW,FULL,RAMP_UP);
+    cardEl.classList.add("playing");
   });
   cardEl.addEventListener("pointerleave",function(){
     cardEl.classList.remove("playing");
-    ramp(v.playbackRate||FULL,0.3,RAMP_DOWN);
     leaveT=setTimeout(function(){
-      cancelAnimationFrame(raf);
-      try{ v.pause(); v.currentTime=0; v.playbackRate=SLOW; }catch(e){}
+      try{ v.pause(); }catch(e){}
     },FADE_OUT);
   });
 }

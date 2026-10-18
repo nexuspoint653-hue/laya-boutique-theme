@@ -179,7 +179,7 @@
    href="{{ card_url }}">
   <div class="card-media" data-ratio="{{ ratio }}">
     {%- if card_img != blank -%}
-      <img class="card-bd" src="{{ card_img | image_url: width: 90 }}" alt="" aria-hidden="true" loading="lazy" width="90" height="135">
+      <img class="card-bd" src="{{ card_img | image_url: width: 16 }}" alt="" aria-hidden="true" loading="lazy" decoding="async" width="16" height="24">
       <img class="still" src="{{ card_img | image_url: width: 800 }}"
            srcset="{{ card_img | image_url: width: 400 }} 400w, {{ card_img | image_url: width: 800 }} 800w"
            sizes="(max-width:700px) 50vw, 25vw"
