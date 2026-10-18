@@ -1566,3 +1566,10 @@ html.lenis,html.lenis body{height:auto}
 /* cookie note sits beside the accessibility button, never over it */
 .cnote{left:68px!important;bottom:16px!important}
 @media (max-width:749px){.cnote{left:62px!important;bottom:12px!important;width:min(260px,calc(100vw - 74px))!important}}
+
+/* ===== Cards v3 (2026-10-18): 3:4 frame like the photos themselves, no blurred fill ===== */
+.card .card-media{aspect-ratio:3/4!important;background:#fff}
+.card-bd{display:none!important}
+.card .card-media--fill img.still,.card .card-media--fill img.hover-img{object-fit:cover!important;object-position:50% 30%}
+.card .card-media:not(.card-media--fill) img.still{object-fit:contain!important;padding:4% 6%;box-sizing:border-box}
+.card .card-media img.hover-img{object-fit:cover!important;background:#fff}

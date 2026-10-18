@@ -161,7 +161,7 @@
     "split_1": {
       "type": "split-panel",
       "settings": {
-        "image": "shopify://shop_images/salwa-champagne-medallion-gown.jpg",
+        "image": "shopify://shop_images/5AAED8B3-43DA-4333-BD0C-B8A4A84392E7.jpg",
         "fallback": "laya-split-1.jpg",
         "flip": false,
         "scheme": "light",
@@ -178,7 +178,7 @@
         "muted": true,
         "controls": false,
         "fit": "cover",
-        "focal": "center",
+        "focal": "top",
         "placeholder": "tile",
         "ratio": "auto",
         "overlay": 0,
@@ -243,7 +243,8 @@
             "label": "Abayas",
             "link": "",
             "video_url": "",
-            "video_asset": ""
+            "video_asset": "",
+            "image": "shopify://shop_images/445CF9F9-E46D-4AE1-8E21-3FF7560CB505.jpg"
           }
         },
         "t2": {
@@ -254,7 +255,8 @@
             "label": "Dresses",
             "link": "",
             "video_url": "",
-            "video_asset": ""
+            "video_asset": "",
+            "image": "shopify://shop_images/FullSizeRender_1a345b6e-325f-4ce6-8452-765f0cd36c38.jpg"
           }
         },
         "t3": {
@@ -265,14 +267,15 @@
             "label": "Matching Sets",
             "link": "",
             "video_url": "",
-            "video_asset": ""
+            "video_asset": "",
+            "image": "shopify://shop_images/454C24D9-1A6F-4D67-8188-02B1612BE327.jpg"
           }
         },
         "t4": {
           "type": "tile",
           "settings": {
             "collection": "accessories",
-            "image": "shopify://shop_images/rana-blush-ruched-chiffon-gown.jpg",
+            "image": "shopify://shop_images/E0004A13-4972-4898-9C18-4492F6B2E350.jpg",
             "fallback": "laya-tile-4.jpg",
             "label": "Hijabs & Accessories",
             "link": "",
@@ -350,7 +353,7 @@
     "split_2": {
       "type": "split-panel",
       "settings": {
-        "image": "shopify://shop_images/dima-slate-chain-print-skirt-set.jpg",
+        "image": "shopify://shop_images/F28DB3FB-6B23-42CF-BFA1-3C71B4D83610.jpg",
         "fallback": "laya-split-2.jpg",
         "flip": true,
         "scheme": "dark",
@@ -367,7 +370,7 @@
         "muted": true,
         "controls": false,
         "fit": "cover",
-        "focal": "center",
+        "focal": "top",
         "placeholder": "tile",
         "ratio": "auto",
         "overlay": 0,
@@ -629,12 +632,64 @@
         "btn2_text": "",
         "btn2_link": "",
         "btn2_style": "underline"
-      }
+      },
+      "blocks": {
+        "k1": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/017F5326-5258-4CED-B3E9-9F1718F90775.jpg",
+            "product": "wide-leg-set-stylish-viadel"
+          }
+        },
+        "k2": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/E34EF630-E2E9-4A20-AB6C-B47C94413824.jpg",
+            "product": "abaya-chiffon-viadel"
+          }
+        },
+        "k3": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/4D180BB4-BA58-4E4F-9CC4-43929A00AA43.jpg",
+            "product": "the-broche-dress-qashe"
+          }
+        },
+        "k4": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/F0B9E3D6-6833-4F18-A15E-AB4D4B3F8903.jpg",
+            "product": "baby-blue-set-gomlex"
+          }
+        },
+        "k5": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/F88ED011-EC2C-47D8-B3EE-0C8666B01787.jpg",
+            "product": "daily-set-oysho-blackriver"
+          }
+        },
+        "k6": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/FFEA2838-0867-491C-B336-AAE8D9BA959F.jpg",
+            "product": "tencel-navy-set-gomlex"
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2",
+        "k3",
+        "k4",
+        "k5",
+        "k6"
+      ]
     },
     "split_3": {
       "type": "split-panel",
       "settings": {
-        "image": "shopify://shop_images/ayla-teal-floral-blouse-and-trouser-set.jpg",
+        "image": "shopify://shop_images/205923DF-9325-436C-9D75-6C9FE99D5438.jpg",
         "fallback": "laya-split-3.jpg",
         "flip": false,
         "scheme": "tint",
@@ -651,7 +706,7 @@
         "muted": true,
         "controls": false,
         "fit": "cover",
-        "focal": "center",
+        "focal": "top",
         "placeholder": "tile",
         "ratio": "auto",
         "overlay": 0,

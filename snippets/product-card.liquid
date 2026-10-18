@@ -133,6 +133,28 @@
     assign card_img = img
   elsif has_product
     assign card_img = product.featured_image
+    comment
+      prefer a photo that already fits the 3:4 card, so nothing is letterboxed
+    endcomment
+    assign fa = card_img.aspect_ratio | default: 1
+    if fa < 0.66 or fa > 0.84
+      for pi in product.images
+        if pi.alt == 'laya-replaced'
+          continue
+        endif
+        if pi.aspect_ratio >= 0.66 and pi.aspect_ratio <= 0.84
+          assign card_img = pi
+          break
+        endif
+      endfor
+    endif
+  endif
+  assign card_fill = false
+  if card_img != blank
+    assign car = card_img.aspect_ratio | default: 1
+    if car >= 0.66 and car <= 0.84
+      assign card_fill = true
+    endif
   endif
 
   assign card_hover_img = ''
@@ -177,9 +199,8 @@
 {%- if has_card -%}
 <a class="card{% if align == 'center' %} card--center{% endif %}{% if hover == 'zoom' %} card--zoom{% endif %}"
    href="{{ card_url }}">
-  <div class="card-media" data-ratio="{{ ratio }}">
+  <div class="card-media{% if card_fill %} card-media--fill{% endif %}" data-ratio="{{ ratio }}">
     {%- if card_img != blank -%}
-      <img class="card-bd" src="{{ card_img | image_url: width: 16 }}" alt="" aria-hidden="true" loading="lazy" decoding="async" width="16" height="24">
       <img class="still" src="{{ card_img | image_url: width: 800 }}"
            srcset="{{ card_img | image_url: width: 400 }} 400w, {{ card_img | image_url: width: 800 }} 800w"
            sizes="(max-width:700px) 50vw, 25vw"
