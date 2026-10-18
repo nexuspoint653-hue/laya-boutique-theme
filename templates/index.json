@@ -370,7 +370,7 @@
         "muted": true,
         "controls": false,
         "fit": "cover",
-        "focal": "top",
+        "focal": "bottom",
         "placeholder": "tile",
         "ratio": "auto",
         "overlay": 0,
