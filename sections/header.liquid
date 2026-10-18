@@ -73,7 +73,7 @@
       <button class="m-ico show-sm" type="button" data-open-search aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button>
       {%- assign has_story = false -%}
       {%- for link in menu.links limit: 4 -%}
-        {%- if link.url contains 'our-story' -%}{%- assign has_story = true -%}{%- endif -%}
+        {%- if link.title == 'Our Story' -%}{%- assign has_story = true -%}{%- endif -%}
         <a href="{{ link.url }}" class="nav-a"{% if link.links.size > 0 %} data-menu="mega-{{ forloop.index }}"{% endif %}>{{ link.title }}</a>
       {%- endfor -%}
       {%- unless has_story -%}<a href="/pages/our-story" class="nav-a">Our Story</a>{%- endunless -%}
