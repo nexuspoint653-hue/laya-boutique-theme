@@ -1598,3 +1598,40 @@ html.lenis,html.lenis body{height:auto}
   .hero-promo-p{display:none}
 }
 @media (prefers-reduced-motion:reduce){.hero-promo{transition:opacity .2s}}
+
+/* ===== Responsive hardening (2026-10-21): every width from 320px phones to 3440px ultrawides ===== */
+html,body{overflow-x:clip}
+img,video,svg,iframe{max-width:100%}
+p,li,dd,h1,h2,h3,h4,a{overflow-wrap:break-word}
+/* buttons never clip their label: allow a second line on very narrow screens */
+@media (max-width:420px){
+  .btn,.bp-add,.bty-btn,.sty-btn,.hero-promo-btn,.visit2-btn,button[type=submit]{white-space:normal;line-height:1.35;text-align:center}
+  .bp-add{height:auto;min-height:54px;padding:10px 16px}
+  .bty-offer{flex-wrap:wrap;justify-content:center}
+}
+/* home hero fills the screen on tall and ultrawide monitors too */
+.hero{max-height:none}
+@media (min-height:1100px){.hero{min-height:calc(100svh - 38px)}}
+/* short laptop screens: keep the promo card compact so it never covers the hero button */
+@media (max-height:760px) and (min-width:750px){
+  .hero-promo{width:290px;padding:10px}
+  .hero-promo-in{grid-template-columns:92px 1fr;gap:12px}
+  .hero-promo-t{font-size:18px}
+  .hero-promo-p{display:none}
+}
+@media (max-height:520px){.hero-promo{display:none}}
+/* large and ultrawide monitors: use more of the width, scale type gently */
+@media (min-width:2000px){
+  :root{--wide:1960px;--gut:clamp(56px,3.4vw,96px)}
+  .nav-a{font-size:14px}
+  .bp-top,.bp-story,.bty-hero{max-width:1900px}
+  .bp-rel,.bty-grid{max-width:1500px}
+}
+@media (min-width:2800px){
+  :root{--wide:2400px}
+  body{font-size:17px}
+  .nav-a{font-size:15px}
+  .hero-copy .dsp,.hero-copy h1{font-size:clamp(80px,4.6vw,170px)}
+  .bp-top,.bp-story,.bty-hero{max-width:2300px}
+  .bp-rel,.bty-grid{max-width:1800px}
+}
