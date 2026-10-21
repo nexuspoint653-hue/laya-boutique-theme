@@ -1,0 +1,63 @@
+{
+  "sections": {
+    "main": {
+      "type": "beauty-page",
+      "blocks": {
+        "dr": {
+          "type": "scent",
+          "settings": {
+            "image": "shopify://shop_images/laya-beauty-dr-scene.jpg",
+            "eyebrow": "Collection 01",
+            "heading": "Desert Rose",
+            "body": "<p>A warm Dubai evening, bottled. Velvety Bulgarian rose and Damask rose petal settle into smoky oud and rosewood, lifted by a bright finish of bergamot and berry. Rich, feminine and made to linger on skin and fabric alike.</p>",
+            "notes": "Bulgarian Rose, Damask Rose Petal, Oud, Rosewood, Bergamot, Berry",
+            "link_text": "Shop Desert Rose",
+            "link": "/products/desert-rose-collection"
+          }
+        },
+        "so": {
+          "type": "scent",
+          "settings": {
+            "image": "shopify://shop_images/laya-beauty-so-scene.jpg",
+            "eyebrow": "Collection 02",
+            "heading": "Silk Oasis",
+            "body": "<p>Soft as silk and calm as an oasis at dusk. Smooth oud wood and Rose de Mai open into a garden of jasmine, peony and amaryllis blossom over warm rosewood. Light enough for every day, elegant enough for every occasion.</p>",
+            "notes": "Oud Wood, Rose de Mai, Jasmine, Peony, Rosewood, Amaryllis Blossom",
+            "link_text": "Shop Silk Oasis",
+            "link": "/products/silk-oasis-collection"
+          }
+        }
+      },
+      "block_order": [
+        "dr",
+        "so"
+      ],
+      "settings": {
+        "hero_image": "shopify://shop_images/laya-beauty-duo-scene.jpg",
+        "eyebrow": "New · Laya Beauty",
+        "heading": "The Dubai Edit",
+        "intro": "<p>Our first beauty line: fragrance mists and body lotions inspired by the gardens and evenings of Dubai. Two signature scents, Desert Rose and Silk Oasis, made to layer and to last.</p>",
+        "offer_1": "$20",
+        "offer_1_sub": "Each",
+        "offer_2": "2 for $30",
+        "offer_2_sub": "Mix & match",
+        "button": "Shop the Edit",
+        "note": "Launch offer for a limited time. Any two pieces, applied automatically at checkout.",
+        "collection": "laya-beauty",
+        "shop_eyebrow": "Limited-time launch",
+        "shop_heading": "Shop the Collection",
+        "how_eyebrow": "The Ritual",
+        "how_heading": "How to Layer",
+        "step_1": "Soften",
+        "step_1_text": "Smooth the body lotion over clean, slightly damp skin after your shower.",
+        "step_2": "Veil",
+        "step_2_text": "Mist from arm's length over skin, hair and hijab while the lotion is still fresh.",
+        "step_3": "Refresh",
+        "step_3_text": "Keep the mist close and add a light veil whenever you want the scent to bloom again."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

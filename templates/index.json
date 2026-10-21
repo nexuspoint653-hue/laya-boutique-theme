@@ -78,7 +78,16 @@
         "btn1_style": "button",
         "btn2_text": "",
         "btn2_link": "",
-        "btn2_style": "underline"
+        "btn2_style": "underline",
+        "promo_show": true,
+        "promo_image": "shopify://shop_images/laya-beauty-duo-scene.jpg",
+        "promo_eyebrow": "New · Laya Beauty",
+        "promo_title": "Check out our new beauty line",
+        "promo_text": "$20 each or any 2 for $30. Limited-time offer.",
+        "promo_button": "Grab yours now",
+        "promo_link": "/pages/the-dubai-edit",
+        "promo_delay": 1,
+        "promo_key": "beauty-launch"
       }
     },
     "featured": {
