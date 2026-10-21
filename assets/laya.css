@@ -1635,3 +1635,4 @@ p,li,dd,h1,h2,h3,h4,a{overflow-wrap:break-word}
   .bp-top,.bp-story,.bty-hero{max-width:2300px}
   .bp-rel,.bty-grid{max-width:1800px}
 }
+.mnav-new{font-style:normal;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--gold);color:#fff;font-size:9px;letter-spacing:.16em;text-transform:uppercase;vertical-align:middle}

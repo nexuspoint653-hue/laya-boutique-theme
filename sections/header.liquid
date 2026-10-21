@@ -77,6 +77,7 @@
         <a href="{{ link.url }}" class="nav-a"{% if link.links.size > 0 %} data-menu="mega-{{ forloop.index }}"{% endif %}>{{ link.title }}</a>
       {%- endfor -%}
       {%- unless has_story -%}<a href="/pages/our-story" class="nav-a">Our Story</a>{%- endunless -%}
+      <a href="/pages/beauty" class="nav-a">Beauty</a>
     </nav>
 
     <a href="{{ routes.root_url }}" class="logo" aria-label="{{ shop.name }}">
@@ -169,6 +170,7 @@
             {%- endif -%}
           </li>
         {%- endfor -%}
+        <li><a href="/pages/beauty">Beauty <em class="mnav-new">New</em></a></li>
         <li><a href="/pages/our-story">Our Story</a></li>
       </ul>
       <div class="mnav-feat">

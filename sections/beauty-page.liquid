@@ -4,40 +4,68 @@
 -%}
 <div class="bty" id="bty-{{ section.id }}">
 
-  <header class="bty-hero">
-    <div class="bty-hero-copy" data-rv>
+  <header class="bty-top">
+    <div class="bty-top-copy" data-rv>
       <span class="bty-eye">{{ s.eyebrow }}</span>
       <h1 class="bty-h1">{{ s.heading }}</h1>
-      <span class="bty-rule" aria-hidden="true"></span>
       <div class="bty-lead">{{ s.intro }}</div>
-      <div class="bty-offer">
-        <span><strong>{{ s.offer_1 }}</strong>{{ s.offer_1_sub }}</span>
-        <i aria-hidden="true"></i>
-        <span><strong>{{ s.offer_2 }}</strong>{{ s.offer_2_sub }}</span>
-      </div>
-      <a class="bty-btn" href="#bty-shop-{{ section.id }}">{{ s.button }}</a>
-      {%- if s.note != blank -%}<p class="bty-note">{{ s.note }}</p>{%- endif -%}
     </div>
-    <div class="bty-hero-media" data-rv>
-      {%- if s.hero_image != blank -%}
-        {{ s.hero_image | image_url: width: 1400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 900px) 50vw, 100vw', widths: '700,1000,1400', alt: s.heading }}
-      {%- endif -%}
+    <div class="bty-offer" data-rv>
+      <span><strong>{{ s.offer_1 }}</strong>{{ s.offer_1_sub }}</span>
+      <i aria-hidden="true"></i>
+      <span><strong>{{ s.offer_2 }}</strong>{{ s.offer_2_sub }}</span>
     </div>
   </header>
 
   <section class="bty-shop" id="bty-shop-{{ section.id }}">
-    <div class="bty-head" data-rv>
+    {%- liquid
+      assign skip = 'beauty,laya-beauty,dubai-collection'
+      assign chip_count = 0
+      for t in coll.all_tags
+        unless skip contains t
+          assign chip_count = chip_count | plus: 1
+        endunless
+      endfor
+    -%}
+    <div class="bty-bar">
+      {%- if chip_count > 1 -%}
+      <div class="bty-chips" role="group" aria-label="Filter">
+        <button type="button" class="on" data-bty-f="">All</button>
+        {%- for t in coll.all_tags -%}
+          {%- unless skip contains t -%}
+            <button type="button" data-bty-f="{{ t | handle }}">{{ t | replace: '-', ' ' | capitalize }}</button>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+      <span class="bty-count"><b data-bty-count>{{ coll.products_count }}</b> {% if coll.products_count == 1 %}piece{% else %}pieces{% endif %}</span>
+    </div>
+    {%- paginate coll.products by 24 -%}
+    <div class="bty-grid" data-bty-grid>
+      {%- for product in coll.products -%}
+        <div class="bty-item" data-tags="{% for t in product.tags %}{{ t | handle }} {% endfor %}">
+          {% render 'product-card', product: product, hover: 'image' %}
+        </div>
+      {%- else -%}
+        <p class="bty-empty">New pieces arriving soon.</p>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      <nav class="bty-pages" aria-label="Pages">{{ paginate | default_pagination: previous: '&larr;', next: '&rarr;' }}</nav>
+    {%- endif -%}
+    {%- endpaginate -%}
+    {%- if s.note != blank -%}<p class="bty-note">{{ s.note }}</p>{%- endif -%}
+  </section>
+
+  {%- if s.hero_image != blank -%}
+  <section class="bty-banner" data-rv>
+    {{ s.hero_image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,2000', alt: s.heading }}
+    <div class="bty-banner-copy">
       <span class="bty-eye">{{ s.shop_eyebrow }}</span>
       <h2 class="bty-h2">{{ s.shop_heading }}</h2>
     </div>
-    <div class="bty-grid">
-      {%- for product in coll.products limit: 6 -%}
-        {% render 'product-card', product: product, hover: 'image' %}
-      {%- else -%}
-        <p class="bty-empty">Add products to the Laya Beauty collection.</p>
-      {%- endfor -%}
-    </div>
   </section>
+  {%- endif -%}
 
   {%- for block in section.blocks -%}
     {%- assign b = block.settings -%}
@@ -86,20 +114,37 @@
 .bty-btn:hover{background:var(--gold)}
 .bty-note{margin:14px 0 0;font-size:11px;letter-spacing:.06em;color:var(--muted)}
 
-/* hero */
-.bty-hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(30px,5vw,90px);max-width:1400px;margin:0 auto;padding:clamp(40px,5vw,80px) var(--gut) clamp(60px,7vw,110px)}
-.bty-hero-media{aspect-ratio:3/4;border-radius:22px;overflow:hidden;background:var(--b-b);box-shadow:0 40px 90px -45px rgba(90,50,30,.45)}
-.bty-hero-media img{width:100%;height:100%;object-fit:cover}
-.bty-offer{display:inline-flex;align-items:center;gap:22px;margin-top:30px;padding:16px 24px;border:1px solid rgba(169,136,88,.35);border-radius:16px;background:#fff}
+/* top */
+.bty-top{max-width:1500px;margin:0 auto;padding:clamp(34px,4vw,64px) var(--gut) clamp(20px,2.4vw,32px);display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.bty-top-copy{max-width:640px}
+.bty-top .bty-lead p{margin-top:16px}
+.bty-offer{display:inline-flex;align-items:center;gap:22px;padding:16px 24px;border:1px solid rgba(169,136,88,.35);border-radius:16px;background:#fff}
 .bty-offer span{display:flex;flex-direction:column;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .bty-offer strong{font-family:var(--serif);font-weight:400;font-size:28px;letter-spacing:.02em;text-transform:none;color:var(--ink);line-height:1.1}
 .bty-offer i{width:1px;align-self:stretch;background:rgba(169,136,88,.35)}
 
 /* shop */
-.bty-shop{background:linear-gradient(to bottom,var(--b-a),var(--b-b) 40%,var(--b-a));padding:clamp(50px,6vw,100px) var(--gut)}
-.bty-head{text-align:center;margin-bottom:clamp(30px,4vw,56px)}
-.bty-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,30px);max-width:1200px;margin:0 auto}
+.bty-shop{max-width:1500px;margin:0 auto;padding:0 var(--gut) clamp(60px,7vw,110px)}
+.bty-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:16px 0;margin-bottom:clamp(18px,2vw,28px);border-top:1px solid rgba(169,136,88,.25);border-bottom:1px solid rgba(169,136,88,.25)}
+.bty-chips{display:flex;gap:8px;flex-wrap:wrap}
+.bty-chips button{height:36px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12px;letter-spacing:.06em;color:var(--ink);cursor:pointer;transition:border-color .3s,background .3s,color .3s}
+.bty-chips button:hover{border-color:var(--ink)}
+.bty-chips button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.bty-count{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.bty-count b{font-weight:400;color:var(--ink)}
+.bty-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.8vw,28px)}
+.bty-item[hidden]{display:none}
 .bty-empty{grid-column:1/-1;text-align:center;color:var(--muted)}
+.bty-pages{display:flex;justify-content:center;gap:14px;margin-top:40px;font-size:13px}
+.bty-note{margin:26px 0 0;text-align:center;font-size:12px;letter-spacing:.04em;color:var(--muted)}
+
+/* banner */
+.bty-banner{position:relative;margin:0 var(--gut);border-radius:24px;overflow:hidden;aspect-ratio:21/9;max-width:1500px;margin-inline:auto}
+.bty-banner img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+.bty-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(27,20,14,.55),rgba(27,20,14,0) 55%)}
+.bty-banner-copy{position:absolute;z-index:1;left:clamp(20px,4vw,60px);bottom:clamp(20px,4vw,56px);color:#fff}
+.bty-banner-copy .bty-eye{color:#E6D2A8}
+.bty-banner-copy .bty-h2{color:#fff}
 
 /* scent stories */
 .bty-scent{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);align-items:center;gap:clamp(30px,6vw,110px);max-width:1300px;margin:0 auto;padding:clamp(40px,6vw,90px) var(--gut)}
@@ -122,14 +167,17 @@
 .bty-steps strong{font-family:var(--serif);font-weight:400;font-size:21px;letter-spacing:.04em}
 .bty-steps span{font-size:13.5px;line-height:1.7;color:var(--soft)}
 
+@media (max-width:1100px){.bty-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:2000px){.bty-top,.bty-shop,.bty-banner{max-width:1900px}.bty-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 @media (max-width:900px){
-  .bty-hero{grid-template-columns:1fr;gap:28px;padding-top:24px;text-align:center}
-  .bty-hero-media{order:-1;border-radius:16px}
-  .bty-rule{margin:20px auto}
-  .bty-lead p{margin:0 auto;text-align:center!important}
-  .bty-offer{gap:16px;padding:14px 18px}
-  .bty-offer strong{font-size:23px}
-  .bty-grid{grid-template-columns:1fr 1fr}
+  .bty-top{flex-direction:column;align-items:center;text-align:center;padding-top:26px}
+  .bty-lead p{margin:14px auto 0;text-align:center!important}
+  .bty-offer{gap:16px;padding:12px 18px}
+  .bty-offer strong{font-size:22px}
+  .bty-bar{justify-content:center}
+  .bty-chips{justify-content:center}
+  .bty-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .bty-banner{aspect-ratio:4/5;border-radius:16px;margin-inline:16px}
   .bty-scent,.bty-scent.flip{grid-template-columns:1fr;gap:24px;padding:30px 20px}
   .bty-scent.flip .bty-scent-media{order:0}
   .bty-scent-copy{text-align:center;margin:0 auto}
@@ -139,9 +187,24 @@
 }
 </style>
 
+<script>
+(function(){
+  var root=document.getElementById('bty-{{ section.id }}'); if(!root) return;
+  var items=root.querySelectorAll('.bty-item'), cnt=root.querySelector('[data-bty-count]');
+  root.querySelectorAll('[data-bty-f]').forEach(function(b){
+    b.addEventListener('click',function(){
+      root.querySelectorAll('[data-bty-f]').forEach(function(x){x.classList.toggle('on',x===b);});
+      var f=b.dataset.btyF, n=0;
+      items.forEach(function(it){ var show=!f||(' '+it.dataset.tags).indexOf(' '+f+' ')>-1; it.hidden=!show; if(show) n++; });
+      if(cnt) cnt.textContent=n;
+    });
+  });
+})();
+</script>
+
 {% schema %}
 {
-  "name": "Beauty line page",
+  "name": "Beauty shop page",
   "settings": [
     {"type":"header","content":"Hero"},
     {"type":"image_picker","id":"hero_image","label":"Hero image"},
