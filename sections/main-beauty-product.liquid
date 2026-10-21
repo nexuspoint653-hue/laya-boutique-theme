@@ -23,8 +23,9 @@
     {%- comment -%} Gallery: one large photo, the rest in a two-up grid; swipes on phones {%- endcomment -%}
     <div class="bp-gallery" data-bp-gallery>
       {%- for img in imgs limit: 7 -%}
+        {%- assign ld = 'lazy' -%}{%- if forloop.index < 3 -%}{%- assign ld = 'eager' -%}{%- endif -%}
         <figure class="bp-shot{% if forloop.first %} bp-shot--lead{% endif %}" data-media="{{ img.id }}">
-          {{ img | image_url: width: 1600 | image_tag: loading: forloop.first | ternary: 'eager', 'lazy', sizes: '(min-width: 990px) 58vw, 100vw', widths: '600,900,1200,1600', alt: img.alt | default: product.title }}
+          {{ img | image_url: width: 1600 | image_tag: loading: ld, sizes: '(min-width: 990px) 58vw, 100vw', widths: '600,900,1200,1600', alt: img.alt | default: product.title }}
         </figure>
       {%- endfor -%}
     </div>
