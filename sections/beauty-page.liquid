@@ -90,16 +90,7 @@
     </section>
   {%- endfor -%}
 
-  <section class="bty-how" data-rv>
-    <span class="bty-eye">{{ s.how_eyebrow }}</span>
-    <h2 class="bty-h2">{{ s.how_heading }}</h2>
-    <ol class="bty-steps">
-      <li><b>01</b><strong>{{ s.step_1 }}</strong><span>{{ s.step_1_text }}</span></li>
-      <li><b>02</b><strong>{{ s.step_2 }}</strong><span>{{ s.step_2_text }}</span></li>
-      <li><b>03</b><strong>{{ s.step_3 }}</strong><span>{{ s.step_3_text }}</span></li>
-    </ol>
-    <a class="bty-btn" href="#bty-shop-{{ section.id }}">{{ s.button }}</a>
-  </section>
+  {% render 'beauty-ritual', eyebrow: s.how_eyebrow, heading: s.how_heading, lead: s.how_lead, img_main: s.how_image, img_small: s.how_image_2, thumb_1: s.how_thumb_1, thumb_2: s.how_thumb_2, s1: s.step_1, s1_text: s.step_1_text, s2: s.step_2, s2_text: s.step_2_text, s3: s.step_3, s3_text: s.step_3_text, cta_text: s.button, cta_link: '#bty-shop-' | append: section.id %}
 </div>
 
 <style>
@@ -225,6 +216,11 @@
     {"type":"header","content":"How to wear"},
     {"type":"text","id":"how_eyebrow","label":"Eyebrow","default":"The Ritual"},
     {"type":"text","id":"how_heading","label":"Heading","default":"How to Layer"},
+    {"type":"text","id":"how_lead","label":"Line under heading","default":"Thirty seconds to a scent that lasts all day."},
+    {"type":"image_picker","id":"how_image","label":"Large image"},
+    {"type":"image_picker","id":"how_image_2","label":"Small image"},
+    {"type":"image_picker","id":"how_thumb_1","label":"Lotion thumbnail"},
+    {"type":"image_picker","id":"how_thumb_2","label":"Mist thumbnail"},
     {"type":"text","id":"step_1","label":"Step 1","default":"Soften"},
     {"type":"text","id":"step_1_text","label":"Step 1 text"},
     {"type":"text","id":"step_2","label":"Step 2","default":"Veil"},

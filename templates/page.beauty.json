@@ -53,7 +53,12 @@
         "step_2": "Veil",
         "step_2_text": "Mist from arm's length over skin, hair and hijab while the lotion is still fresh.",
         "step_3": "Refresh",
-        "step_3_text": "Keep the mist close and add a light veil whenever you want the scent to bloom again."
+        "step_3_text": "Keep the mist close and add a light veil whenever you want the scent to bloom again.",
+        "how_lead": "Thirty seconds to a scent that lasts all day.",
+        "how_image": "shopify://shop_images/laya-beauty-dr-lotion.jpg",
+        "how_image_2": "shopify://shop_images/laya-beauty-so-spray.jpg",
+        "how_thumb_1": "shopify://shop_images/laya-beauty-so-lotion.jpg",
+        "how_thumb_2": "shopify://shop_images/laya-beauty-dr-spray.jpg"
       }
     }
   },

@@ -115,15 +115,11 @@
   </section>
 
   {%- comment -%} Ritual {%- endcomment -%}
-  <section class="bp-ritual" data-rv>
-    <span class="bp-eye">{{ s.ritual_eyebrow }}</span>
-    <h2 class="bp-h2">{{ s.ritual_heading }}</h2>
-    <ol>
-      <li><b>01</b><strong>{{ s.step_1 }}</strong><span>{{ s.step_1_text }}</span></li>
-      <li><b>02</b><strong>{{ s.step_2 }}</strong><span>{{ s.step_2_text }}</span></li>
-      <li><b>03</b><strong>{{ s.step_3 }}</strong><span>{{ s.step_3_text }}</span></li>
-    </ol>
-  </section>
+  {%- liquid
+    assign r_main = imgs[3].preview_image | default: imgs[0].preview_image
+    assign r_small = imgs[1].preview_image | default: imgs[0].preview_image
+  -%}
+  {% render 'beauty-ritual', eyebrow: s.ritual_eyebrow, heading: s.ritual_heading, lead: 'Thirty seconds to a scent that lasts all day.', img_main: r_main, img_small: r_small, thumb_1: r_main, thumb_2: r_small, s1: s.step_1, s1_text: s.step_1_text, s2: s.step_2, s2_text: s.step_2_text, s3: s.step_3, s3_text: s.step_3_text, cta_text: '', cta_link: '' %}
 
   {%- comment -%} Complete the ritual {%- endcomment -%}
   {%- assign rel = s.related -%}

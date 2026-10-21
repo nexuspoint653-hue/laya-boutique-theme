@@ -1,0 +1,103 @@
+{%- comment -%}
+  Editorial "How to Layer" block shared by the beauty page and beauty product pages.
+  Params: eyebrow, heading, lead, img_main, img_small, thumb_1 (lotion), thumb_2 (mist),
+          s1, s1_text, s2, s2_text, s3, s3_text, cta_text, cta_link
+{%- endcomment -%}
+<section class="rt" data-rv>
+  <div class="rt-in">
+    <div class="rt-art">
+      {%- if img_main != blank -%}
+        <figure class="rt-main">{{ img_main | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 40vw, 90vw', widths: '600,900,1200', alt: heading }}</figure>
+      {%- endif -%}
+      {%- if img_small != blank -%}
+        <figure class="rt-small">{{ img_small | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 18vw, 45vw', widths: '400,700', alt: '' }}</figure>
+      {%- endif -%}
+      <span class="rt-badge"><b>3</b><em>steps</em><i>30 sec</i></span>
+    </div>
+
+    <div class="rt-copy">
+      <span class="rt-eye">{{ eyebrow }}</span>
+      <h2 class="rt-h2">{{ heading }}</h2>
+      {%- if lead != blank -%}<p class="rt-lead">{{ lead }}</p>{%- endif -%}
+      <ol class="rt-steps">
+        <li>
+          <span class="rt-num">01</span>
+          <div class="rt-step">
+            <strong>{{ s1 }}</strong>
+            <p>{{ s1_text }}</p>
+            {%- if thumb_1 != blank -%}<span class="rt-chip">{{ thumb_1 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}Body Lotion</span>{%- endif -%}
+          </div>
+        </li>
+        <li>
+          <span class="rt-num">02</span>
+          <div class="rt-step">
+            <strong>{{ s2 }}</strong>
+            <p>{{ s2_text }}</p>
+            {%- if thumb_2 != blank -%}<span class="rt-chip">{{ thumb_2 | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}Fragrance Mist</span>{%- endif -%}
+          </div>
+        </li>
+        <li>
+          <span class="rt-num">03</span>
+          <div class="rt-step">
+            <strong>{{ s3 }}</strong>
+            <p>{{ s3_text }}</p>
+            <span class="rt-chip rt-chip--tip">Tip · keep the mist in your bag</span>
+          </div>
+        </li>
+      </ol>
+      {%- if cta_link != blank -%}
+        <div class="rt-cta">
+          <a class="rt-btn" href="{{ cta_link }}">{{ cta_text }}</a>
+          <span class="rt-note">Any 2 for $30</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+.rt{padding:clamp(30px,5vw,80px) var(--gut) clamp(60px,7vw,110px)}
+.rt-in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(36px,6vw,110px);align-items:center;max-width:1360px;margin:0 auto;padding:clamp(28px,4vw,64px);border-radius:28px;background:linear-gradient(135deg,#F6EFE6 0%,#EFE4D6 55%,#F4ECE2 100%);position:relative;overflow:hidden}
+.rt-in::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(201,174,131,.28),rgba(201,174,131,0) 70%);pointer-events:none}
+.rt-art{position:relative;padding:0 14% 12% 0}
+.rt-main{margin:0;aspect-ratio:4/5;border-radius:20px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(80,50,25,.45)}
+.rt-small{position:absolute;right:0;bottom:0;width:44%;margin:0;aspect-ratio:3/4;border-radius:16px;overflow:hidden;border:6px solid #F6EFE6;box-shadow:0 30px 60px -30px rgba(80,50,25,.5)}
+.rt-main img,.rt-small img{width:100%;height:100%;object-fit:cover}
+.rt-badge{position:absolute;left:-14px;top:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;width:92px;height:92px;border-radius:50%;background:#fff;box-shadow:0 14px 34px -16px rgba(80,50,25,.45);text-align:center;line-height:1}
+.rt-badge b{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--ink)}
+.rt-badge em{font-style:normal;font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.rt-badge i{font-style:normal;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-top:5px}
+.rt-copy{position:relative;z-index:1}
+.rt-eye{display:block;font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+.rt-h2{font-family:var(--serif);font-weight:300;font-size:clamp(34px,3.8vw,58px);letter-spacing:.08em;text-transform:uppercase;line-height:1.05;margin:12px 0 0;color:var(--ink)}
+.rt-lead{font-family:var(--serif);font-style:italic;font-size:clamp(18px,1.5vw,21px);color:var(--soft);margin:14px 0 0;text-align:left!important}
+.rt-steps{list-style:none;margin:clamp(26px,3vw,40px) 0 0;padding:0;position:relative}
+.rt-steps::before{content:"";position:absolute;left:27px;top:28px;bottom:28px;width:1px;background:linear-gradient(var(--gold-lt),rgba(201,174,131,.15))}
+.rt-steps li{display:grid;grid-template-columns:56px 1fr;gap:22px;align-items:start;padding:0 0 26px;position:relative}
+.rt-steps li:last-child{padding-bottom:0}
+.rt-num{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#fff;border:1px solid rgba(169,136,88,.35);font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gold);position:relative;z-index:1;transition:background .4s,color .4s}
+.rt-steps li:hover .rt-num{background:var(--ink);color:#fff;border-color:var(--ink)}
+.rt-step{padding:6px 0 0}
+.rt-step strong{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(22px,1.8vw,26px);letter-spacing:.03em;color:var(--ink)}
+.rt-step p{margin:6px 0 0;font-size:14.5px;line-height:1.75;color:var(--soft);max-width:440px;text-align:left!important}
+.rt-chip{display:inline-flex;align-items:center;gap:10px;margin-top:12px;padding:5px 14px 5px 5px;border-radius:999px;background:rgba(255,255,255,.75);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.rt-chip img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.rt-chip--tip{padding:7px 14px;color:var(--gold)}
+.rt-cta{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:clamp(28px,3vw,40px);padding-left:78px}
+.rt-btn{display:inline-block;padding:16px 32px;border-radius:999px;background:var(--ink);color:#fff;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;transition:background .4s var(--e-out)}
+.rt-btn:hover{background:var(--gold)}
+.rt-note{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+@media (min-width:2000px){.rt-in{max-width:1800px}}
+@media (max-width:989px){
+  .rt{padding-inline:16px}
+  .rt-in{grid-template-columns:1fr;gap:34px;padding:22px 20px 32px;border-radius:22px}
+  .rt-art{max-width:460px;margin:0 auto;width:100%}
+  .rt-badge{left:0;width:78px;height:78px}
+  .rt-badge b{font-size:24px}
+  .rt-copy{text-align:left}
+  .rt-steps li{grid-template-columns:46px 1fr;gap:16px}
+  .rt-num{width:46px;height:46px;font-size:17px}
+  .rt-steps::before{left:22px}
+  .rt-cta{padding-left:0;justify-content:center}
+}
+</style>
