@@ -1,0 +1,315 @@
+{%- liquid
+  assign s = section.settings
+  assign v = product.selected_or_first_available_variant
+  assign imgs = product.images
+  assign desc_parts = product.description | split: '<h4>'
+  assign intro = desc_parts | first
+  assign coll_name = 'Dubai Collection'
+  if product.tags contains 'desert-rose'
+    assign coll_name = 'Desert Rose · Dubai'
+  elsif product.tags contains 'silk-oasis'
+    assign coll_name = 'Silk Oasis · Dubai'
+  elsif product.tags contains 'gift-set'
+    assign coll_name = 'Gift Set · Dubai'
+  endif
+  assign scene = imgs[1] | default: imgs[0]
+-%}
+<div class="bp" id="bp-{{ section.id }}">
+  <nav class="bp-crumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span>/</span><a href="{{ s.edit_link }}">{{ s.edit_label }}</a><span>/</span><span aria-current="page">{{ product.title }}</span>
+  </nav>
+
+  <div class="bp-top">
+    {%- comment -%} Gallery: one large photo, the rest in a two-up grid; swipes on phones {%- endcomment -%}
+    <div class="bp-gallery" data-bp-gallery>
+      {%- for img in imgs limit: 7 -%}
+        <figure class="bp-shot{% if forloop.first %} bp-shot--lead{% endif %}" data-media="{{ img.id }}">
+          {{ img | image_url: width: 1600 | image_tag: loading: forloop.first | ternary: 'eager', 'lazy', sizes: '(min-width: 990px) 58vw, 100vw', widths: '600,900,1200,1600', alt: img.alt | default: product.title }}
+        </figure>
+      {%- endfor -%}
+    </div>
+    {%- if imgs.size > 1 -%}
+    <div class="bp-dots" data-bp-dots aria-hidden="true">{%- for img in imgs limit: 7 -%}<i{% if forloop.first %} class="on"{% endif %}></i>{%- endfor -%}</div>
+    {%- endif -%}
+
+    <aside class="bp-info">
+      <div class="bp-info-in">
+        <span class="bp-eye">{{ coll_name }}</span>
+        <h1 class="bp-title">{{ product.title }}</h1>
+        <div class="bp-price-row">
+          <span class="bp-price" data-bp-price>{{ v.price | money }}</span>
+          {%- if v.compare_at_price > v.price -%}<s class="bp-compare" data-bp-compare>{{ v.compare_at_price | money }}</s>{%- endif -%}
+          {%- if s.offer_badge != blank -%}<span class="bp-pill">{{ s.offer_badge }}</span>{%- endif -%}
+        </div>
+        <div class="bp-intro">{{ intro }}</div>
+
+        {% form 'product', product, class: 'bp-form', data-bp-form: '' %}
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <fieldset class="bp-opt">
+                <legend>{{ option.name }} <b data-bp-label>{{ option.selected_value }}</b></legend>
+                <div class="bp-vars">
+                  {%- for value in option.values -%}
+                    {%- assign vv = product.variants | where: 'title', value | first -%}
+                    {%- assign vimg = vv.featured_image | default: imgs[forloop.index0] | default: imgs[0] -%}
+                    <button type="button" class="bp-var{% if option.selected_value == value %} on{% endif %}" data-bp-var="{{ vv.id }}" data-price="{{ vv.price | money }}" data-compare="{% if vv.compare_at_price > vv.price %}{{ vv.compare_at_price | money }}{% endif %}" data-media="{{ vv.featured_media.id }}" data-name="{{ value | escape }}"{% unless vv.available %} disabled{% endunless %}>
+                      <span class="bp-var-img">{{ vimg | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</span>
+                      <span class="bp-var-t">{{ value }}</span>
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+          <input type="hidden" name="id" value="{{ v.id }}" data-bp-id>
+          <div class="bp-buyrow">
+            <div class="bp-qty">
+              <button type="button" data-bp-q="-1" aria-label="Decrease quantity">−</button>
+              <input type="number" name="quantity" value="1" min="1" aria-label="Quantity" data-bp-qty>
+              <button type="button" data-bp-q="1" aria-label="Increase quantity">+</button>
+            </div>
+            <button type="submit" class="bp-add"{% unless v.available %} disabled{% endunless %}>{% if v.available %}Add to Bag{% else %}Sold Out{% endif %}</button>
+          </div>
+          {%- if s.offer_note != blank -%}<p class="bp-offer">{{ s.offer_note }}</p>{%- endif -%}
+        {% endform %}
+
+        <ul class="bp-perks">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l-1 4H8zM8 7v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V7"/></svg><span>{{ s.perk_1 }}</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg><span>{{ s.perk_2 }}</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h12v9H3zM15 10h4l2 3v3h-6M7 19a1.5 1.5 0 1 0 0-.01M17 19a1.5 1.5 0 1 0 0-.01"/></svg><span>{{ s.perk_3 }}</span></li>
+        </ul>
+
+        <div class="bp-acc">
+          {%- for part in desc_parts offset: 1 -%}
+            {%- assign bits = part | split: '</h4>' -%}
+            <details{% if forloop.first %} open{% endif %}>
+              <summary>{{ bits[0] | strip_html }}</summary>
+              <div class="bp-acc-b">{{ bits[1] }}</div>
+            </details>
+          {%- endfor -%}
+          <details>
+            <summary>How to Use</summary>
+            <div class="bp-acc-b"><p>{{ s.how_to }}</p></div>
+          </details>
+          <details>
+            <summary>Shipping &amp; Returns</summary>
+            <div class="bp-acc-b"><p>{{ s.shipping }}</p></div>
+          </details>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  {%- comment -%} Scent story band {%- endcomment -%}
+  <section class="bp-story">
+    <figure class="bp-story-media" data-rv>
+      {{ scene | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 50vw, 100vw', widths: '700,1000,1400', alt: product.title }}
+    </figure>
+    <div class="bp-story-copy" data-rv>
+      <span class="bp-eye">{{ s.story_eyebrow }}</span>
+      <h2 class="bp-h2">{{ s.story_heading }}</h2>
+      <div class="bp-story-p">{{ intro }}</div>
+      <a class="bp-link" href="{{ s.edit_link }}">{{ s.story_link }}</a>
+    </div>
+  </section>
+
+  {%- comment -%} Ritual {%- endcomment -%}
+  <section class="bp-ritual" data-rv>
+    <span class="bp-eye">{{ s.ritual_eyebrow }}</span>
+    <h2 class="bp-h2">{{ s.ritual_heading }}</h2>
+    <ol>
+      <li><b>01</b><strong>{{ s.step_1 }}</strong><span>{{ s.step_1_text }}</span></li>
+      <li><b>02</b><strong>{{ s.step_2 }}</strong><span>{{ s.step_2_text }}</span></li>
+      <li><b>03</b><strong>{{ s.step_3 }}</strong><span>{{ s.step_3_text }}</span></li>
+    </ol>
+  </section>
+
+  {%- comment -%} Complete the ritual {%- endcomment -%}
+  {%- assign rel = s.related -%}
+  {%- if rel.products.size > 1 -%}
+  <section class="bp-rel">
+    <div class="bp-rel-head" data-rv>
+      <span class="bp-eye">{{ s.rel_eyebrow }}</span>
+      <h2 class="bp-h2">{{ s.rel_heading }}</h2>
+    </div>
+    <div class="bp-rel-grid">
+      {%- for p in rel.products limit: 4 -%}
+        {%- if p.id == product.id -%}{%- continue -%}{%- endif -%}
+        {% render 'product-card', product: p, hover: 'image' %}
+      {%- endfor -%}
+    </div>
+  </section>
+  {%- endif -%}
+
+  <div class="bp-mbar" data-bp-mbar>
+    <span><b>{{ product.title }}</b><em data-bp-mprice>{{ v.price | money }}</em></span>
+    <button type="button" class="bp-add" data-bp-madd>Add to Bag</button>
+  </div>
+</div>
+
+<style>
+#bp-{{ section.id }}{--bp-a:#FAF8F5;--bp-b:#F4EDE4;--bp-line:rgba(169,136,88,.28)}
+.bp{background:var(--bp-a);color:var(--ink)}
+.bp-eye{display:block;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.bp-h2{font-family:var(--serif);font-weight:300;font-size:clamp(30px,3.2vw,48px);letter-spacing:.08em;text-transform:uppercase;line-height:1.1;margin:12px 0 0}
+.bp-crumb{max-width:1440px;margin:0 auto;padding:22px var(--gut) 0;font-size:11px;letter-spacing:.08em;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.bp-crumb a{color:var(--muted)}.bp-crumb a:hover{color:var(--ink)}
+
+.bp-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,4vw,72px);max-width:1440px;margin:0 auto;padding:20px var(--gut) clamp(60px,7vw,110px);align-items:start}
+.bp-gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bp-shot{margin:0;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:#fff}
+.bp-shot--lead{grid-column:1/-1;aspect-ratio:4/5}
+.bp-shot img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--e-out)}
+.bp-shot:hover img{transform:scale(1.03)}
+.bp-dots{display:none}
+
+.bp-info{position:sticky;top:calc(var(--hdr) + 24px)}
+.bp-info-in{padding:clamp(4px,1vw,12px) 0}
+.bp-title{font-family:var(--serif);font-weight:300;font-size:clamp(36px,3.4vw,54px);line-height:1.05;letter-spacing:.02em;margin:12px 0 0}
+.bp-price-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+.bp-price{font-family:var(--serif);font-size:28px}
+.bp-compare{font-size:16px;color:var(--muted)}
+.bp-pill{padding:6px 14px;border-radius:999px;background:var(--ink);color:#fff;font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.bp-intro p{font-size:15px;line-height:1.85;color:var(--soft);margin:22px 0 0;text-align:left!important}
+.bp-form{margin-top:28px;padding-top:26px;border-top:1px solid var(--bp-line)}
+.bp-opt{border:0;margin:0;padding:0}
+.bp-opt legend{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.bp-opt legend b{font-weight:400;color:var(--ink);letter-spacing:.06em;text-transform:none;font-size:13px;margin-left:6px}
+.bp-vars{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bp-var{display:flex;align-items:center;gap:12px;padding:8px 14px 8px 8px;border:1px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;text-align:left;transition:border-color .3s,box-shadow .3s}
+.bp-var:hover{border-color:var(--gold-lt)}
+.bp-var.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.bp-var[disabled]{opacity:.45;cursor:not-allowed}
+.bp-var-img{flex:0 0 48px;width:48px;height:60px;border-radius:9px;overflow:hidden;background:var(--bp-b)}
+.bp-var-img img{width:100%;height:100%;object-fit:cover}
+.bp-var-t{font-size:12.5px;line-height:1.35;color:var(--ink)}
+.bp-buyrow{display:flex;gap:10px;margin-top:22px}
+.bp-qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:#fff}
+.bp-qty button{width:42px;height:54px;border:0;background:none;font-size:18px;cursor:pointer;color:var(--ink)}
+.bp-qty input{width:34px;border:0;text-align:center;font:inherit;font-size:15px;background:none;-moz-appearance:textfield}
+.bp-qty input::-webkit-outer-spin-button,.bp-qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.bp-add{flex:1;height:56px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:11px;letter-spacing:.26em;text-transform:uppercase;cursor:pointer;transition:background .4s var(--e-out)}
+.bp-add:hover{background:var(--gold)}
+.bp-add[disabled]{background:var(--muted);cursor:not-allowed}
+.bp-offer{margin:14px 0 0;padding:12px 16px;border-radius:12px;background:var(--bp-b);font-size:12.5px;line-height:1.5;color:var(--soft);text-align:center}
+.bp-perks{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:12px}
+.bp-perks li{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--soft)}
+.bp-perks svg{width:20px;height:20px;fill:none;stroke:var(--gold);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex:0 0 20px}
+.bp-acc{margin-top:28px;border-top:1px solid var(--bp-line)}
+.bp-acc details{border-bottom:1px solid var(--bp-line)}
+.bp-acc summary{list-style:none;cursor:pointer;padding:18px 0;font-size:11px;letter-spacing:.24em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+.bp-acc summary::-webkit-details-marker{display:none}
+.bp-acc summary::after{content:"+";font-size:16px;color:var(--gold);transition:transform .3s}
+.bp-acc details[open] summary::after{transform:rotate(45deg)}
+.bp-acc-b{padding:0 0 20px;font-size:14px;line-height:1.8;color:var(--soft)}
+.bp-acc-b p,.bp-acc-b li{text-align:left!important}
+.bp-acc-b ul{margin:0;padding-left:18px}
+
+.bp-story{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(30px,6vw,100px);max-width:1360px;margin:0 auto;padding:clamp(40px,6vw,90px) var(--gut);background:linear-gradient(to bottom,var(--bp-a),var(--bp-b) 50%,var(--bp-a))}
+.bp-story-media{margin:0;aspect-ratio:4/5;border-radius:20px;overflow:hidden}
+.bp-story-media img{width:100%;height:100%;object-fit:cover}
+.bp-story-copy{max-width:480px}
+.bp-story-p p{font-family:var(--serif);font-size:clamp(19px,1.6vw,23px);line-height:1.6;color:var(--soft);margin:22px 0 0;text-align:left!important}
+.bp-link{display:inline-block;margin-top:28px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);padding-bottom:6px;background:linear-gradient(var(--gold),var(--gold)) left bottom/100% 1px no-repeat;transition:background-size .5s var(--e-out),color .3s}
+.bp-link:hover{color:var(--gold);background-size:40% 1px}
+
+.bp-ritual{text-align:center;max-width:1100px;margin:0 auto;padding:clamp(40px,6vw,90px) var(--gut)}
+.bp-ritual ol{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,26px);margin:clamp(28px,4vw,48px) 0 0;padding:0}
+.bp-ritual li{display:flex;flex-direction:column;align-items:center;gap:10px;padding:30px 24px;background:#fff;border-radius:18px;border:1px solid rgba(169,136,88,.18)}
+.bp-ritual b{font-family:var(--serif);font-style:italic;font-weight:400;font-size:30px;color:var(--gold-lt)}
+.bp-ritual strong{font-family:var(--serif);font-weight:400;font-size:21px}
+.bp-ritual span{font-size:13.5px;line-height:1.7;color:var(--soft)}
+
+.bp-rel{max-width:1200px;margin:0 auto;padding:clamp(30px,4vw,60px) var(--gut) clamp(70px,8vw,120px)}
+.bp-rel-head{text-align:center;margin-bottom:clamp(26px,3vw,44px)}
+.bp-rel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px)}
+
+.bp-mbar{display:none}
+
+@media (max-width:989px){
+  .bp-top{grid-template-columns:1fr;padding-top:10px;gap:22px}
+  .bp-gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;margin:0 calc(-1 * var(--gut));scrollbar-width:none}
+  .bp-gallery::-webkit-scrollbar{display:none}
+  .bp-shot,.bp-shot--lead{flex:0 0 100%;aspect-ratio:3/4;border-radius:0;scroll-snap-align:center}
+  .bp-dots{display:flex;justify-content:center;gap:6px;margin-top:-6px}
+  .bp-dots i{width:6px;height:6px;border-radius:50%;background:var(--line);transition:background .3s,width .3s}
+  .bp-dots i.on{background:var(--ink);width:18px;border-radius:3px}
+  .bp-info{position:static}
+  .bp-vars{grid-template-columns:1fr}
+  .bp-story{grid-template-columns:1fr;gap:24px;padding:40px 20px}
+  .bp-story-copy{text-align:center;margin:0 auto}
+  .bp-story-p p{text-align:center!important}
+  .bp-ritual ol{grid-template-columns:1fr}
+  .bp-rel-grid{grid-template-columns:1fr 1fr}
+  .bp-mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;align-items:center;gap:12px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);transform:translateY(110%);transition:transform .45s var(--e-out)}
+  .bp-mbar.on{transform:none}
+  .bp-mbar span{flex:1;display:flex;flex-direction:column;min-width:0}
+  .bp-mbar b{font-weight:400;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bp-mbar em{font-style:normal;font-size:13px;color:var(--muted)}
+  .bp-mbar .bp-add{flex:0 0 auto;height:46px;padding:0 24px}
+}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('bp-{{ section.id }}'); if(!root) return;
+  var idIn=root.querySelector('[data-bp-id]'), price=root.querySelector('[data-bp-price]'), mprice=root.querySelector('[data-bp-mprice]');
+  var gal=root.querySelector('[data-bp-gallery]'), label=root.querySelector('[data-bp-label]');
+  root.querySelectorAll('[data-bp-var]').forEach(function(b){
+    b.addEventListener('click',function(){
+      root.querySelectorAll('[data-bp-var]').forEach(function(x){x.classList.toggle('on',x===b);});
+      idIn.value=b.dataset.bpVar; if(price) price.textContent=b.dataset.price; if(mprice) mprice.textContent=b.dataset.price;
+      if(label) label.textContent=b.dataset.name;
+      var c=root.querySelector('[data-bp-compare]'); if(c){ c.textContent=b.dataset.compare; c.style.display=b.dataset.compare?'':'none'; }
+      if(b.dataset.media && gal){
+        var fig=gal.querySelector('[data-media="'+b.dataset.media+'"]');
+        if(fig && fig!==gal.firstElementChild){
+          var lead=gal.firstElementChild; lead.classList.remove('bp-shot--lead');
+          gal.insertBefore(fig,lead); fig.classList.add('bp-shot--lead');
+        }
+        if(gal.scrollWidth>gal.clientWidth+4) gal.scrollTo({left:0,behavior:'smooth'});
+      }
+    });
+  });
+  var q=root.querySelector('[data-bp-qty]');
+  root.querySelectorAll('[data-bp-q]').forEach(function(b){ b.addEventListener('click',function(){ q.value=Math.max(1,(parseInt(q.value,10)||1)+parseInt(b.dataset.bpQ,10)); }); });
+  var dots=root.querySelectorAll('[data-bp-dots] i');
+  if(gal && dots.length){ gal.addEventListener('scroll',function(){ var i=Math.round(gal.scrollLeft/gal.clientWidth); dots.forEach(function(d,k){d.classList.toggle('on',k===i);}); },{passive:true}); }
+  var bar=root.querySelector('[data-bp-mbar]'), add=root.querySelector('.bp-form .bp-add');
+  if(bar && add && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(e){ bar.classList.toggle('on', !e[0].isIntersecting && e[0].boundingClientRect.top<0); }).observe(add);
+    root.querySelector('[data-bp-madd]').addEventListener('click',function(){ add.click(); });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Beauty product",
+  "settings": [
+    {"type":"text","id":"edit_label","label":"Breadcrumb label","default":"Laya Beauty"},
+    {"type":"url","id":"edit_link","label":"Breadcrumb link"},
+    {"type":"text","id":"offer_badge","label":"Offer badge","default":"Any 2 for $30"},
+    {"type":"text","id":"offer_note","label":"Offer note"},
+    {"type":"text","id":"perk_1","label":"Perk 1","default":"250 mL / 8.4 fl oz"},
+    {"type":"text","id":"perk_2","label":"Perk 2","default":"For skin, hair and hijab"},
+    {"type":"text","id":"perk_3","label":"Perk 3","default":"Complimentary shipping on orders over $250"},
+    {"type":"textarea","id":"how_to","label":"How to use"},
+    {"type":"textarea","id":"shipping","label":"Shipping & returns"},
+    {"type":"text","id":"story_eyebrow","label":"Story eyebrow","default":"The Scent"},
+    {"type":"text","id":"story_heading","label":"Story heading","default":"Inspired by Dubai"},
+    {"type":"text","id":"story_link","label":"Story link label","default":"Explore the Dubai Edit"},
+    {"type":"text","id":"ritual_eyebrow","label":"Ritual eyebrow","default":"The Ritual"},
+    {"type":"text","id":"ritual_heading","label":"Ritual heading","default":"How to Layer"},
+    {"type":"text","id":"step_1","label":"Step 1","default":"Soften"},
+    {"type":"text","id":"step_1_text","label":"Step 1 text"},
+    {"type":"text","id":"step_2","label":"Step 2","default":"Veil"},
+    {"type":"text","id":"step_2_text","label":"Step 2 text"},
+    {"type":"text","id":"step_3","label":"Step 3","default":"Refresh"},
+    {"type":"text","id":"step_3_text","label":"Step 3 text"},
+    {"type":"collection","id":"related","label":"Complete the ritual collection"},
+    {"type":"text","id":"rel_eyebrow","label":"Related eyebrow","default":"Complete the Ritual"},
+    {"type":"text","id":"rel_heading","label":"Related heading","default":"Pair it, Save $10"}
+  ]
+}
+{% endschema %}
