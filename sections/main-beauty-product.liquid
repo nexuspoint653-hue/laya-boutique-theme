@@ -223,7 +223,8 @@
 
 .bp-rel{max-width:1200px;margin:0 auto;padding:clamp(30px,4vw,60px) var(--gut) clamp(70px,8vw,120px)}
 .bp-rel-head{text-align:center;margin-bottom:clamp(26px,3vw,44px)}
-.bp-rel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px)}
+.bp-rel-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(14px,2vw,28px)}
+.bp-rel-grid>*{flex:0 1 calc((100% - 2*clamp(14px,2vw,28px))/3);min-width:0}
 
 .bp-mbar{display:none}
 
@@ -241,7 +242,7 @@
   .bp-story-copy{text-align:center;margin:0 auto}
   .bp-story-p p{text-align:center!important}
   .bp-ritual ol{grid-template-columns:1fr}
-  .bp-rel-grid{grid-template-columns:1fr 1fr}
+  .bp-rel-grid>*{flex-basis:calc(50% - 8px)}
   .bp-mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;align-items:center;gap:12px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);transform:translateY(110%);transition:transform .45s var(--e-out)}
   .bp-mbar.on{transform:none}
   .bp-mbar span{flex:1;display:flex;flex-direction:column;min-width:0}
