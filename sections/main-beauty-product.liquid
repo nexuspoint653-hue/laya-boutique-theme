@@ -1,7 +1,7 @@
 {%- liquid
   assign s = section.settings
   assign v = product.selected_or_first_available_variant
-  assign imgs = product.images
+  assign imgs = product.media | where: 'media_type', 'image'
   assign desc_parts = product.description | split: '<h4>'
   assign intro = desc_parts | first
   assign coll_name = 'Dubai Collection'
@@ -12,7 +12,7 @@
   elsif product.tags contains 'gift-set'
     assign coll_name = 'Gift Set · Dubai'
   endif
-  assign scene = imgs[1] | default: imgs[0]
+  assign scene = imgs[1].preview_image | default: imgs[0].preview_image
 -%}
 <div class="bp" id="bp-{{ section.id }}">
   <nav class="bp-crumb" aria-label="Breadcrumb">
@@ -25,7 +25,7 @@
       {%- for img in imgs limit: 7 -%}
         {%- assign ld = 'lazy' -%}{%- if forloop.index < 3 -%}{%- assign ld = 'eager' -%}{%- endif -%}
         <figure class="bp-shot{% if forloop.first %} bp-shot--lead{% endif %}" data-media="{{ img.id }}">
-          {{ img | image_url: width: 1600 | image_tag: loading: ld, sizes: '(min-width: 990px) 58vw, 100vw', widths: '600,900,1200,1600', alt: img.alt | default: product.title }}
+          {{ img.preview_image | image_url: width: 1600 | image_tag: loading: ld, sizes: '(min-width: 990px) 58vw, 100vw', widths: '600,900,1200,1600', alt: img.alt | default: product.title }}
         </figure>
       {%- endfor -%}
     </div>
@@ -52,7 +52,7 @@
                 <div class="bp-vars">
                   {%- for value in option.values -%}
                     {%- assign vv = product.variants | where: 'title', value | first -%}
-                    {%- assign vimg = vv.featured_image | default: imgs[forloop.index0] | default: imgs[0] -%}
+                    {%- assign vimg = vv.featured_image | default: imgs[forloop.index0].preview_image | default: imgs[0].preview_image -%}
                     <button type="button" class="bp-var{% if option.selected_value == value %} on{% endif %}" data-bp-var="{{ vv.id }}" data-price="{{ vv.price | money }}" data-compare="{% if vv.compare_at_price > vv.price %}{{ vv.compare_at_price | money }}{% endif %}" data-media="{{ vv.featured_media.id }}" data-name="{{ value | escape }}"{% unless vv.available %} disabled{% endunless %}>
                       <span class="bp-var-img">{{ vimg | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</span>
                       <span class="bp-var-t">{{ value }}</span>
