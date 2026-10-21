@@ -12,7 +12,7 @@
   elsif product.tags contains 'gift-set'
     assign coll_name = 'Gift Set · Dubai'
   endif
-  assign scene = imgs[1].preview_image | default: imgs[0].preview_image
+  assign scene = imgs[2].preview_image | default: imgs[0].preview_image
 -%}
 <div class="bp" id="bp-{{ section.id }}">
   <nav class="bp-crumb" aria-label="Breadcrumb">
