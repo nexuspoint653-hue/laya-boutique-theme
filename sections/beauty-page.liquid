@@ -59,10 +59,14 @@
 
   {%- if s.hero_image != blank -%}
   <section class="bty-banner" data-rv>
-    {{ s.hero_image | image_url: width: 2000 | image_tag: loading: 'lazy', sizes: '100vw', widths: '800,1200,1600,2000', alt: s.heading }}
+    <figure class="bty-banner-media">
+      {{ s.hero_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 900px) 45vw, 100vw', widths: '700,1000,1400', alt: s.heading }}
+    </figure>
     <div class="bty-banner-copy">
       <span class="bty-eye">{{ s.shop_eyebrow }}</span>
       <h2 class="bty-h2">{{ s.shop_heading }}</h2>
+      <p>Desert Rose for warm, rich evenings. Silk Oasis for soft, floral days. Wear one, or layer both for a signature that is entirely yours.</p>
+      <a class="bty-btn" href="/products/the-dubai-duo">Shop the Duo · $30</a>
     </div>
   </section>
   {%- endif -%}
@@ -90,7 +94,8 @@
     </section>
   {%- endfor -%}
 
-  {% render 'beauty-ritual', eyebrow: s.how_eyebrow, heading: s.how_heading, lead: s.how_lead, img_main: s.how_image, img_small: s.how_image_2, thumb_1: s.how_thumb_1, thumb_2: s.how_thumb_2, s1: s.step_1, s1_text: s.step_1_text, s2: s.step_2, s2_text: s.step_2_text, s3: s.step_3, s3_text: s.step_3_text, cta_text: s.button, cta_link: '#bty-shop-' | append: section.id %}
+  {%- assign shop_anchor = '#bty-shop-' | append: section.id -%}
+  {% render 'beauty-ritual', eyebrow: s.how_eyebrow, heading: s.how_heading, lead: s.how_lead, img_main: s.how_image, img_small: s.how_image_2, thumb_1: s.how_thumb_1, thumb_2: s.how_thumb_2, s1: s.step_1, s1_text: s.step_1_text, s2: s.step_2, s2_text: s.step_2_text, s3: s.step_3, s3_text: s.step_3_text, cta_text: s.button, cta_link: shop_anchor %}
 </div>
 
 <style>
@@ -130,13 +135,12 @@
 .bty-pages{display:flex;justify-content:center;gap:14px;margin-top:40px;font-size:13px}
 .bty-note{margin:26px 0 0;text-align:center;font-size:12px;letter-spacing:.04em;color:var(--muted)}
 
-/* banner */
-.bty-banner{position:relative;margin:0 var(--gut);border-radius:24px;overflow:hidden;aspect-ratio:21/9;max-width:1500px;margin-inline:auto}
-.bty-banner img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
-.bty-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(27,20,14,.55),rgba(27,20,14,0) 55%)}
-.bty-banner-copy{position:absolute;z-index:1;left:clamp(20px,4vw,60px);bottom:clamp(20px,4vw,56px);color:#fff}
-.bty-banner-copy .bty-eye{color:#E6D2A8}
-.bty-banner-copy .bty-h2{color:#fff}
+/* banner: full photo, never cropped */
+.bty-banner{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;gap:clamp(30px,5vw,90px);max-width:1360px;margin:0 auto;padding:clamp(20px,3vw,40px) var(--gut) clamp(40px,5vw,80px)}
+.bty-banner-media{margin:0;aspect-ratio:3/4;border-radius:22px;overflow:hidden;box-shadow:0 40px 90px -45px rgba(90,50,30,.45)}
+.bty-banner-media img{width:100%;height:100%;object-fit:contain;background:#E9D7C2}
+.bty-banner-copy{max-width:480px}
+.bty-banner-copy p{font-family:var(--serif);font-size:clamp(19px,1.6vw,23px);line-height:1.6;color:var(--soft);margin:20px 0 0;text-align:left!important}
 
 /* scent stories */
 .bty-scent{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);align-items:center;gap:clamp(30px,6vw,110px);max-width:1300px;margin:0 auto;padding:clamp(40px,6vw,90px) var(--gut)}
@@ -160,7 +164,7 @@
 .bty-steps span{font-size:13.5px;line-height:1.7;color:var(--soft)}
 
 @media (max-width:1100px){.bty-grid{--cols:3}}
-@media (min-width:2000px){.bty-top,.bty-shop,.bty-banner{max-width:1900px}.bty-grid{--cols:5}}
+@media (min-width:2000px){.bty-top,.bty-shop{max-width:1900px}.bty-banner{max-width:1800px}.bty-grid{--cols:5}}
 @media (max-width:900px){
   .bty-top{flex-direction:column;align-items:center;text-align:center;padding-top:26px}
   .bty-lead p{margin:14px auto 0;text-align:center!important}
@@ -169,7 +173,9 @@
   .bty-bar{justify-content:center}
   .bty-chips{justify-content:center}
   .bty-grid{--cols:2;--gap:12px}
-  .bty-banner{aspect-ratio:4/5;border-radius:16px;margin-inline:16px}
+  .bty-banner{grid-template-columns:1fr;gap:24px;padding:20px 16px 40px}
+  .bty-banner-copy{text-align:center;margin:0 auto}
+  .bty-banner-copy p{text-align:center!important}
   .bty-scent,.bty-scent.flip{grid-template-columns:1fr;gap:24px;padding:30px 20px}
   .bty-scent.flip .bty-scent-media{order:0}
   .bty-scent-copy{text-align:center;margin:0 auto}
