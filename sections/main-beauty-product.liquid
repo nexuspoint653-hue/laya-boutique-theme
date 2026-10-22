@@ -135,8 +135,16 @@
       {{ scene | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 50vw, 100vw', widths: '700,1000,1400', alt: product.title }}
     </figure>
     <div class="bp-story-copy" data-rv>
+      {%- liquid
+        assign story_h = s.story_heading
+        if product.tags contains 'desert-rose'
+          assign story_h = 'Warm Rose & Oud'
+        elsif product.tags contains 'silk-oasis'
+          assign story_h = 'Soft Florals & Oud Wood'
+        endif
+      -%}
       <span class="bp-eye">{{ s.story_eyebrow }}</span>
-      <h2 class="bp-h2">{{ s.story_heading }}</h2>
+      <h2 class="bp-h2">{{ story_h }}</h2>
       <div class="bp-story-p">{{ intro }}</div>
       <a class="bp-link" href="{{ s.edit_link }}">{{ s.story_link }}</a>
     </div>

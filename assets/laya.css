@@ -1139,9 +1139,7 @@ p,li,figcaption{text-wrap:pretty}
 .split-body[style*="text-align:center"]{align-items:center}
 .split-body[style*="text-align:center"] .lede,
 .split-body[style*="text-align:center"] .lede p{
-  text-align:justify;
-  text-justify:inter-word;
-  text-align-last:center;
+  text-align:center;
   text-wrap:pretty;
   margin-inline:auto;
 }
@@ -1636,3 +1634,7 @@ p,li,dd,h1,h2,h3,h4,a{overflow-wrap:break-word}
   .bp-rel,.bty-grid{max-width:1800px}
 }
 .mnav-new{font-style:normal;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--gold);color:#fff;font-size:9px;letter-spacing:.16em;text-transform:uppercase;vertical-align:middle}
+
+/* ===== Text pass (2026-10-22): no justified or stretched paragraphs anywhere ===== */
+body :is(p,li,dd,blockquote,.rte,.lede){text-align-last:auto;text-justify:auto;hyphens:manual;-webkit-hyphens:manual}
+body :is(p,li,.rte,.lede)[style*="justify"]{text-align:left!important}

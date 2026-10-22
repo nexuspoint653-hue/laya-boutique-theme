@@ -128,6 +128,8 @@
     "social_pinterest": "https://www.pinterest.com/layaboutique",
     "social_youtube": "https://www.youtube.com/@layaboutique",
     "social_threads": "https://www.threads.net/@layaboutique",
-    "show_sale_pricing": false
+    "show_sale_pricing": false,
+    "justify_text": false,
+    "justify_hyphens": false
   }
 }
