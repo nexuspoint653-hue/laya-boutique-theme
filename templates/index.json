@@ -576,7 +576,7 @@
     "look": {
       "type": "shop-the-look",
       "settings": {
-        "heading": "Shop The Look",
+        "heading": "Shop the Look",
         "subheading": "",
         "show_shop_all": true,
         "shop_all_text": "Shop All",
