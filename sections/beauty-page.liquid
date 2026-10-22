@@ -66,7 +66,7 @@
       <span class="bty-eye">{{ s.shop_eyebrow }}</span>
       <h2 class="bty-h2">{{ s.shop_heading }}</h2>
       <p>Desert Rose for warm, rich evenings. Silk Oasis for soft, floral days. Wear one, or layer both for a signature that is entirely yours.</p>
-      <a class="bty-btn" href="/products/the-dubai-duo">Shop the Duo · $30</a>
+      <a class="bty-btn" href="#bty-shop-{{ section.id }}" data-bty-go="duo-set">Shop the Duos · $30</a>
     </div>
   </section>
   {%- endif -%}
@@ -189,6 +189,7 @@
 (function(){
   var root=document.getElementById('bty-{{ section.id }}'); if(!root) return;
   var items=root.querySelectorAll('.bty-item'), cnt=root.querySelector('[data-bty-count]');
+  root.querySelectorAll('[data-bty-go]').forEach(function(a){ a.addEventListener('click',function(){ var b=root.querySelector('[data-bty-f="'+a.dataset.btyGo+'"]'); if(b) b.click(); }); });
   root.querySelectorAll('[data-bty-f]').forEach(function(b){
     b.addEventListener('click',function(){
       root.querySelectorAll('[data-bty-f]').forEach(function(x){x.classList.toggle('on',x===b);});

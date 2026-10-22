@@ -9,10 +9,38 @@
     assign coll_name = 'Desert Rose · Dubai'
   elsif product.tags contains 'silk-oasis'
     assign coll_name = 'Silk Oasis · Dubai'
-  elsif product.tags contains 'gift-set'
-    assign coll_name = 'Gift Set · Dubai'
+  endif
+  assign is_duo = false
+  if product.tags contains 'duo-set'
+    assign is_duo = true
+    assign coll_name = coll_name | replace: '· Dubai', '· Duo'
   endif
   assign scene = imgs[2].preview_image | default: imgs[0].preview_image
+  assign r_main = blank
+  assign r_small = blank
+  for m in imgs
+    if scene == blank and m.alt contains 'collection'
+      assign scene = m.preview_image
+    endif
+    if m.alt contains 'collection'
+      assign scene = m.preview_image
+      break
+    endif
+  endfor
+  for m in imgs
+    if r_main == blank and m.alt contains 'texture'
+      assign r_main = m.preview_image
+    endif
+    if r_small == blank and m.alt contains 'spraying'
+      assign r_small = m.preview_image
+    endif
+  endfor
+  if r_main == blank
+    assign r_main = imgs[0].preview_image
+  endif
+  if r_small == blank
+    assign r_small = imgs[1].preview_image | default: imgs[0].preview_image
+  endif
 -%}
 <div class="bp" id="bp-{{ section.id }}">
   <nav class="bp-crumb" aria-label="Breadcrumb">
@@ -40,7 +68,7 @@
         <div class="bp-price-row">
           <span class="bp-price" data-bp-price>{{ v.price | money }}</span>
           {%- if v.compare_at_price > v.price -%}<s class="bp-compare" data-bp-compare>{{ v.compare_at_price | money }}</s>{%- endif -%}
-          {%- if s.offer_badge != blank -%}<span class="bp-pill">{{ s.offer_badge }}</span>{%- endif -%}
+          {%- if is_duo -%}<span class="bp-pill">Save $10</span>{%- elsif s.offer_badge != blank -%}<span class="bp-pill">{{ s.offer_badge }}</span>{%- endif -%}
         </div>
         <div class="bp-intro">{{ intro }}</div>
 
@@ -71,7 +99,7 @@
             </div>
             <button type="submit" class="bp-add"{% unless v.available %} disabled{% endunless %}>{% if v.available %}Add to Bag{% else %}Sold Out{% endif %}</button>
           </div>
-          {%- if s.offer_note != blank -%}<p class="bp-offer">{{ s.offer_note }}</p>{%- endif -%}
+          {%- if is_duo -%}<p class="bp-offer">Mist + lotion from the same line, together for $30 instead of $40.</p>{%- elsif s.offer_note != blank -%}<p class="bp-offer">{{ s.offer_note }}</p>{%- endif -%}
         {% endform %}
 
         <ul class="bp-perks">
@@ -115,10 +143,6 @@
   </section>
 
   {%- comment -%} Ritual {%- endcomment -%}
-  {%- liquid
-    assign r_main = imgs[3].preview_image | default: imgs[0].preview_image
-    assign r_small = imgs[1].preview_image | default: imgs[0].preview_image
-  -%}
   {% render 'beauty-ritual', eyebrow: s.ritual_eyebrow, heading: s.ritual_heading, lead: 'Thirty seconds to a scent that lasts all day.', img_main: r_main, img_small: r_small, thumb_1: r_main, thumb_2: r_small, s1: s.step_1, s1_text: s.step_1_text, s2: s.step_2, s2_text: s.step_2_text, s3: s.step_3, s3_text: s.step_3_text, cta_text: '', cta_link: '' %}
 
   {%- comment -%} Complete the ritual {%- endcomment -%}
