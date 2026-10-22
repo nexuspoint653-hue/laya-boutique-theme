@@ -41,6 +41,48 @@
       <span class="bty-count"><b data-bty-count>{{ coll.products_count }}</b> {% if coll.products_count == 1 %}piece{% else %}pieces{% endif %}</span>
     </div>
     {%- paginate coll.products by 24 -%}
+    {%- liquid
+      assign nm = 0
+      assign nl = 0
+      for product in coll.products
+        unless product.tags contains 'duo-set'
+          if product.tags contains 'fragrance-mist'
+            assign nm = nm | plus: 1
+          elsif product.tags contains 'body-lotion'
+            assign nl = nl | plus: 1
+          endif
+        endunless
+      endfor
+      assign editorial = false
+      if nm == 2 and nl == 2
+        assign editorial = true
+      endif
+    -%}
+    {%- if editorial -%}
+      <div class="bty-grid bty-grid--ed" data-bty-grid>
+        {%- assign im = 0 -%}{%- assign il = 0 -%}
+        {%- for product in coll.products -%}
+          {%- if product.tags contains 'duo-set' -%}{%- continue -%}{%- endif -%}
+          {%- assign slot = '' -%}
+          {%- if product.tags contains 'fragrance-mist' -%}{%- assign im = im | plus: 1 -%}{%- assign slot = 'm' | append: im -%}
+          {%- elsif product.tags contains 'body-lotion' -%}{%- assign il = il | plus: 1 -%}{%- assign slot = 'l' | append: il -%}{%- endif -%}
+          {%- if slot == '' -%}{%- continue -%}{%- endif -%}
+          <div class="bty-item" data-slot="{{ slot }}" data-tags="{% for t in product.tags %}{{ t | handle }} {% endfor %}">
+            {% render 'product-card', product: product, hover: 'image' %}
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="bty-grid bty-grid--rest" data-bty-grid>
+        {%- for product in coll.products -%}
+          {%- unless product.tags contains 'duo-set' -%}
+            {%- if product.tags contains 'fragrance-mist' or product.tags contains 'body-lotion' -%}{%- continue -%}{%- endif -%}
+          {%- endunless -%}
+          <div class="bty-item" data-tags="{% for t in product.tags %}{{ t | handle }} {% endfor %}">
+            {% render 'product-card', product: product, hover: 'image' %}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
     <div class="bty-grid" data-bty-grid>
       {%- for product in coll.products -%}
         <div class="bty-item" data-tags="{% for t in product.tags %}{{ t | handle }} {% endfor %}">
@@ -50,6 +92,7 @@
         <p class="bty-empty">New pieces arriving soon.</p>
       {%- endfor -%}
     </div>
+    {%- endif -%}
     {%- if paginate.pages > 1 -%}
       <nav class="bty-pages" aria-label="Pages">{{ paginate | default_pagination: previous: '&larr;', next: '&rarr;' }}</nav>
     {%- endif -%}
@@ -131,6 +174,17 @@
 .bty-grid{--cols:4;--gap:clamp(14px,1.8vw,28px);display:flex;flex-wrap:wrap;justify-content:center;gap:var(--gap)}
 .bty-item{flex:0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));min-width:0}
 .bty-item[hidden]{display:none}
+/* editorial layout: mists either side, a little lower; lotions stacked in the middle */
+.bty-grid--ed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"m1 l1 m2" "m1 l2 m2";column-gap:clamp(16px,2.2vw,34px);row-gap:clamp(22px,2.6vw,40px);max-width:1080px;margin:0 auto;align-items:center}
+.bty-grid--ed .bty-item{flex:none;width:auto}
+.bty-grid--ed [data-slot=m1]{grid-area:m1}
+.bty-grid--ed [data-slot=m2]{grid-area:m2}
+.bty-grid--ed [data-slot=l1]{grid-area:l1}
+.bty-grid--ed [data-slot=l2]{grid-area:l2}
+.bty-grid--rest{margin-top:clamp(30px,4vw,60px)}
+.bty.is-filtering .bty-grid--ed{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--gap,24px);max-width:none}
+.bty.is-filtering .bty-grid--ed .bty-item{flex:0 0 calc((100% - 3 * clamp(14px,1.8vw,28px)) / 4)}
+.bty.is-filtering .bty-grid--rest{margin-top:var(--gap,24px)}
 .bty-empty{grid-column:1/-1;text-align:center;color:var(--muted)}
 .bty-pages{display:flex;justify-content:center;gap:14px;margin-top:40px;font-size:13px}
 .bty-note{margin:26px 0 0;text-align:center;font-size:12px;letter-spacing:.04em;color:var(--muted)}
@@ -173,6 +227,9 @@
   .bty-bar{justify-content:center}
   .bty-chips{justify-content:center}
   .bty-grid{--cols:2;--gap:12px}
+  .bty-grid--ed{grid-template-columns:1fr 1fr;grid-template-areas:"m1 l1" "m2 l2";column-gap:12px;row-gap:20px;align-items:start}
+  .bty-grid--ed [data-slot^=m]{margin-top:48px}
+  .bty.is-filtering .bty-grid--ed .bty-item{flex-basis:calc(50% - 6px);margin-top:0}
   .bty-banner{grid-template-columns:1fr;gap:24px;padding:20px 16px 40px}
   .bty-banner-copy{text-align:center;margin:0 auto}
   .bty-banner-copy p{text-align:center!important}
@@ -193,7 +250,7 @@
   root.querySelectorAll('[data-bty-f]').forEach(function(b){
     b.addEventListener('click',function(){
       root.querySelectorAll('[data-bty-f]').forEach(function(x){x.classList.toggle('on',x===b);});
-      var f=b.dataset.btyF, n=0;
+      var f=b.dataset.btyF, n=0; root.classList.toggle('is-filtering', !!f);
       items.forEach(function(it){ var show=!f||(' '+it.dataset.tags).indexOf(' '+f+' ')>-1; it.hidden=!show; if(show) n++; });
       if(cnt) cnt.textContent=n;
     });
