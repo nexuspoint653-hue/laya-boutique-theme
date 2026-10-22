@@ -1071,7 +1071,7 @@ p,.rte p,li{text-wrap:pretty}
 .split h2.dsp{min-width:max-content}
 .split .lede{max-width:40ch}
 .split-body.pos-center .lede{margin-inline:auto}
-.acc .rte p,.prose.rte p{hyphens:auto}
+.acc .rte p,.prose.rte p{hyphens:manual}
 [id$="--22985123332227__svc"] p{max-width:30ch;margin-inline:auto}
 [id$="--23017845588099__main"] .prose > p:nth-of-type(16){max-width:30ch;word-spacing:-.5px}
 @media (max-width:749.98px){
@@ -1296,7 +1296,7 @@ p,li,figcaption{text-wrap:pretty}
 /* ===== Justified copy: no rivers in narrow columns ===== */
 .split .lede,.split-body .lede{max-width:min(52ch,100%)}
 .split-body .lede,.split-body .lede p,.banner-copy .lede,.banner-copy .lede p{
-  hyphens:auto;-webkit-hyphens:auto;hyphenate-limit-chars:7 3 3;word-spacing:-.01em;text-wrap:pretty}
+  hyphens:manual;-webkit-hyphens:manual;text-wrap:pretty}
 @media (max-width:900px){.split-body .lede,.split-body .lede p{text-align:center!important;text-align-last:center}}
 
 /* ===== Product breadcrumb ===== */
@@ -1636,5 +1636,5 @@ p,li,dd,h1,h2,h3,h4,a{overflow-wrap:break-word}
 .mnav-new{font-style:normal;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--gold);color:#fff;font-size:9px;letter-spacing:.16em;text-transform:uppercase;vertical-align:middle}
 
 /* ===== Text pass (2026-10-22): no justified or stretched paragraphs anywhere ===== */
-body :is(p,li,dd,blockquote,.rte,.lede){text-align-last:auto;text-justify:auto;hyphens:manual;-webkit-hyphens:manual}
+body :is(p,li,dd,blockquote,.rte,.lede){text-align-last:auto;text-justify:auto;hyphens:manual!important;-webkit-hyphens:manual!important}
 body :is(p,li,.rte,.lede)[style*="justify"]{text-align:left!important}
