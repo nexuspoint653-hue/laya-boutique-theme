@@ -1638,3 +1638,8 @@ p,li,dd,h1,h2,h3,h4,a{overflow-wrap:break-word}
 /* ===== Text pass (2026-10-22): no justified or stretched paragraphs anywhere ===== */
 body :is(p,li,dd,blockquote,.rte,.lede){text-align-last:auto;text-justify:auto;hyphens:manual!important;-webkit-hyphens:manual!important}
 body :is(p,li,.rte,.lede)[style*="justify"]{text-align:left!important}
+
+/* ===== Sold-out tag: always visible, bottom right of every card ===== */
+.card .card-sold{position:absolute;right:10px;bottom:10px;z-index:5;padding:6px 10px;border-radius:999px;background:rgba(27,26,24,.86);color:#fff;font-size:9px;letter-spacing:.18em;text-transform:uppercase;line-height:1;pointer-events:none}
+.card:has(.card-sold) .card-media img.still{opacity:.82}
+@media (max-width:749px){.card .card-sold{right:8px;bottom:8px;padding:5px 8px;font-size:8.5px;letter-spacing:.14em}}

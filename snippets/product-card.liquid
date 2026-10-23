@@ -226,8 +226,6 @@
         <span class="card-badge">{{ badge_text }}</span>
       {%- elsif product.metafields.custom.badge != blank -%}
         <span class="card-badge">{{ product.metafields.custom.badge }}</span>
-      {%- elsif product.available == false -%}
-        <span class="card-badge">Sold Out</span>
       {%- elsif cap > product.price and settings.show_sale_pricing -%}
         <span class="card-badge">Sale</span>
       {%- elsif product.tags contains 'Bestseller' -%}
@@ -235,6 +233,9 @@
       {%- elsif product.tags contains 'New' -%}
         <span class="card-badge">New</span>
       {%- endif -%}
+    {%- endif -%}
+    {%- if product.id and product.available == false -%}
+      <span class="card-sold">Sold Out</span>
     {%- endif -%}
 
     {%- if show_fav -%}
