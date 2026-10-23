@@ -16,7 +16,10 @@
   <div class="toolbar">
     <div class="chips">
       <a class="chip{% unless current_tags %} on{% endunless %}" href="{{ collection.url }}">All</a>
-      {%- for tag in collection.all_tags limit: 6 -%}
+      {%- assign chip_n = 0 -%}
+      {%- for tag in collection.all_tags -%}
+        {%- if tag contains '-' or tag == 'beauty' or chip_n >= 6 -%}{%- continue -%}{%- endif -%}
+        {%- assign chip_n = chip_n | plus: 1 -%}
         <a class="chip{% if current_tags contains tag %} on{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>
       {%- endfor -%}
     </div>
@@ -54,7 +57,7 @@
       <h3>Refine</h3>
       <div class="fs-chips">
         <a class="{% unless current_tags %}on{% endunless %}" href="{{ collection.url }}">All</a>
-        {%- for tag in collection.all_tags limit: 8 -%}<a class="{% if current_tags contains tag %}on{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>{%- endfor -%}
+        {%- assign chip_m = 0 -%}{%- for tag in collection.all_tags -%}{%- if tag contains '-' or tag == 'beauty' or chip_m >= 8 -%}{%- continue -%}{%- endif -%}{%- assign chip_m = chip_m | plus: 1 -%}<a class="{% if current_tags contains tag %}on{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>{%- endfor -%}
       </div>
     </div>
     {%- endif -%}
