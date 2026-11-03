@@ -4,8 +4,24 @@
 {% render 'section-copy', s: section, place: 'top' %}
   <div class="hero-media" data-media-fit="{{ section.settings.fit | default: 'cover' }}"
        data-media-focal="{{ section.settings.focal | default: 'center' }}">
-    {%- if section.settings.video != blank and section.settings.video_mobile != blank or section.settings.video != blank and section.settings.video_mobile_asset != blank -%}
-      <div class="hv-pick hv-d">{{ section.settings.video | video_tag: image_size: '1920x', autoplay: false, loop: section.settings.loop, muted: true, controls: false, playsinline: true, preload: 'none' }}</div>
+    {%- liquid
+      assign hv_has_m = false
+      if section.settings.video_mobile != blank or section.settings.video_mobile_asset != blank
+        assign hv_has_m = true
+      endif
+      assign hv_has_d = false
+      if section.settings.video != blank or section.settings.video_url != blank
+        assign hv_has_d = true
+      endif
+    -%}
+    {%- if hv_has_m and hv_has_d -%}
+      <div class="hv-pick hv-d">
+        {%- if section.settings.video_url != blank -%}
+          <video muted{% if section.settings.loop %} loop{% endif %} playsinline preload="none"{% if section.settings.image != blank %} poster="{{ section.settings.image | image_url: width: 1920 }}"{% endif %}><source src="{{ section.settings.video_url }}" type="video/mp4"></video>
+        {%- else -%}
+          {{ section.settings.video | video_tag: image_size: '1920x', autoplay: false, loop: section.settings.loop, muted: true, controls: false, playsinline: true, preload: 'none' }}
+        {%- endif -%}
+      </div>
       <div class="hv-pick hv-m">
         {%- if section.settings.video_mobile_asset != blank -%}
           <video muted{% if section.settings.loop %} loop{% endif %} playsinline preload="none"{% if section.settings.poster_mobile_asset != blank %} poster="{{ section.settings.poster_mobile_asset | asset_url }}"{% endif %}><source src="{{ section.settings.video_mobile_asset | asset_url }}" type="video/mp4"></video>
