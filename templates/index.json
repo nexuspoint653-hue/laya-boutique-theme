@@ -12,7 +12,9 @@
     "hero": {
       "type": "hero-video",
       "settings": {
-        "video": "shopify://files/videos/laya-hero-walk.mp4",
+        "video": "shopify://files/videos/laya-hero-wide.mp4",
+        "video_mobile_asset": "laya-hero-mobile.mp4",
+        "poster_mobile_asset": "laya-hero-mobile-poster.jpg",
         "video_url": "",
         "video_asset": "",
         "poster_asset": "",
