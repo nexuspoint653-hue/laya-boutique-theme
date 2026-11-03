@@ -1646,7 +1646,7 @@ body :is(p,li,.rte,.lede)[style*="justify"]{text-align:left!important}
 /* hero: wide video on desktop, vertical on phones */
 .hero-media .hv-pick{position:absolute;inset:0}
 .hero-media .hv-pick[hidden]{display:none}
-.hero-media .hv-pick video{width:100%;height:100%;object-fit:cover;object-position:center center}
+.hero-media .hv-pick video{width:100%;height:100%;object-fit:cover;object-position:center 8%}
 .hero-media .hv-m video{object-position:center 22%}
 @media (max-aspect-ratio:4/5){.hero-media .hv-d{display:none}}
 @media (min-aspect-ratio:4/5){.hero-media .hv-m{display:none}}
