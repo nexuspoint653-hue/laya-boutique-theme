@@ -4,7 +4,30 @@
 {% render 'section-copy', s: section, place: 'top' %}
   <div class="hero-media" data-media-fit="{{ section.settings.fit | default: 'cover' }}"
        data-media-focal="{{ section.settings.focal | default: 'center' }}">
-    {%- if section.settings.video != blank -%}
+    {%- if section.settings.video != blank and section.settings.video_mobile != blank or section.settings.video != blank and section.settings.video_mobile_asset != blank -%}
+      <div class="hv-pick hv-d">{{ section.settings.video | video_tag: image_size: '1920x', autoplay: false, loop: section.settings.loop, muted: true, controls: false, playsinline: true, preload: 'none' }}</div>
+      <div class="hv-pick hv-m">
+        {%- if section.settings.video_mobile_asset != blank -%}
+          <video muted{% if section.settings.loop %} loop{% endif %} playsinline preload="none"{% if section.settings.poster_mobile_asset != blank %} poster="{{ section.settings.poster_mobile_asset | asset_url }}"{% endif %}><source src="{{ section.settings.video_mobile_asset | asset_url }}" type="video/mp4"></video>
+        {%- else -%}
+          {{ section.settings.video_mobile | video_tag: image_size: '1080x', autoplay: false, loop: section.settings.loop, muted: true, controls: false, playsinline: true, preload: 'none' }}
+        {%- endif -%}
+      </div>
+      <script>
+        (function(){
+          var root=document.currentScript.parentNode, mq=window.matchMedia('(max-aspect-ratio: 4/5)');
+          function pick(){
+            var keep=root.querySelector(mq.matches?'.hv-m':'.hv-d'), drop=root.querySelector(mq.matches?'.hv-d':'.hv-m');
+            var dv=drop&&drop.querySelector('video'); if(dv){dv.pause();}
+            if(drop) drop.hidden=true; if(keep) keep.hidden=false;
+            var v=keep&&keep.querySelector('video'); if(!v) return;
+            v.muted=true; v.setAttribute('muted',''); v.preload='auto';
+            var p=v.play(); if(p&&p.catch) p.catch(function(){});
+          }
+          pick(); if(mq.addEventListener) mq.addEventListener('change',pick);
+        })();
+      </script>
+    {%- elsif section.settings.video != blank -%}
       {{ section.settings.video | video_tag:
          image_size: '1600x',
          autoplay: section.settings.autoplay,
@@ -112,6 +135,23 @@
       "type": "video",
       "id": "video",
       "label": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Phone / tall-screen video (vertical)",
+      "info": "Optional. Plays instead of the main video on phones and tall screens."
+    },
+    {
+      "type": "text",
+      "id": "video_mobile_asset",
+      "label": "Phone video theme file (optional)",
+      "info": "Theme asset .mp4 used on phones if no phone video is uploaded above."
+    },
+    {
+      "type": "text",
+      "id": "poster_mobile_asset",
+      "label": "Phone video poster file (optional)"
     },
     {
       "type": "url",

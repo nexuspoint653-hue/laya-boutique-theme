@@ -1643,3 +1643,10 @@ body :is(p,li,.rte,.lede)[style*="justify"]{text-align:left!important}
 .card .card-sold{position:absolute;right:10px;bottom:10px;z-index:5;padding:6px 10px;border-radius:999px;background:rgba(27,26,24,.86);color:#fff;font-size:9px;letter-spacing:.18em;text-transform:uppercase;line-height:1;pointer-events:none}
 .card:has(.card-sold) .card-media img.still{opacity:.82}
 @media (max-width:749px){.card .card-sold{right:8px;bottom:8px;padding:5px 8px;font-size:8.5px;letter-spacing:.14em}}
+/* hero: wide video on desktop, vertical on phones */
+.hero-media .hv-pick{position:absolute;inset:0}
+.hero-media .hv-pick[hidden]{display:none}
+.hero-media .hv-pick video{width:100%;height:100%;object-fit:cover;object-position:center center}
+.hero-media .hv-m video{object-position:center 22%}
+@media (max-aspect-ratio:4/5){.hero-media .hv-d{display:none}}
+@media (min-aspect-ratio:4/5){.hero-media .hv-m{display:none}}
